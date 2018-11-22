@@ -11,15 +11,15 @@
         android:supportsRtl="true"
         android:usesCleartextTraffic="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".Login">
+        <activity android:name="grouppay.dylankilbride.com.activities.Login">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".Register" />
-        <activity android:name=".Home"></activity>
+        <activity android:name="grouppay.dylankilbride.com.activities.Register" />
+        <activity android:name="grouppay.dylankilbride.com.activities.Home"></activity>
     </application>
 
 </manifest>

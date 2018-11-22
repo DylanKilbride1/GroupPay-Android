@@ -1,7 +1,9 @@
-package grouppay.dylankilbride.com.grouppay;
+package grouppay.dylankilbride.com.activities;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+
+import grouppay.dylankilbride.com.grouppay.R;
 
 public class Home extends AppCompatActivity {
 
