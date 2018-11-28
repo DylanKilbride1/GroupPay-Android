@@ -70,13 +70,12 @@ public class Register extends AppCompatActivity {
             }){
           @Override
           protected Map<String, String> getParams() throws AuthFailureError {
-            Map<String, String> params = new HashMap<String, String>();
+            Map<String, String> params = new HashMap<>();
             params.put("email_address", emailBox.getText().toString());
             params.put("first_name", firstNameBox.getText().toString());
             params.put("last_name", lastNameBox.getText().toString());
             params.put("password", passwordBox.getText().toString());
             params.put("mobile_number", mobileNumberBox.getText().toString());
-
             return params;
           }
         };

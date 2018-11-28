@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">Group Pay</string>
+    <string name="register_link">Don\'t have an account? Register here</string>
+    <string name="login_link">Already have an account? Login</string>
 </resources>

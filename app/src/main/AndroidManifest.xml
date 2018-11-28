@@ -12,7 +12,8 @@
         android:supportsRtl="true"
         android:usesCleartextTraffic="true"
         android:theme="@style/AppTheme">
-        <activity android:name="grouppay.dylankilbride.com.activities.Login">
+        <activity android:name="grouppay.dylankilbride.com.activities.Login"
+            android:label="">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

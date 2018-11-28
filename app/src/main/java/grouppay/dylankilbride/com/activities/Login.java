@@ -3,6 +3,7 @@ package grouppay.dylankilbride.com.activities;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -26,12 +27,14 @@ public class Login extends AppCompatActivity {
   EditText emailBox, passwordBox;
   Button loginButton;
   TextView registerLink;
-  String URL = "http://10.0.2.2/login";
+  String URL = "http://10.0.2.2:8080/login";
 
   @Override
   protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
     setContentView(R.layout.activity_login);
+    Toolbar toolbar = (Toolbar)findViewById(R.id.appBar);
+    setSupportActionBar(toolbar);
 
     emailBox = (EditText)findViewById(R.id.emailBox);
     passwordBox = (EditText)findViewById(R.id.passwordBox);
@@ -44,9 +47,9 @@ public class Login extends AppCompatActivity {
         StringRequest request = new StringRequest(Request.Method.POST, URL, new Response.Listener<String>(){
           @Override
           public void onResponse(String s) {
-            if(s.equals("true")){
-              Toast.makeText(Login.this, "Login Successful", Toast.LENGTH_LONG).show();
-              startActivity(new Intent(Login.this,Home.class));
+            if(s.equals("Logged In")){
+              Intent intent = new Intent(Login.this, Home.class);
+              startActivity(intent);
             }
             else{
               Toast.makeText(Login.this, "Incorrect Details", Toast.LENGTH_LONG).show();
