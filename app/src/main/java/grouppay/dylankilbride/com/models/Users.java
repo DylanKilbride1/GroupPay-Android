@@ -3,6 +3,7 @@ package grouppay.dylankilbride.com.models;
 public class Users {
 
   private int id;
+  //TODO Add photo field
   private String firstName;
   private String lastName;
   private String emailAddress;

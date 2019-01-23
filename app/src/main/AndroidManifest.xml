@@ -11,7 +11,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:usesCleartextTraffic="true"
-        android:theme="@style/AppTheme">
+        android:theme="@style/Theme.AppCompat.Light.NoActionBar">
         <activity android:name="grouppay.dylankilbride.com.activities.Login"
             android:label="">
             <intent-filter>
@@ -22,6 +22,10 @@
         </activity>
         <activity android:name="grouppay.dylankilbride.com.activities.Register" />
         <activity android:name="grouppay.dylankilbride.com.activities.Home"></activity>
+
+        <meta-data
+            android:name="preloaded_fonts"
+            android:resource="@array/preloaded_fonts" />
     </application>
 
 </manifest>

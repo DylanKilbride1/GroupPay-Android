@@ -4,4 +4,15 @@
     <color name="colorPrimaryDark">#ededed</color>
     <color name="colorAccent">#195fc9</color>
     <color name="loginRegisterButtonColor">#195fc6</color>
+    <color name="colorLandingScreenFAB">#1652ca</color>
+    <color name="navBgStart">#1652ca</color>
+    <color name="navBgEnd">#1175e9</color>
+    <color name="colorActionBarText">#252525</color>
+    <color name="colorDeleteButton">#ffffff</color>
+    <color name="incorrectField">#e11313</color>
+    <color name="whiteText">#ffffff</color>
+    <color name="viewContactHeaderStart">#0047b3</color>
+    <color name="viewContactHeaderEnd">#236bbf</color>
+    <color name="viewContactLayoutBg">#afafaf</color>
+    <color name="offWhiteBg">#c4c4c4</color>
 </resources>

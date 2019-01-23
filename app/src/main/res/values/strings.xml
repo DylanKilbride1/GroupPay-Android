@@ -2,4 +2,11 @@
     <string name="app_name">Group Pay</string>
     <string name="register_link">Don\'t have an account? Register here</string>
     <string name="login_link">Already have an account? Login</string>
+    <string name="user_doesnt_exist">These credentials don"'"t seem to be correct. Please try again</string>
+    <string name="invalid_details">Incorrect email or passwords</string>
+    <string name="nav_bar_profile">Profile</string>
+    <string name="nav_bar_cards">Credit/Debit Cards</string>
+    <string name="nav_bar_log_out">Log Out</string>
+    <string name="nav_drawer_open">Open</string>
+    <string name="nav_drawer_close">Close</string>
 </resources>

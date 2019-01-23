@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:gravity="center"
+    android:background="@drawable/nav_header_bg">
+
+    <ImageView
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:layout_marginBottom="5dp"
+        android:layout_marginTop="5dp"
+        android:background="@drawable/male_user_100px"/>
+
+    <TextView
+        android:id="@+id/navName"
+        android:layout_width="match_parent"
+        android:layout_height="35dp"
+        android:fontFamily="@font/cairo"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:gravity="center_vertical"
+        android:text="Dylan Kilbride"
+        android:textColor="@color/whiteText"
+        android:textSize="15dp"
+        android:textStyle="bold" />
+
+    <TextView
+        android:id="@+id/navEmail"
+        android:layout_width="match_parent"
+        android:layout_height="35dp"
+        android:fontFamily="@font/cairo"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:layout_marginBottom="10dp"
+        android:gravity="center_vertical"
+        android:maxLines="1"
+        android:text="dylankilbride1@gmail.com"
+        android:textColor="@color/whiteText"
+        android:textFontWeight=""
+        android:textSize="15dp" />
+</LinearLayout>

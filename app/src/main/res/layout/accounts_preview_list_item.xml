@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="120dp"
+    android:background="@drawable/darktolight_blue_list_item"
+    android:layout_margin="10dp"
+    android:padding="10dp"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <!--<android.support.v7.widget.CardView
+        android:layout_width="80dp"
+        android:layout_height="80dp"
+        android:layout_marginRight="20dp"
+        android:id="@+id/cardView"
+        app:cardCornerRadius="40dp"
+        android:layout_centerVertical="true">
+        <ImageView
+            android:layout_height="80dp"
+            android:layout_width="80dp"
+            android:id="@+id/listItemGroupPhoto"
+            android:scaleType="centerCrop"/>
+    </android.support.v7.widget.CardView>-->
+
+    <TextView
+        android:id="@+id/groupNameView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Holiday 2019"
+        android:textColor="@color/whiteText"
+        android:textSize="25dp"
+        android:maxLength="18"/>
+
+    <View
+        android:id="@+id/accountsTvDivider"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_below="@id/groupNameView"
+        android:background="@color/whiteText"/>
+
+    <TextView
+        android:id="@+id/accountValuesView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/accountsTvDivider"
+        android:layout_marginBottom="5dp"
+        android:text="€20 of €3000"
+        android:textColor="@color/whiteText"
+        android:textSize="25dp"
+        android:maxLength="18"/>
+
+    <TextView
+        android:id="@+id/numberOfMembers"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/accountValuesView"
+        android:text="14 Members"
+        android:textColor="@color/whiteText"
+        android:textSize="15dp"/>
+
+</RelativeLayout>
