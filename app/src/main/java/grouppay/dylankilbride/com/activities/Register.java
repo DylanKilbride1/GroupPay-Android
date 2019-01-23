@@ -2,6 +2,7 @@ package grouppay.dylankilbride.com.activities;
 
 import android.app.VoiceInteractor;
 import android.content.Intent;
+import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -20,6 +21,7 @@ import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.HashMap;
@@ -31,7 +33,7 @@ public class Register extends AppCompatActivity {
   EditText firstNameBox, lastNameBox, emailBox, passwordBox, mobileNumberBox;
   Button registerButton;
   TextView loginLink;
-  String URL = "http://10.0.2.2:8080/register";
+  String URL = "http://10.0.2.2:8080/users/register";
   RequestQueue requestQueue;
 
   @Override
@@ -55,11 +57,37 @@ public class Register extends AppCompatActivity {
     registerButton.setOnClickListener(new View.OnClickListener() {
       @Override
       public void onClick(View v) {
-        StringRequest objectRequest = new StringRequest(Request.Method.POST, URL,
-            new Response.Listener<String>() {
+
+        JSONObject registrationRequestDetails = new JSONObject();
+        try {
+          registrationRequestDetails.put("email_address", emailBox.getText().toString());
+          registrationRequestDetails.put("first_name", firstNameBox.getText().toString());
+          registrationRequestDetails.put("last_name", lastNameBox.getText().toString());
+          registrationRequestDetails.put("password", passwordBox.getText().toString());
+          registrationRequestDetails.put("mobile_number", mobileNumberBox.getText().toString());
+        } catch (JSONException e) {
+          Log.e("Couldn't create JSON: ", e.toString());
+        }
+        JsonObjectRequest objectRequest = new JsonObjectRequest(Request.Method.POST,
+            URL,
+            registrationRequestDetails,
+            new Response.Listener<JSONObject>() {
               @Override
-              public void onResponse(String response) {
-                Log.e("Server Response", response);
+              public void onResponse(JSONObject response) {
+                try {
+                  if (response.get("result").equals("registered")) {
+                    Intent intent = new Intent(Register.this, Login.class);
+                    intent.putExtra("registrationEmail", emailBox.getText().toString());
+                    intent.putExtra("registrationPassword", passwordBox.getText().toString());
+                    startActivity(intent);
+                  } else {
+                    Snackbar.make(findViewById(R.id.registerLinearLayout), "There's already an account with that email",
+                        Snackbar.LENGTH_LONG)
+                        .show();
+                  }
+                } catch (JSONException e) {
+                  e.printStackTrace();
+                }
               }
             },
             new Response.ErrorListener() {
@@ -68,18 +96,7 @@ public class Register extends AppCompatActivity {
                 Log.e("Rest Error", error.toString());
               }
             }){
-          @Override
-          protected Map<String, String> getParams() throws AuthFailureError {
-            Map<String, String> params = new HashMap<>();
-            params.put("email_address", emailBox.getText().toString());
-            params.put("first_name", firstNameBox.getText().toString());
-            params.put("last_name", lastNameBox.getText().toString());
-            params.put("password", passwordBox.getText().toString());
-            params.put("mobile_number", mobileNumberBox.getText().toString());
-            return params;
-          }
         };
-
         requestQueue.add(objectRequest);
       }
     });
