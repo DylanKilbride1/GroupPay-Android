@@ -22,9 +22,6 @@ import com.android.volley.toolbox.Volley;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.util.HashMap;
-import java.util.Map;
-
 import grouppay.dylankilbride.com.grouppay.R;
 
 public class Login extends AppCompatActivity {

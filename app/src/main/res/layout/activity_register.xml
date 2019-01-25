@@ -26,7 +26,7 @@
         android:layout_width="match_parent"
         android:layout_height="50dp"
         android:fontFamily="@font/cairo"
-        android:backgroundTint="@color/colorAccent"
+        android:backgroundTint="@color/editTextBgTintStandard"
         android:hint="First Name"
         android:id="@+id/firstNameBox"/>
 
@@ -34,7 +34,7 @@
         android:layout_width="match_parent"
         android:layout_height="50dp"
         android:fontFamily="@font/cairo"
-        android:backgroundTint="@color/colorAccent"
+        android:backgroundTint="@color/editTextBgTintStandard"
         android:hint="Last Name"
         android:id="@+id/lastNameBox"/>
 
@@ -42,7 +42,7 @@
         android:layout_width="match_parent"
         android:layout_height="50dp"
         android:fontFamily="@font/cairo"
-        android:backgroundTint="@color/colorAccent"
+        android:backgroundTint="@color/editTextBgTintStandard"
         android:hint="Email"
         android:id="@+id/emailBox"/>
 
@@ -50,7 +50,7 @@
         android:layout_width="match_parent"
         android:layout_height="50dp"
         android:fontFamily="@font/cairo"
-        android:backgroundTint="@color/colorAccent"
+        android:backgroundTint="@color/editTextBgTintStandard"
         android:inputType="textPassword"
         android:hint="Password"
         android:id="@+id/passwordBox"/>
@@ -59,7 +59,7 @@
         android:layout_width="match_parent"
         android:layout_height="50dp"
         android:fontFamily="@font/cairo"
-        android:backgroundTint="@color/colorAccent"
+        android:backgroundTint="@color/editTextBgTintStandard"
         android:inputType="textPassword"
         android:hint="Confirm Password"
         android:id="@+id/confirmPasswordBox"/>
@@ -69,7 +69,7 @@
         android:layout_height="50dp"
         android:layout_marginBottom="10dp"
         android:fontFamily="@font/cairo"
-        android:backgroundTint="@color/colorAccent"
+        android:backgroundTint="@color/editTextBgTintStandard"
         android:hint="Mobile Number"
         android:inputType="number"
         android:id="@+id/mobileNumberBox"/>
@@ -94,6 +94,6 @@
         android:layout_marginTop="15dp"
         android:gravity="center"
         android:id="@+id/loginLink"
-        android:textColor="@color/colorAccent"/>
+        android:textColor="@color/editTextBgTintStandard"/>
 
 </LinearLayout>

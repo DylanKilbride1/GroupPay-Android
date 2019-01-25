@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="grouppay.dylankilbride.com.grouppay">
-    <uses-permission android:name="android.permission.INTERNET"></uses-permission>
-    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"></uses-permission>
+
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
 
     <application
         android:allowBackup="true"
@@ -10,9 +11,10 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:usesCleartextTraffic="true"
-        android:theme="@style/Theme.AppCompat.Light.NoActionBar">
-        <activity android:name="grouppay.dylankilbride.com.activities.Login"
+        android:theme="@style/Theme.AppCompat.Light.NoActionBar"
+        android:usesCleartextTraffic="true">
+        <activity
+            android:name="grouppay.dylankilbride.com.activities.Login"
             android:label="">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -21,11 +23,17 @@
             </intent-filter>
         </activity>
         <activity android:name="grouppay.dylankilbride.com.activities.Register" />
-        <activity android:name="grouppay.dylankilbride.com.activities.Home"></activity>
+        <activity
+            android:name="grouppay.dylankilbride.com.activities.Home"
+            android:label="" />
 
         <meta-data
             android:name="preloaded_fonts"
             android:resource="@array/preloaded_fonts" />
+
+        <activity android:name="grouppay.dylankilbride.com.activities.PaymentMethods" />
+        <activity android:name="grouppay.dylankilbride.com.activities.Profile" />
+        <activity android:name="grouppay.dylankilbride.com.activities.AddPaymentMethod"></activity>
     </application>
 
 </manifest>

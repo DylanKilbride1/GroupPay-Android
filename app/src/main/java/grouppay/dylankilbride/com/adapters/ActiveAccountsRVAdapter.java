@@ -1,89 +1,106 @@
 package grouppay.dylankilbride.com.adapters;
 
 import android.content.Context;
-import android.content.Intent;
-import android.media.Image;
 import android.support.annotation.NonNull;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.TextView;
-import android.support.v7.widget.RecyclerView;
 
-import java.math.BigDecimal;
 import java.util.List;
 
 import grouppay.dylankilbride.com.grouppay.R;
 import grouppay.dylankilbride.com.models.GroupAccount;
 
-public class ActiveAccountsRVAdapter extends RecyclerView.Adapter<ActiveAccountsRVAdapter.ViewHolder> {
+public class ActiveAccountsRVAdapter extends RecyclerView.Adapter<ActiveAccountsRVAdapter.ViewHolder>{
 
-  private List<GroupAccount> groupAccountList;
-  private LayoutInflater layoutInflater;
-  private ItemClickListener itemClickListener;
+  public List<GroupAccount> accountsList;
+  private int itemLayout;
+  private Context context;
+  private static ItemClickListener clickInterface;
 
-  public ActiveAccountsRVAdapter(Context context, List<GroupAccount> data){
-    this.layoutInflater = LayoutInflater.from(context);
-    this.groupAccountList = data;
+  public ActiveAccountsRVAdapter(List<GroupAccount> accountsList, int itemLayout) {
+    this.accountsList = accountsList;
+    this.itemLayout = itemLayout;
   }
 
+  public ActiveAccountsRVAdapter(List<GroupAccount> accountsList, Context context) {
+    this.accountsList = accountsList;
+    this.context = context;
+  }
+
+  @NonNull
   @Override
-  public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType){
-    View view = layoutInflater.inflate(R.layout.accounts_preview_list_item, parent, false);
+  public ViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int viewType) {
+    View view = LayoutInflater.from(viewGroup.getContext()).inflate(itemLayout, viewGroup, false);
     return new ViewHolder(view);
   }
 
   @Override
-  public void onBindViewHolder(@NonNull ViewHolder viewHolder, int i) {
-    //TODO Add image
-    String groupNameStr = groupAccountList.get(i).getAccountName();
-    BigDecimal amountPaid = groupAccountList.get(i).getTotalAmountPaid();
-    String amountPaidStr = String.valueOf(amountPaid);
-    BigDecimal amountOwed = groupAccountList.get(i).getTotalAmountOwed();
-    String amountOwedStr = String.valueOf(amountOwed);
-    int members = groupAccountList.get(i).getNumberOfMembers();
-    String membersStr = String.valueOf(members) + " members";
-    String financialValues = "€" + amountPaidStr + " of €" + amountOwedStr;
+  public void onBindViewHolder(@NonNull final ViewHolder viewHolder, final int position) {
+    final GroupAccount groupAccount = accountsList.get(position);
+    viewHolder.groupName.setText(groupAccount.getAccountName());
+    viewHolder.accountValues.setText(groupAccount.getAccountFinanceString());
+    viewHolder.numberOfMembers.setText(groupAccount.getNumberOfMembersString());
 
-    viewHolder.groupName.setText(groupNameStr);
-    viewHolder.accountValues.setText(financialValues);
-    viewHolder.numberOfMembers.setText(membersStr);
+    viewHolder.groupName.setOnClickListener(new View.OnClickListener() {
+      @Override
+      public void onClick(View view) {
+        accountsList.remove(position);
+        notifyItemRemoved(position);
+        notifyItemRangeChanged(position, accountsList.size());
+      }
+    });
+
+//    viewHolder.contactName.setOnClickListener(new View.OnClickListener() {
+//
+//      @Override
+//      public void onClick(View view) {
+//        Intent intent = new Intent(view.getContext(), ViewContact.class);
+//        intent.putExtra("fullName", contactsList.get(position).getFullName());
+//        intent.putExtra("email", contactsList.get(position).getEmailAddress());
+//        intent.putExtra("phone", contactsList.get(position).getPhoneNumber());
+//        view.getContext().startActivity(intent);
+//      }
+//    });
   }
 
   @Override
   public int getItemCount() {
-    return 0;
+    return accountsList.size();
   }
 
-  // stores and recycles views as they are scrolled off screen
-  public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
-    //ImageView groupPhotoImageView;
-    TextView groupName, accountValues, numberOfMembers;
 
-    ViewHolder(View itemView) {
+  public void setAccounts(List<GroupAccount> accountsList) {
+    this.accountsList = accountsList;
+    notifyDataSetChanged();
+  }
+
+  public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+
+    public TextView groupName, accountValues, numberOfMembers;
+
+
+    public ViewHolder(@NonNull View itemView) {
       super(itemView);
-      //TODO Add Image
+
       groupName = itemView.findViewById(R.id.groupNameView);
       accountValues = itemView.findViewById(R.id.accountValuesView);
       numberOfMembers = itemView.findViewById(R.id.numberOfMembers);
-      itemView.setOnClickListener(this);
     }
 
     @Override
     public void onClick(View view) {
-      if (itemClickListener != null) itemClickListener.onItemClick(view, getAdapterPosition());
+      if(view.equals(groupName)){
+        removeAt(getAdapterPosition());
+      }
+    }
+
+    public void removeAt(int position) {
+      accountsList.remove(position);
+      notifyItemRemoved(position);
+      notifyItemRangeChanged(position, accountsList.size());
     }
   }
-
-  // convenience method for getting data at click position
-  GroupAccount getItem(int id) {
-    return groupAccountList.get(id);
-  }
-
-  // allows clicks events to be caught
-  void setClickListener(ItemClickListener itemClickListener) {
-    this.itemClickListener = itemClickListener;
-  }
-
 }

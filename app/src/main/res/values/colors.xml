@@ -3,6 +3,7 @@
     <color name="colorPrimary">#ffffff</color>
     <color name="colorPrimaryDark">#ededed</color>
     <color name="colorAccent">#195fc9</color>
+    <color name="editTextBgTintStandard">#195fc9</color>
     <color name="loginRegisterButtonColor">#195fc6</color>
     <color name="colorLandingScreenFAB">#1652ca</color>
     <color name="navBgStart">#1652ca</color>
@@ -15,4 +16,10 @@
     <color name="viewContactHeaderEnd">#236bbf</color>
     <color name="viewContactLayoutBg">#afafaf</color>
     <color name="offWhiteBg">#c4c4c4</color>
+    <color name="addPaymentHeaderBgStart">#cccccc</color>
+    <color name="addPaymentHeaderBgEnd">#b4b4b4</color>
+    <color name="addPaymentFAB">#1652ca</color>
+    <color name="addCardBgStart">#1652ca</color>
+    <color name="addCardBgEnd">#1175e9</color>
+
 </resources>

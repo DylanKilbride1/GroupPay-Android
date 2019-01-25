@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <android.support.design.widget.AppBarLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:theme="@style/AppTheme.AppBarOverlay">
+
+        <android.support.v7.widget.Toolbar
+            android:id="@+id/paymentMethodsToolbar"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:background="@color/whiteText"
+            app:popupTheme="@style/AppTheme.PopupOverlay" />
+
+    </android.support.design.widget.AppBarLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <RelativeLayout
+            android:id="@+id/viewA"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginTop="?attr/actionBarSize"
+            android:layout_weight="0.7"
+            android:background="@drawable/add_payment_header_bg">
+
+            <ImageView
+                android:id="@+id/addPaymentsHeaderCardImg"
+                android:layout_width="200dp"
+                android:layout_height="wrap_content"
+                android:layout_above="@+id/addPaymentsHeaderCardSecureText"
+                android:src="@drawable/add_payment_card_img"/>
+
+            <TextView
+                android:id="@+id/addPaymentsHeaderCardSecureText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="@dimen/add_payments_header_secure_text_padding"
+                android:layout_alignParentBottom="true"
+                android:text="All card details are encrypted and secure."
+                android:textSize="@dimen/add_payments_header_secure_text_size"
+                android:fontFamily="@font/cairo"/>
+        </RelativeLayout>
+
+        <LinearLayout
+            android:id="@+id/viewB"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="0.4"
+            android:background="@color/whiteText"
+            android:orientation="horizontal">
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/paymentMethodsRV"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+            </android.support.v7.widget.RecyclerView>
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/fabAddPaymentMethod"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginRight="20dp"
+        android:clickable="true"
+        android:src="@drawable/plus_icon_filled"
+        android:backgroundTint="@color/addPaymentFAB"
+        app:layout_anchor="@id/viewA"
+        app:layout_anchorGravity="bottom|right|end"/>
+
+</android.support.design.widget.CoordinatorLayout>

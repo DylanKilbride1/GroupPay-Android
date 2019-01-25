@@ -11,7 +11,7 @@
         android:layout_centerVertical="true"
         android:fontFamily="@font/cairo"
         android:textSize="20sp"
-        android:textColor="@color/whiteText"
+        android:textColor="@color/colorActionBarText"
         android:maxLines="1"
         android:ellipsize="end"
         android:text="" />

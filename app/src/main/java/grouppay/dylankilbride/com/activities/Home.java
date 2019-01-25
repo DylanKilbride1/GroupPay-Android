@@ -22,13 +22,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 import grouppay.dylankilbride.com.adapters.ActiveAccountsRVAdapter;
-import grouppay.dylankilbride.com.adapters.ActiveAccountsRVAdapterNew;
 import grouppay.dylankilbride.com.grouppay.R;
 import grouppay.dylankilbride.com.models.GroupAccount;
 
 public class Home extends AppCompatActivity {
 
-  ActiveAccountsRVAdapterNew adapter;
+  ActiveAccountsRVAdapter adapter;
   private RecyclerView accountsRecyclerView;
   private RecyclerView.LayoutManager accountsRecyclerViewLayoutManager;
   private TextView noAccountsTextView, navName, navEmail;
@@ -66,7 +65,7 @@ public class Home extends AppCompatActivity {
     userName = getIntent().getStringExtra("name");
     userEmail = getIntent().getStringExtra("email");
 
-    FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+    FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fabAddAccount);
     fab.setOnClickListener(new View.OnClickListener() {
       @Override
       public void onClick(View view) {
@@ -86,14 +85,14 @@ public class Home extends AppCompatActivity {
 
       @Override
       public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-        int id = item.getItemId();
-        switch (id) {
+        switch (item.getItemId()) {
           case R.id.nav_profile:
             //Intent intentMaps = new Intent(Home.this, ContactsLocation.class);
             //startActivity(intentMaps);
             break;
           case R.id.nav_cards:
-            //TODO Add intent for cards activity
+            Intent intentPaymentMethods = new Intent(Home.this, PaymentMethods.class);
+            startActivity(intentPaymentMethods);
             break;
           case R.id.nav_logout:
             Intent intentLogin = new Intent(Home.this, Login.class);
@@ -112,11 +111,11 @@ public class Home extends AppCompatActivity {
     accountsRecyclerView = (RecyclerView) findViewById(R.id.rvAccountsPreview);
     accountsRecyclerViewLayoutManager = new LinearLayoutManager(this);
     accountsRecyclerView.setLayoutManager(accountsRecyclerViewLayoutManager);
-    accountsRecyclerView.setAdapter(new ActiveAccountsRVAdapterNew(accountList, R.layout.accounts_preview_list_item));
+    accountsRecyclerView.setAdapter(new ActiveAccountsRVAdapter(accountList, R.layout.accounts_preview_list_item));
   }
 
   public void setUpActionBar() {
-    Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+    Toolbar toolbar = (Toolbar) findViewById(R.id.homeToolbar);
     setSupportActionBar(toolbar);
 
     if (getSupportActionBar() != null) {
@@ -124,9 +123,9 @@ public class Home extends AppCompatActivity {
       getSupportActionBar().setDisplayShowTitleEnabled(false);
 
       LayoutInflater inflator = LayoutInflater.from(this);
-      View v = inflator.inflate(R.layout.titleview_main_activity, null);
+      View v = inflator.inflate(R.layout.titleview_all_activities, null);
 
-      ((TextView) v.findViewById(R.id.title)).setText(this.getTitle());
+      ((TextView) v.findViewById(R.id.title)).setText(R.string.toolbar_home_title);
       ((TextView) v.findViewById(R.id.title)).setTextSize(20);
 
       this.getSupportActionBar().setCustomView(v);

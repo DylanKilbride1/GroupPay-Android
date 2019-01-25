@@ -4,9 +4,12 @@
     <string name="login_link">Already have an account? Login</string>
     <string name="user_doesnt_exist">These credentials don"'"t seem to be correct. Please try again</string>
     <string name="invalid_details">Incorrect email or passwords</string>
-    <string name="nav_bar_profile">Profile</string>
-    <string name="nav_bar_cards">Credit/Debit Cards</string>
-    <string name="nav_bar_log_out">Log Out</string>
+    <string name="nav_drawer_profile">Profile</string>
+    <string name="nav_drawer_cards">Credit/Debit Cards</string>
+    <string name="nav_drawer_log_out">Log Out</string>
     <string name="nav_drawer_open">Open</string>
     <string name="nav_drawer_close">Close</string>
+    <string name="toolbar_home_title">Active Accounts</string>
+    <string name="toolbar_payment_methods_title">Payment Methods</string>
+    <string name="add_card_secure_details">Card details are saved securely</string>
 </resources>

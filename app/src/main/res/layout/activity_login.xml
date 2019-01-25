@@ -31,7 +31,7 @@
             android:layout_height="wrap_content"
             android:inputType="textEmailAddress"
             android:fontFamily="@font/cairo"
-            android:backgroundTint="@color/colorAccent"
+            android:backgroundTint="@color/editTextBgTintStandard"
             android:hint="Email"
             android:id="@+id/emailBox"/>
 
@@ -41,7 +41,7 @@
             android:layout_marginBottom="20dp"
             android:inputType="textPassword"
             android:fontFamily="@font/cairo"
-            android:backgroundTint="@color/colorAccent"
+            android:backgroundTint="@color/editTextBgTintStandard"
             android:hint="Password"
             android:id="@+id/passwordBox"
             android:layout_marginTop="10dp"/>
