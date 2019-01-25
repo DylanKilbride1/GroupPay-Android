@@ -44,12 +44,14 @@
     </LinearLayout>
 
         <EditText
+            android:id="@+id/addCardCardholderNameET"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/add_card_standard_margin"
             android:layout_marginRight="@dimen/add_card_standard_margin"
             android:layout_marginLeft="@dimen/add_card_standard_margin"
             android:layout_marginBottom="15dp"
+            android:maxLines="1"
             android:backgroundTint="@color/editTextBgTintStandard"
             android:hint="Cardholder Name"/>
 
@@ -66,7 +68,10 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="@dimen/add_card_standard_margin"
                 android:layout_marginBottom="15dp"
+                android:maxLines="1"
                 android:backgroundTint="@color/editTextBgTintStandard"
+                android:drawableStart="@drawable/add_card_cardtype_generic_icon"
+                android:drawablePadding="10dp"
                 android:hint="Card Number"/>
 
             <ImageView
@@ -76,7 +81,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginRight="30dp"
                 android:src="@drawable/camera_icon"
-                android:onClick="scanCardDetails"/>
+                android:onClick="onScanPress"/> <!--App crashes here - Add method to implement logic-->
 
         </LinearLayout>
 
@@ -90,18 +95,22 @@
 
 
         <EditText
+            android:id="@+id/addCardExpiryET"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="0.5"
             android:layout_marginRight="15dp"
+            android:maxLines="1"
             android:backgroundTint="@color/editTextBgTintStandard"
             android:hint="Expiry Date"/>
 
         <EditText
+            android:id="@+id/addCardCvvET"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="0.5"
             android:layout_marginLeft="15dp"
+            android:maxLines="1"
             android:backgroundTint="@color/editTextBgTintStandard"
             android:hint="CVV"/>
 

@@ -173,6 +173,4 @@ public class Home extends AppCompatActivity {
   public void onBackPressed() {
     moveTaskToBack(true);
   }
-
-  //TODO Add nav drawer to this activity
 }
