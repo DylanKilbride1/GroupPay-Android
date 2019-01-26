@@ -28,7 +28,7 @@
 
         </android.support.design.widget.AppBarLayout>
 
-        <include layout="@layout/content_main" />
+        <include layout="@layout/activity_home_main_content" />
 
         <android.support.design.widget.FloatingActionButton
             android:id="@+id/fabAddAccount"
@@ -46,7 +46,7 @@
         android:layout_height="match_parent"
         app:menu="@menu/home_nav_menu"
         android:layout_gravity="start"
-        app:headerLayout="@layout/home_nav_header"
+        app:headerLayout="@layout/activity_active_accounts_nav_drawer_header"
         android:id="@+id/navView">
 
     </android.support.design.widget.NavigationView>

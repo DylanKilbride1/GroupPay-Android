@@ -87,8 +87,9 @@ public class Home extends AppCompatActivity {
       public boolean onNavigationItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()) {
           case R.id.nav_profile:
-            //Intent intentMaps = new Intent(Home.this, ContactsLocation.class);
-            //startActivity(intentMaps);
+            Intent profileIntent = new Intent(Home.this, Profile.class);
+            profileIntent.putExtra("userId", userId);
+            startActivity(profileIntent);
             break;
           case R.id.nav_cards:
             Intent intentPaymentMethods = new Intent(Home.this, PaymentMethods.class);
@@ -111,7 +112,7 @@ public class Home extends AppCompatActivity {
     accountsRecyclerView = (RecyclerView) findViewById(R.id.rvAccountsPreview);
     accountsRecyclerViewLayoutManager = new LinearLayoutManager(this);
     accountsRecyclerView.setLayoutManager(accountsRecyclerViewLayoutManager);
-    accountsRecyclerView.setAdapter(new ActiveAccountsRVAdapter(accountList, R.layout.accounts_preview_list_item));
+    accountsRecyclerView.setAdapter(new ActiveAccountsRVAdapter(accountList, R.layout.activity_active_accounts_preview_list_item));
   }
 
   public void setUpActionBar() {
@@ -123,7 +124,7 @@ public class Home extends AppCompatActivity {
       getSupportActionBar().setDisplayShowTitleEnabled(false);
 
       LayoutInflater inflator = LayoutInflater.from(this);
-      View v = inflator.inflate(R.layout.titleview_all_activities, null);
+      View v = inflator.inflate(R.layout.generic_titleview, null);
 
       ((TextView) v.findViewById(R.id.title)).setText(R.string.toolbar_home_title);
       ((TextView) v.findViewById(R.id.title)).setTextSize(20);

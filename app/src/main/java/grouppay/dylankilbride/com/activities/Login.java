@@ -58,44 +58,44 @@ public class Login extends AppCompatActivity {
       @Override
       public void onClick(View v) {
 
-//        JSONObject loginRequestDetails = new JSONObject();
-//        try {
-//          loginRequestDetails.put("email", emailBox.getText().toString());
-//          loginRequestDetails.put("password", passwordBox.getText().toString());
-//        } catch (JSONException e) {
-//          Log.e("Couldn't create JSON: ", e.toString());
-//        }
-//
-//        JsonObjectRequest loginRequest = new JsonObjectRequest(Request.Method.POST,
-//            URL,
-//            loginRequestDetails,
-//            new Response.Listener<JSONObject>() {
-//              @Override
-//              public void onResponse(JSONObject response) {
-//                try {
-//                  if (response.get("result").equals("1")) {
+        JSONObject loginRequestDetails = new JSONObject();
+        try {
+          loginRequestDetails.put("email", emailBox.getText().toString());
+          loginRequestDetails.put("password", passwordBox.getText().toString());
+        } catch (JSONException e) {
+          Log.e("Couldn't create JSON: ", e.toString());
+        }
+
+        JsonObjectRequest loginRequest = new JsonObjectRequest(Request.Method.POST,
+            URL,
+            loginRequestDetails,
+            new Response.Listener<JSONObject>() {
+              @Override
+              public void onResponse(JSONObject response) {
+                try {
+                  if (response.get("result").equals("1")) {
                     Intent intent = new Intent(Login.this, Home.class);
-//                    intent.putExtra("userId", response.get("userId").toString());
-//                    intent.putExtra("email", emailBox.getText().toString());
-//                    intent.putExtra("name", response.get("name").toString());
+                    intent.putExtra("userId", response.get("userId").toString());
+                    intent.putExtra("email", emailBox.getText().toString());
+                    intent.putExtra("name", response.get("name").toString());
                     startActivity(intent);
-//                  } else {
-//                    ColorStateList colorStateList = ColorStateList.valueOf(getResources().getColor(R.color.incorrectField));
-//                    ViewCompat.setBackgroundTintList(emailBox, colorStateList);
-//                    ViewCompat.setBackgroundTintList(passwordBox, colorStateList);
-//                    invalidCredentials.setVisibility(View.VISIBLE);
-//                  }
-//                } catch (JSONException e) {
-//                  e.printStackTrace();
-//                }
-//              }
-//            }, new Response.ErrorListener() {
-//          @Override
-//          public void onErrorResponse(VolleyError error) {
-//            Log.e("Something: ", error.toString());
-//          }
-//        });
-//        loginRequestQueue.add(loginRequest);
+                  } else {
+                    ColorStateList colorStateList = ColorStateList.valueOf(getResources().getColor(R.color.incorrectField));
+                    ViewCompat.setBackgroundTintList(emailBox, colorStateList);
+                    ViewCompat.setBackgroundTintList(passwordBox, colorStateList);
+                    invalidCredentials.setVisibility(View.VISIBLE);
+                  }
+                } catch (JSONException e) {
+                  e.printStackTrace();
+                }
+              }
+            }, new Response.ErrorListener() {
+          @Override
+          public void onErrorResponse(VolleyError error) {
+            Log.e("Something: ", error.toString());
+          }
+        });
+        loginRequestQueue.add(loginRequest);
        }
     });
 

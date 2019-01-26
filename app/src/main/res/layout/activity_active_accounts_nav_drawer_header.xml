@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:gravity="center"
-    android:background="@drawable/nav_header_bg">
+    android:background="@drawable/nav_drawer_header_bg">
 
     <ImageView
         android:layout_width="100dp"

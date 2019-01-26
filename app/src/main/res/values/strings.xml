@@ -11,5 +11,10 @@
     <string name="nav_drawer_close">Close</string>
     <string name="toolbar_home_title">Active Accounts</string>
     <string name="toolbar_payment_methods_title">Payment Methods</string>
+    <string name="toolbar_profile_title">Profile Details</string>
+    <string name="toolbar_add_payment_method_title">Add Credit/Debit Card</string>
     <string name="add_card_secure_details">Card details are saved securely</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>

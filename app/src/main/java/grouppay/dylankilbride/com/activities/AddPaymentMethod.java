@@ -3,9 +3,12 @@ package grouppay.dylankilbride.com.activities;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.Toolbar;
+import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.TextView;
 
 import grouppay.dylankilbride.com.grouppay.R;
 import io.card.payment.CardIOActivity;
@@ -20,6 +23,9 @@ public class AddPaymentMethod extends AppCompatActivity {
   protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
     setContentView(R.layout.activity_add_payment_method);
+
+    setUpActionBar();
+    getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
     cardholderName = (EditText) findViewById(R.id.addCardCardholderNameET);
     cardNumber = (EditText) findViewById(R.id.addCardNumberET);
@@ -89,5 +95,23 @@ public class AddPaymentMethod extends AppCompatActivity {
       // resultTextView.setText(resultDisplayStr);
     }
     // else handle other activity results
+  }
+
+  public void setUpActionBar() {
+    Toolbar toolbar = (Toolbar) findViewById(R.id.addPaymentMethodToolbar);
+    setSupportActionBar(toolbar);
+
+    if (getSupportActionBar() != null) {
+      getSupportActionBar().setDisplayShowCustomEnabled(true);
+      getSupportActionBar().setDisplayShowTitleEnabled(false);
+
+      LayoutInflater inflator = LayoutInflater.from(this);
+      View v = inflator.inflate(R.layout.generic_titleview, null);
+
+      ((TextView) v.findViewById(R.id.title)).setText(R.string.toolbar_add_payment_method_title);
+      ((TextView) v.findViewById(R.id.title)).setTextSize(20);
+
+      this.getSupportActionBar().setCustomView(v);
+    }
   }
 }

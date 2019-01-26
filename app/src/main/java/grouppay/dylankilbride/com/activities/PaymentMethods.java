@@ -59,7 +59,7 @@ public class PaymentMethods extends AppCompatActivity {
     paymentMethodsRecyclerView = (RecyclerView) findViewById(R.id.paymentMethodsRV);
     paymentMethodsRecyclerViewLayoutManager = new LinearLayoutManager(this);
     paymentMethodsRecyclerView.setLayoutManager(paymentMethodsRecyclerViewLayoutManager);
-    paymentMethodsRecyclerView.setAdapter(new PaymentMethodsRVAdapter(cardsList, R.layout.payment_method_list_item));
+    paymentMethodsRecyclerView.setAdapter(new PaymentMethodsRVAdapter(cardsList, R.layout.activity_payment_methods_list_item));
   }
 
   public void setUpActionBar() {
@@ -71,7 +71,7 @@ public class PaymentMethods extends AppCompatActivity {
       getSupportActionBar().setDisplayShowTitleEnabled(false);
 
       LayoutInflater inflator = LayoutInflater.from(this);
-      View v = inflator.inflate(R.layout.titleview_all_activities, null);
+      View v = inflator.inflate(R.layout.generic_titleview, null);
 
       ((TextView) v.findViewById(R.id.title)).setText(R.string.toolbar_payment_methods_title);
       ((TextView) v.findViewById(R.id.title)).setTextSize(20);

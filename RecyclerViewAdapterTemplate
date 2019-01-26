@@ -102,4 +102,3 @@ public class RecyclerViewAdapterTemplate extends RecyclerView.Adapter<RecyclerVi
     }
   }
 }
-

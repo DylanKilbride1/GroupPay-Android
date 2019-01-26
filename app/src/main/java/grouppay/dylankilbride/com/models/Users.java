@@ -2,7 +2,7 @@ package grouppay.dylankilbride.com.models;
 
 public class Users {
 
-  private int id;
+  private long id;
   //TODO Add photo field
   private String firstName;
   private String lastName;
@@ -19,6 +19,14 @@ public class Users {
   }
 
   public Users() {
+  }
+
+  public long getId() {
+    return id;
+  }
+
+  public void setId(long id) {
+    this.id = id;
   }
 
   public void setFirstName(String firstName) {
