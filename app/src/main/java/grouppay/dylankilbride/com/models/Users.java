@@ -10,7 +10,8 @@ public class Users {
   private String password;
   private String mobileNumber;
 
-  public Users(String firstName, String lastName, String emailAddress, String password, String mobileNumber) {
+  public Users(long id, String firstName, String lastName, String emailAddress, String password, String mobileNumber) {
+    this.id = id;
     this.firstName = firstName;
     this.lastName = lastName;
     this.emailAddress = emailAddress;

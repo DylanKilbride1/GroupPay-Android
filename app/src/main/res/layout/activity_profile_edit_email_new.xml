@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?><LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:gravity="center_horizontal"
+    android:orientation="vertical">
+
+    <android.support.design.widget.AppBarLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:theme="@style/AppTheme.AppBarOverlay">
+
+        <android.support.v7.widget.Toolbar
+            android:id="@+id/addPaymentMethodToolbar"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:background="@color/whiteText"
+            app:popupTheme="@style/AppTheme.PopupOverlay" />
+
+    </android.support.design.widget.AppBarLayout>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/add_card_standard_margin"
+        android:layout_marginBottom="15dp"
+        android:orientation="horizontal">
+
+        <ImageView
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:layout_marginRight="10dp"
+            android:src="@drawable/edit_email_icon"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="17sp"
+            android:text="@string/profile_edit_email_title"/>
+
+    </LinearLayout>
+
+    <EditText
+        android:id="@+id/profileNewEmailAddressET"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/add_card_standard_margin"
+        android:layout_marginRight="@dimen/add_card_standard_margin"
+        android:layout_marginLeft="@dimen/add_card_standard_margin"
+        android:layout_marginBottom="15dp"
+        android:maxLines="1"
+        android:backgroundTint="@color/editTextBgTintStandard"
+        android:hint="@string/profile_edit_email_hint"/>
+
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent">
+
+        <Button
+            android:id="@+id/profileEditEmailBTN"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_margin="40dp"
+            android:layout_alignParentBottom="true"
+            android:text="@string/generic_continue"
+            android:textSize="15dp"
+            android:textColor="@color/whiteText"
+            android:background="@drawable/generic_rounded_continue_button_bg"/>
+
+    </RelativeLayout>
+
+
+</LinearLayout>

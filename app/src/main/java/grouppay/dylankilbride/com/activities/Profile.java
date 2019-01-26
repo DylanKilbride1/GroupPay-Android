@@ -1,10 +1,13 @@
 package grouppay.dylankilbride.com.activities;
 
+import android.content.Intent;
+import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import grouppay.dylankilbride.com.activities.retrofit_interfaces.ProfileAPIInterface;
@@ -16,10 +19,13 @@ import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
+import static grouppay.dylankilbride.com.constants.Constants.LOCALHOST_SERVER_BASEURL;
+
 public class Profile extends AppCompatActivity {
 
   String userIdStr;
   TextView editEmailTV, editPhoneNumberTV;
+  RelativeLayout emailAddressRL, phoneNumberRL;
 
   @Override
   protected void onCreate(Bundle savedInstanceState) {
@@ -31,8 +37,21 @@ public class Profile extends AppCompatActivity {
 
     userIdStr = getIntent().getStringExtra("userId");
 
+    emailAddressRL = (RelativeLayout) findViewById(R.id.profileEmailAddressRL);
+    phoneNumberRL = (RelativeLayout) findViewById(R.id.profilePhoneNumberRL);
+
+    emailAddressRL.setOnClickListener(new View.OnClickListener() {
+      @Override
+      public void onClick(View view) {
+        Intent editEmail = new Intent(Profile.this, ProfileEditEmail.class);
+        editEmail.putExtra("userId", userIdStr);
+        startActivity(editEmail);
+        finish();
+      }
+    });
+
     Retrofit retrofit = new Retrofit.Builder()
-        .baseUrl("http://10.0.2.2:8080/")
+        .baseUrl(LOCALHOST_SERVER_BASEURL)
         .addConverterFactory(GsonConverterFactory.create())
         .build();
 
@@ -42,7 +61,7 @@ public class Profile extends AppCompatActivity {
       @Override
       public void onResponse(Call<Users> call, Response<Users> response) {
         if (!response.isSuccessful()) {
-          //do something if this went wrong
+          //TODO Add error display message for user
           return;
         } else {
           editEmailTV = (TextView) findViewById(R.id.profileEditEmailAddressTV);
@@ -54,7 +73,7 @@ public class Profile extends AppCompatActivity {
 
       @Override
       public void onFailure(Call<Users> call, Throwable t) {
-
+        //TODO Do something here
       }
     });
 

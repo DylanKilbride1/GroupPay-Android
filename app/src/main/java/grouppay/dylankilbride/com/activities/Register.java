@@ -27,13 +27,16 @@ import org.json.JSONObject;
 import java.util.HashMap;
 import java.util.Map;
 
+import grouppay.dylankilbride.com.constants.Constants;
 import grouppay.dylankilbride.com.grouppay.R;
+
+import static grouppay.dylankilbride.com.constants.Constants.LOCALHOST_SERVER_BASEURL;
 
 public class Register extends AppCompatActivity {
   EditText firstNameBox, lastNameBox, emailBox, passwordBox, mobileNumberBox;
   Button registerButton;
   TextView loginLink;
-  String URL = "http://10.0.2.2:8080/users/register";
+  String URL = LOCALHOST_SERVER_BASEURL + "/users/register";
   RequestQueue requestQueue;
 
   @Override

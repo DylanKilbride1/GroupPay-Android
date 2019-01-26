@@ -24,12 +24,14 @@ import org.json.JSONObject;
 
 import grouppay.dylankilbride.com.grouppay.R;
 
+import static grouppay.dylankilbride.com.constants.Constants.LOCALHOST_SERVER_BASEURL;
+
 public class Login extends AppCompatActivity {
   EditText emailBox, passwordBox;
   TextView invalidCredentials;
   Button loginButton;
   TextView registerLink;
-  String URL = "http://10.0.2.2:8080/users/login";
+  String URL = LOCALHOST_SERVER_BASEURL + "/users/login";
 
   @Override
   protected void onCreate(Bundle savedInstanceState) {

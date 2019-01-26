@@ -4,6 +4,7 @@
     <string name="login_link">Already have an account? Login</string>
     <string name="user_doesnt_exist">These credentials don"'"t seem to be correct. Please try again</string>
     <string name="invalid_details">Incorrect email or passwords</string>
+    <string name="generic_continue">CONTINUE</string>
     <string name="nav_drawer_profile">Profile</string>
     <string name="nav_drawer_cards">Credit/Debit Cards</string>
     <string name="nav_drawer_log_out">Log Out</string>
@@ -14,7 +15,8 @@
     <string name="toolbar_profile_title">Profile Details</string>
     <string name="toolbar_add_payment_method_title">Add Credit/Debit Card</string>
     <string name="add_card_secure_details">Card details are saved securely</string>
-
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="profile_edit_email_title">Edit Email Address</string>
+    <string name="profile_edit_email_hint">New Email Address</string>
+    <string name="profile_edit_phone_title">Edit Phone Number</string>
+    <string name="profile_edit_phone_hint">New Phone Number</string>
 </resources>

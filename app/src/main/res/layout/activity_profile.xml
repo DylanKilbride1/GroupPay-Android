@@ -23,7 +23,7 @@
     </android.support.design.widget.AppBarLayout>
 
     <RelativeLayout
-        android:id="@+id/profileHeaderLayout"
+        android:id="@+id/profileHeaderRL"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:gravity="center"
@@ -73,7 +73,7 @@
         android:orientation="vertical">
 
         <RelativeLayout
-            android:id="@+id/profileEmailAddressLayout"
+            android:id="@+id/profileEmailAddressRL"
             android:layout_width="match_parent"
             android:layout_height="80dp"
             android:gravity="center_vertical"
@@ -103,13 +103,13 @@
                 android:layout_height="30dp"
                 android:layout_alignParentEnd="true"
                 android:layout_centerVertical="true"
-                android:src="@drawable/right_arrow_icon" />
+                android:src="@drawable/edit_pen_icon" />
 
         </RelativeLayout>
 
 
         <RelativeLayout
-            android:id="@+id/profilePhoneNumberLayout"
+            android:id="@+id/profilePhoneNumberRL"
             android:layout_width="match_parent"
             android:layout_height="80dp"
             android:gravity="center_vertical"
@@ -139,9 +139,10 @@
                 android:layout_height="30dp"
                 android:layout_alignParentEnd="true"
                 android:layout_centerVertical="true"
-                android:src="@drawable/right_arrow_icon" />
+                android:src="@drawable/edit_pen_icon" />
 
         </RelativeLayout>
 
     </LinearLayout>
+
 </LinearLayout>
