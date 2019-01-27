@@ -47,18 +47,19 @@
                 app:civ_border_color="@color/profileImageBorder"/>
 
                 <TextView
-                    android:id="@+id/profileFullNameTV"
+                    android:id="@+id/profileMainFullNameTV"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginBottom="5dp"
                     android:textSize="15sp"
                     android:textStyle="bold"
+                    android:fontFamily="@font/cairo"
                     tools:text="Dylan Kilbride"/>
 
                 <TextView
                     android:id="@+id/profileMainEmailAddressTV"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:fontFamily="@font/cairo"
                     android:textSize="15sp"
                     tools:text="dylankilbride1@gmail.com"/>
 
@@ -71,6 +72,41 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical">
+
+        <RelativeLayout
+            android:id="@+id/profileFullNameRL"
+            android:layout_width="match_parent"
+            android:layout_height="80dp"
+            android:gravity="center_vertical"
+            android:padding="10dp"
+            android:clickable="true">
+
+            <TextView
+                android:id="@+id/profileFullNameTV"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="15sp"
+                android:textStyle="bold"
+                android:fontFamily="@font/cairo"
+                android:text="Full Name"/>
+
+            <TextView
+                android:id="@+id/profileEditFullNameTV"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/profileFullNameTV"
+                android:textSize="15sp"
+                android:fontFamily="@font/cairo"
+                tools:text="Dylan Kilbride"/>
+
+            <ImageView
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:layout_alignParentEnd="true"
+                android:layout_centerVertical="true"
+                android:src="@drawable/edit_pen_icon" />
+
+        </RelativeLayout>
 
         <RelativeLayout
             android:id="@+id/profileEmailAddressRL"
@@ -106,7 +142,6 @@
                 android:src="@drawable/edit_pen_icon" />
 
         </RelativeLayout>
-
 
         <RelativeLayout
             android:id="@+id/profilePhoneNumberRL"

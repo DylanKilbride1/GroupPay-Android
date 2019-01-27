@@ -3,12 +3,14 @@ package grouppay.dylankilbride.com.activities;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.Toolbar;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 
-import grouppay.dylankilbride.com.activities.retrofit_interfaces.ProfileAPIInterface;
-import grouppay.dylankilbride.com.constants.Constants;
+import grouppay.dylankilbride.com.retrofit_interfaces.ProfileAPIInterface;
 import grouppay.dylankilbride.com.grouppay.R;
 import grouppay.dylankilbride.com.models.Users;
 import retrofit2.Call;
@@ -30,6 +32,9 @@ public class ProfileEditEmail extends AppCompatActivity {
   protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
     setContentView(R.layout.activity_profile_edit_email_new);
+
+    setUpActionBar();
+    getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
     userIdStr = getIntent().getStringExtra("userId");
 
@@ -74,5 +79,23 @@ public class ProfileEditEmail extends AppCompatActivity {
 
       }
     });
+  }
+
+  public void setUpActionBar() {
+    Toolbar toolbar = (Toolbar) findViewById(R.id.editEmailAddressToolbar);
+    setSupportActionBar(toolbar);
+
+    if (getSupportActionBar() != null) {
+      getSupportActionBar().setDisplayShowCustomEnabled(true);
+      getSupportActionBar().setDisplayShowTitleEnabled(false);
+
+      LayoutInflater inflator = LayoutInflater.from(this);
+      View v = inflator.inflate(R.layout.generic_titleview, null);
+
+      ((TextView) v.findViewById(R.id.title)).setText(R.string.toolbar_edit_email_address_title);
+      ((TextView) v.findViewById(R.id.title)).setTextSize(20);
+
+      this.getSupportActionBar().setCustomView(v);
+    }
   }
 }

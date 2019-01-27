@@ -1,7 +1,6 @@
 package grouppay.dylankilbride.com.activities;
 
 import android.content.Intent;
-import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
@@ -10,7 +9,7 @@ import android.view.View;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import grouppay.dylankilbride.com.activities.retrofit_interfaces.ProfileAPIInterface;
+import grouppay.dylankilbride.com.retrofit_interfaces.ProfileAPIInterface;
 import grouppay.dylankilbride.com.grouppay.R;
 import grouppay.dylankilbride.com.models.Users;
 import retrofit2.Call;
@@ -24,8 +23,8 @@ import static grouppay.dylankilbride.com.constants.Constants.LOCALHOST_SERVER_BA
 public class Profile extends AppCompatActivity {
 
   String userIdStr;
-  TextView editEmailTV, editPhoneNumberTV;
-  RelativeLayout emailAddressRL, phoneNumberRL;
+  TextView editFullNameTV, editEmailTV, editPhoneNumberTV, mainEmailTV, mainNameTV;
+  RelativeLayout fullNameRL, emailAddressRL, phoneNumberRL;
 
   @Override
   protected void onCreate(Bundle savedInstanceState) {
@@ -37,8 +36,13 @@ public class Profile extends AppCompatActivity {
 
     userIdStr = getIntent().getStringExtra("userId");
 
+    fullNameRL = (RelativeLayout) findViewById(R.id.profileFullNameRL);
     emailAddressRL = (RelativeLayout) findViewById(R.id.profileEmailAddressRL);
     phoneNumberRL = (RelativeLayout) findViewById(R.id.profilePhoneNumberRL);
+    mainEmailTV = (TextView) findViewById(R.id.profileMainEmailAddressTV);
+    mainNameTV = (TextView) findViewById(R.id.profileMainFullNameTV);
+
+    getProifleDetails();
 
     emailAddressRL.setOnClickListener(new View.OnClickListener() {
       @Override
@@ -50,34 +54,25 @@ public class Profile extends AppCompatActivity {
       }
     });
 
-    Retrofit retrofit = new Retrofit.Builder()
-        .baseUrl(LOCALHOST_SERVER_BASEURL)
-        .addConverterFactory(GsonConverterFactory.create())
-        .build();
-
-    ProfileAPIInterface profileAPIInterface = retrofit.create(ProfileAPIInterface.class); //Creates model for JSON
-    Call<Users> call = profileAPIInterface.getUserDetails(userIdStr);
-    call.enqueue(new Callback<Users>() { //Don't use execute as it will execute on main thread
+    phoneNumberRL.setOnClickListener(new View.OnClickListener() {
       @Override
-      public void onResponse(Call<Users> call, Response<Users> response) {
-        if (!response.isSuccessful()) {
-          //TODO Add error display message for user
-          return;
-        } else {
-          editEmailTV = (TextView) findViewById(R.id.profileEditEmailAddressTV);
-          editPhoneNumberTV = (TextView) findViewById(R.id.profileEditPhoneNumberTV);
-          editEmailTV.setText(response.body().getEmailAddress());
-          editPhoneNumberTV.setText(response.body().getMobileNumber());
-        }
-      }
-
-      @Override
-      public void onFailure(Call<Users> call, Throwable t) {
-        //TODO Do something here
+      public void onClick(View view) {
+        Intent editPhoneNumber = new Intent(Profile.this, ProfileEditPhoneNumber.class);
+        editPhoneNumber.putExtra("userId", userIdStr);
+        startActivity(editPhoneNumber);
+        finish();
       }
     });
 
-
+    fullNameRL.setOnClickListener(new View.OnClickListener() {
+      @Override
+      public void onClick(View view) {
+        Intent editName = new Intent(Profile.this, ProfileEditFullName.class);
+        editName.putExtra("userId", userIdStr);
+        startActivity(editName);
+        finish();
+      }
+    });
   }
 
   public void setUpActionBar() {
@@ -96,5 +91,39 @@ public class Profile extends AppCompatActivity {
 
       this.getSupportActionBar().setCustomView(v);
     }
+  }
+
+  public void getProifleDetails() {
+    Retrofit retrofit = new Retrofit.Builder()
+        .baseUrl(LOCALHOST_SERVER_BASEURL)
+        .addConverterFactory(GsonConverterFactory.create())
+        .build();
+
+    ProfileAPIInterface profileAPIInterface = retrofit.create(ProfileAPIInterface.class); //Creates model for JSON
+    Call<Users> call = profileAPIInterface.getUserDetails(userIdStr);
+    call.enqueue(new Callback<Users>() { //Don't use execute as it will execute on main thread
+      @Override
+      public void onResponse(Call<Users> call, Response<Users> response) {
+        if (!response.isSuccessful()) {
+          //TODO Add error display message for user
+          return;
+        } else {
+          String fullName = response.body().getFirstName() + " " + response.body().getLastName();
+          editFullNameTV = (TextView) findViewById(R.id.profileEditFullNameTV);
+          editEmailTV = (TextView) findViewById(R.id.profileEditEmailAddressTV);
+          editPhoneNumberTV = (TextView) findViewById(R.id.profileEditPhoneNumberTV);
+          editFullNameTV.setText(fullName);
+          editEmailTV.setText(response.body().getEmailAddress());
+          editPhoneNumberTV.setText(response.body().getMobileNumber());
+          mainNameTV.setText(response.body().getFullName());
+          mainEmailTV.setText(response.body().getEmailAddress());
+        }
+      }
+
+      @Override
+      public void onFailure(Call<Users> call, Throwable t) {
+        //TODO Do something here
+      }
+    });
   }
 }

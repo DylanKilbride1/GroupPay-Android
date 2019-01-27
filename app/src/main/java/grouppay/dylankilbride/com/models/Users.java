@@ -69,4 +69,8 @@ public class Users {
   public String getMobileNumber() {
     return mobileNumber;
   }
+
+  public String getFullName() {
+    return firstName + " " + lastName;
+  }
 }

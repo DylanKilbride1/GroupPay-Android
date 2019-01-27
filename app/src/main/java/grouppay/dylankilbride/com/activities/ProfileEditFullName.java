@@ -1,8 +1,8 @@
 package grouppay.dylankilbride.com.activities;
 
 import android.content.Intent;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -21,45 +21,46 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 import static grouppay.dylankilbride.com.constants.Constants.LOCALHOST_SERVER_BASEURL;
 
-public class ProfileEditPhoneNumber extends AppCompatActivity {
+public class ProfileEditFullName extends AppCompatActivity {
 
   String userIdStr;
-  Button updatePhoneNumber;
-  EditText newPhoneNumber;
+  Button updateFullName;
+  EditText newFirstName, newLastName;
   ProfileAPIInterface apiInterface;
 
   @Override
   protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
-    setContentView(R.layout.activity_profile_edit_phone_number);
+    setContentView(R.layout.activity_profile_edit_name);
 
     setUpActionBar();
     getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
     userIdStr = getIntent().getStringExtra("userId");
 
-    updatePhoneNumber = (Button) findViewById(R.id.profileEditPhoneBTN);
-    newPhoneNumber = (EditText) findViewById(R.id.profileNewPhoneNumberET);
+    updateFullName = (Button) findViewById(R.id.profileEditFullNameBTN);
+    newFirstName = (EditText) findViewById(R.id.profileNewFirstNameET);
+    newLastName = (EditText) findViewById(R.id.profileNewLastNameET);
 
-    updatePhoneNumber.setOnClickListener(new View.OnClickListener() {
+    updateFullName.setOnClickListener(new View.OnClickListener() {
       @Override
       public void onClick(View view) {
-        Retrofit updatePhoneNumberRequest = new Retrofit.Builder()
+        Retrofit updateEmailRequest = new Retrofit.Builder()
             .baseUrl(LOCALHOST_SERVER_BASEURL)
             .addConverterFactory(GsonConverterFactory.create())
             .build();
 
-        apiInterface = updatePhoneNumberRequest.create(ProfileAPIInterface.class);
+        apiInterface = updateEmailRequest.create(ProfileAPIInterface.class);
 
-        updatePhoneNumber();
+        updateFullName();
       }
     });
   }
 
-  private void updatePhoneNumber() {
-    Users user = new Users(Long.valueOf(userIdStr), null, null, null, null, newPhoneNumber.getText().toString());
+  private void updateFullName() {
+    Users user = new Users(Long.valueOf(userIdStr), newFirstName.getText().toString(), newLastName.getText().toString(), null, null, null);
 
-    Call<Users> call = apiInterface.updateUserPhoneNumber(userIdStr, user);
+    Call<Users> call = apiInterface.updateUserFullName(userIdStr, user);
 
     call.enqueue(new Callback<Users>() {
       @Override
@@ -67,7 +68,7 @@ public class ProfileEditPhoneNumber extends AppCompatActivity {
         if(!response.isSuccessful()) {
           //Handle
         } else {
-          Intent intent = new Intent(ProfileEditPhoneNumber.this, Profile.class);
+          Intent intent = new Intent(ProfileEditFullName.this, Profile.class);
           intent.putExtra("userId", userIdStr);
           startActivity(intent);
           finish();
@@ -82,7 +83,7 @@ public class ProfileEditPhoneNumber extends AppCompatActivity {
   }
 
   public void setUpActionBar() {
-    Toolbar toolbar = (Toolbar) findViewById(R.id.editPhoneNumberToolbar);
+    Toolbar toolbar = (Toolbar) findViewById(R.id.editFullNameToolbar);
     setSupportActionBar(toolbar);
 
     if (getSupportActionBar() != null) {
@@ -92,7 +93,7 @@ public class ProfileEditPhoneNumber extends AppCompatActivity {
       LayoutInflater inflator = LayoutInflater.from(this);
       View v = inflator.inflate(R.layout.generic_titleview, null);
 
-      ((TextView) v.findViewById(R.id.title)).setText(R.string.toolbar_edit_phone_number_title);
+      ((TextView) v.findViewById(R.id.title)).setText(R.string.toolbar_edit_full_name_title);
       ((TextView) v.findViewById(R.id.title)).setTextSize(20);
 
       this.getSupportActionBar().setCustomView(v);
