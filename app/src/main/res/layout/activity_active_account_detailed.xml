@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.design.widget.CoordinatorLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="grouppay.dylankilbride.com.activities.GroupAccountDetailed">
+
+    <android.support.design.widget.AppBarLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:theme="@style/ToolbarTheme">
+
+        <android.support.v7.widget.Toolbar
+            android:id="@+id/detailedAccountsToolbar"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:background="@color/whiteText"
+            app:popupTheme="@style/ToolbarTheme" />
+
+    </android.support.design.widget.AppBarLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/groupAccountDetailedBackground"
+        android:orientation="vertical">
+
+        <RelativeLayout
+            android:id="@+id/viewA"
+            android:layout_width="match_parent"
+            android:layout_height="150dp"
+            android:layout_marginTop="?attr/actionBarSize"
+            android:background="@drawable/nav_drawer_header_bg">
+        </RelativeLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="150dp"
+            android:layout_marginLeft="30dp"
+            android:layout_marginRight="30dp"
+            android:orientation="vertical"
+            android:gravity="center|bottom">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                >
+
+                <TextView
+                    android:id="@+id/activeAccountProgressStartTV"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/cairo"
+                    android:textSize="40sp"
+                    tools:text="€0" />
+
+                <TextView
+                    android:id="@+id/activeAccountProgressEndTV"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/cairo"
+                    android:gravity="right"
+                    android:textSize="40sp"
+                    tools:text="€5000" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+                <ProgressBar
+                    android:id="@+id/detailedAccountPaymentProgress"
+                    android:layout_width="match_parent"
+                    android:layout_height="30dp"
+                    android:paddingBottom="20dp"
+                    android:max="500"
+                    android:progress="250"
+                    style="@style/Widget.AppCompat.ProgressBar.Horizontal"
+                    android:progressDrawable="@drawable/active_account_detailed_progress_bar"/>
+            </LinearLayout>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/viewD"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="0.4"
+            android:background="@color/whiteText"
+            android:orientation="horizontal"
+            android:paddingLeft="10dp"
+            android:paddingRight="10dp">
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/groupAccountsPaymentLogRV"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+            </android.support.v7.widget.RecyclerView>
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <de.hdodenhof.circleimageview.CircleImageView
+        android:id="@+id/activeAccountDetailedGroupImage"
+        android:layout_width="150dp"
+        android:layout_height="150dp"
+        android:src="@drawable/human_photo"
+        app:civ_border_color="@color/groupAccountDetailedGroupImageBorder"
+        app:civ_border_width="3dp"
+        app:layout_anchor="@id/viewA"
+        app:layout_anchorGravity="center|bottom"/>
+
+</android.support.design.widget.CoordinatorLayout>

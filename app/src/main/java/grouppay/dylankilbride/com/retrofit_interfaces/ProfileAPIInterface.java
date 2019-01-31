@@ -1,6 +1,6 @@
 package grouppay.dylankilbride.com.retrofit_interfaces;
 
-import grouppay.dylankilbride.com.models.Users;
+import grouppay.dylankilbride.com.models.User;
 import retrofit2.Call;
 import retrofit2.http.Body;
 import retrofit2.http.GET;
@@ -12,16 +12,16 @@ public interface ProfileAPIInterface {
 
   @Headers({"Accept: application/json"})
   @GET("/users/user/{userId}")
-  Call<Users> getUserDetails(@Path("userId") String userId);
+  Call<User> getUserDetails(@Path("userId") String userId);
 
   @PATCH("/users/user/updateEmail/{userId}")
-  Call<Users> updateUserEmail(@Path("userId") String userId, @Body Users user);
+  Call<User> updateUserEmail(@Path("userId") String userId, @Body User user);
 
   @PATCH("/users/user/updateMobileNumber/{userId}")
-  Call<Users> updateUserPhoneNumber(@Path("userId") String userId, @Body Users user);
+  Call<User> updateUserPhoneNumber(@Path("userId") String userId, @Body User user);
 
   @PATCH("/users/user/updateFullName/{userId}")
-  Call<Users> updateUserFullName(@Path("userId") String userId, @Body Users user);
+  Call<User> updateUserFullName(@Path("userId") String userId, @Body User user);
 
 }
 

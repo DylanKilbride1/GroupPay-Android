@@ -36,7 +36,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="bottom|end"
             android:layout_margin="@dimen/fab_margin"
-            android:backgroundTint="@color/viewContactLayoutBg"
+            android:backgroundTint="@color/homeFAB"
             app:srcCompat="@drawable/plus_icon_filled" />
 
     </android.support.design.widget.CoordinatorLayout>
@@ -46,7 +46,7 @@
         android:layout_height="match_parent"
         app:menu="@menu/home_nav_menu"
         android:layout_gravity="start"
-        app:headerLayout="@layout/activity_active_accounts_nav_drawer_header"
+        app:headerLayout="@layout/activity_home_nav_drawer_header"
         android:id="@+id/navView">
 
     </android.support.design.widget.NavigationView>

@@ -1,6 +1,6 @@
 package grouppay.dylankilbride.com.models;
 
-public class Users {
+public class User {
 
   private long id;
   //TODO Add photo field
@@ -10,7 +10,7 @@ public class Users {
   private String password;
   private String mobileNumber;
 
-  public Users(long id, String firstName, String lastName, String emailAddress, String password, String mobileNumber) {
+  public User(long id, String firstName, String lastName, String emailAddress, String password, String mobileNumber) {
     this.id = id;
     this.firstName = firstName;
     this.lastName = lastName;
@@ -19,7 +19,7 @@ public class Users {
     this.mobileNumber = mobileNumber;
   }
 
-  public Users() {
+  public User() {
   }
 
   public long getId() {
@@ -72,5 +72,13 @@ public class Users {
 
   public String getFullName() {
     return firstName + " " + lastName;
+  }
+
+  public String getInitials() {
+    char firstNameInitial = firstName.charAt(0);
+    char lastNameInitial = lastName.charAt(0);
+    String fnInitial = Character.toString(firstNameInitial).toUpperCase();
+    String lnInitial = Character.toString(lastNameInitial).toUpperCase();
+    return new StringBuilder().append(fnInitial).append(lnInitial).toString();
   }
 }

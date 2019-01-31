@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
@@ -60,6 +61,8 @@ public class PaymentMethods extends AppCompatActivity {
     paymentMethodsRecyclerViewLayoutManager = new LinearLayoutManager(this);
     paymentMethodsRecyclerView.setLayoutManager(paymentMethodsRecyclerViewLayoutManager);
     paymentMethodsRecyclerView.setAdapter(new PaymentMethodsRVAdapter(cardsList, R.layout.activity_payment_methods_list_item));
+    paymentMethodsRecyclerView.addItemDecoration(new DividerItemDecoration(paymentMethodsRecyclerView.getContext(), DividerItemDecoration.VERTICAL));
+
   }
 
   public void setUpActionBar() {

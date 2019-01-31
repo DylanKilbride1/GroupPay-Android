@@ -5,6 +5,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -12,7 +13,7 @@ import android.widget.TextView;
 
 import grouppay.dylankilbride.com.retrofit_interfaces.ProfileAPIInterface;
 import grouppay.dylankilbride.com.grouppay.R;
-import grouppay.dylankilbride.com.models.Users;
+import grouppay.dylankilbride.com.models.User;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -57,13 +58,13 @@ public class ProfileEditPhoneNumber extends AppCompatActivity {
   }
 
   private void updatePhoneNumber() {
-    Users user = new Users(Long.valueOf(userIdStr), null, null, null, null, newPhoneNumber.getText().toString());
+    User user = new User(Long.valueOf(userIdStr), null, null, null, null, newPhoneNumber.getText().toString());
 
-    Call<Users> call = apiInterface.updateUserPhoneNumber(userIdStr, user);
+    Call<User> call = apiInterface.updateUserPhoneNumber(userIdStr, user);
 
-    call.enqueue(new Callback<Users>() {
+    call.enqueue(new Callback<User>() {
       @Override
-      public void onResponse(Call<Users> call, Response<Users> response) {
+      public void onResponse(Call<User> call, Response<User> response) {
         if(!response.isSuccessful()) {
           //Handle
         } else {
@@ -75,7 +76,7 @@ public class ProfileEditPhoneNumber extends AppCompatActivity {
       }
 
       @Override
-      public void onFailure(Call<Users> call, Throwable t) {
+      public void onFailure(Call<User> call, Throwable t) {
 
       }
     });
@@ -96,6 +97,17 @@ public class ProfileEditPhoneNumber extends AppCompatActivity {
       ((TextView) v.findViewById(R.id.title)).setTextSize(20);
 
       this.getSupportActionBar().setCustomView(v);
+    }
+  }
+
+  @Override
+  public boolean onOptionsItemSelected(MenuItem item) {
+    switch (item.getItemId()) {
+      case android.R.id.home:
+        onBackPressed();
+        return true;
+      default:
+        return super.onOptionsItemSelected(item);
     }
   }
 }

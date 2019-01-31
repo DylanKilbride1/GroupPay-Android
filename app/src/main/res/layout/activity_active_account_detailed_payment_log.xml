@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="75dp"
+    android:gravity="center_vertical">
+
+    <LinearLayout
+        android:id="@+id/paymentLogUserInitialsLL"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:id="@+id/paymentLogUserInitials"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="10dp"
+            android:background="@drawable/circular_name_initials_textview"
+            android:fontFamily="@font/cairo"
+            android:gravity="center"
+            android:textColor="@color/colorAccent"
+            android:textSize="17sp"
+            android:textStyle="bold"
+            tools:text="DK" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_toRightOf="@+id/paymentLogUserInitialsLL"
+        android:gravity="center_vertical"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:id="@+id/view1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/paymentLogUserFullName"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="10dp"
+                tools:text="Dylan Kilbride"
+                android:textSize="17sp"
+                android:textStyle="bold"
+                android:fontFamily="@font/cairo"
+                />
+
+            <TextView
+                android:id="@+id/paymentLogPaymentType"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="end|center_vertical"
+                android:layout_marginLeft="10dp"
+                tools:text="Paid"
+                android:fontFamily="@font/cairo"
+                android:textSize="15sp" />
+
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:id="@+id/paymentLogPaymentTime"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="15sp"
+                android:fontFamily="@font/cairo"
+                tools:text="11:30, Jan27"
+                />
+            <TextView
+                android:id="@+id/paymentLogPaymentAmount"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:gravity="right"
+                tools:text="€30"
+                android:textSize="15sp"
+                android:fontFamily="@font/cairo"
+                android:textStyle="bold"
+                />
+        </LinearLayout>
+    </LinearLayout>
+</RelativeLayout>

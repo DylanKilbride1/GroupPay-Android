@@ -10,21 +10,41 @@ import java.util.Map;
 public class GroupAccount {
 
   private long accountId;
+  //TODO Remove testResource in place for users profile image - retrieve from s3 bucket
+  private int testResourceId;
   private String accountName;
   private String accountDescription;
   private int numberOfMembers;
   private BigDecimal totalAmountOwed;
   private BigDecimal totalAmountPaid;
-  //Map<Users, Payments> memberPayments;
- // List<Users> groupMembers;
+  private List<Payments> paymentLog;
+  private BigDecimal paymentProgress = new BigDecimal(0);
 
-  public GroupAccount(long accountId, String accountName, String accountDescription, int numberOfMembers, BigDecimal totalAmountPaid, BigDecimal totalAmountOwed) {
+  public GroupAccount(long accountId, int testResourceId, String accountName, String accountDescription, int numberOfMembers, BigDecimal totalAmountPaid, BigDecimal totalAmountOwed, List<Payments> paymentLog) {
     this.accountId = accountId;
+    this.testResourceId = testResourceId;
     this.accountName = accountName;
     this.accountDescription = accountDescription;
     this.numberOfMembers = numberOfMembers;
-    this.totalAmountOwed = totalAmountOwed;
     this.totalAmountPaid = totalAmountPaid;
+    this.totalAmountOwed = totalAmountOwed;
+    this.paymentLog = paymentLog;
+  }
+
+  public List<Payments> getPaymentLog() {
+    return paymentLog;
+  }
+
+  public void setPaymentLog(List<Payments> paymentLog) {
+    this.paymentLog = paymentLog;
+  }
+
+  public int getTestResourceId() {
+    return testResourceId;
+  }
+
+  public void setTestResourceId(int testResourceId) {
+    this.testResourceId = testResourceId;
   }
 
   public GroupAccount() {}
@@ -87,5 +107,10 @@ public class GroupAccount {
 
   public void setTotalAmountPaid(BigDecimal totalAmountPaid) {
     this.totalAmountPaid = totalAmountPaid;
+  }
+
+  public String getPaymentProgress(BigDecimal paymentValue) {
+    paymentProgress = paymentProgress.add(paymentValue);
+    return String.valueOf(paymentProgress);
   }
 }

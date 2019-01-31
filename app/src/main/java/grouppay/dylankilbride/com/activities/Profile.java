@@ -5,13 +5,14 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import grouppay.dylankilbride.com.retrofit_interfaces.ProfileAPIInterface;
 import grouppay.dylankilbride.com.grouppay.R;
-import grouppay.dylankilbride.com.models.Users;
+import grouppay.dylankilbride.com.models.User;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -100,10 +101,10 @@ public class Profile extends AppCompatActivity {
         .build();
 
     ProfileAPIInterface profileAPIInterface = retrofit.create(ProfileAPIInterface.class); //Creates model for JSON
-    Call<Users> call = profileAPIInterface.getUserDetails(userIdStr);
-    call.enqueue(new Callback<Users>() { //Don't use execute as it will execute on main thread
+    Call<User> call = profileAPIInterface.getUserDetails(userIdStr);
+    call.enqueue(new Callback<User>() { //Don't use execute as it will execute on main thread
       @Override
-      public void onResponse(Call<Users> call, Response<Users> response) {
+      public void onResponse(Call<User> call, Response<User> response) {
         if (!response.isSuccessful()) {
           //TODO Add error display message for user
           return;
@@ -121,9 +122,20 @@ public class Profile extends AppCompatActivity {
       }
 
       @Override
-      public void onFailure(Call<Users> call, Throwable t) {
+      public void onFailure(Call<User> call, Throwable t) {
         //TODO Do something here
       }
     });
+  }
+
+  @Override
+  public boolean onOptionsItemSelected(MenuItem item) {
+    switch (item.getItemId()) {
+      case android.R.id.home:
+        onBackPressed();
+        return true;
+      default:
+        return super.onOptionsItemSelected(item);
+    }
   }
 }

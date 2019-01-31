@@ -1,6 +1,7 @@
 package grouppay.dylankilbride.com.adapters;
 
 import android.content.Context;
+import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -10,6 +11,7 @@ import android.widget.TextView;
 
 import java.util.List;
 
+import grouppay.dylankilbride.com.activities.GroupAccountDetailed;
 import grouppay.dylankilbride.com.grouppay.R;
 import grouppay.dylankilbride.com.models.GroupAccount;
 
@@ -53,17 +55,14 @@ public class ActiveAccountsRVAdapter extends RecyclerView.Adapter<ActiveAccounts
       }
     });
 
-//    viewHolder.contactName.setOnClickListener(new View.OnClickListener() {
-//
-//      @Override
-//      public void onClick(View view) {
-//        Intent intent = new Intent(view.getContext(), ViewContact.class);
-//        intent.putExtra("fullName", contactsList.get(position).getFullName());
-//        intent.putExtra("email", contactsList.get(position).getEmailAddress());
-//        intent.putExtra("phone", contactsList.get(position).getPhoneNumber());
-//        view.getContext().startActivity(intent);
-//      }
-//    });
+    viewHolder.accountValues.setOnClickListener(new View.OnClickListener() {
+
+      @Override
+      public void onClick(View view) {
+        Intent intent = new Intent(view.getContext(), GroupAccountDetailed.class);
+        view.getContext().startActivity(intent);
+      }
+    });
   }
 
   @Override

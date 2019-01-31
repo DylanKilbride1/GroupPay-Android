@@ -2,10 +2,10 @@
 <resources>
     <color name="colorPrimary">#ffffff</color>
     <color name="colorPrimaryDark">#ededed</color>
-    <color name="colorAccent">#195fc9</color>
+    <color name="colorAccent">#195fc6</color>
     <color name="editTextBgTintStandard">#195fc9</color>
     <color name="loginRegisterButtonColor">#195fc6</color>
-    <color name="colorLandingScreenFAB">#1652ca</color>
+    <color name="colorLandingScreenFAB">#195fc6</color>
     <color name="navBgStart">#1652ca</color>
     <color name="navBgEnd">#1175e9</color>
     <color name="colorActionBarText">#252525</color>
@@ -24,5 +24,13 @@
     <color name="profileHeaderBgStart">#e1e1e1</color>
     <color name="profileHeaderBgEnd">#d4d4d4</color>
     <color name="profileImageBorder">#ffffff</color>
+    <color name="groupAccountDetailedGroupImageBorder">#3d3d3d</color>
+    <color name="groupAccountDetailedBackground">#f5f5f5</color>
+    <color name="groupAccountDetailedProgressBarBg">#c9c9c9</color>
+    <color name="groupAccountDetailedProgressBarEnd">#3398d7</color>
+    <color name="groupAccountDetailedProgressBarStart">#1652ca</color>
+    <color name="groupAccountDetailedInitialsBg">#68bff9</color>
+    <color name="toolbarBackButton">#636363</color>
+    <color name="homeFAB">#e926df</color>
 
 </resources>

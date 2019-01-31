@@ -49,10 +49,10 @@ public class Home extends AppCompatActivity {
     actionBarDrawerToggle.syncState();
 
     ArrayList<GroupAccount> groupAccounts = new ArrayList<>();
-    groupAccounts.add(new GroupAccount(1, "Pas De Casa", "Quick Hol", 3, new BigDecimal("47.23"), new BigDecimal("2500")));
-    groupAccounts.add(new GroupAccount(2, "Dinner Today", "Quick Hol", 14, new BigDecimal("4"), new BigDecimal("25")));
-    groupAccounts.add(new GroupAccount(3, "Monday", "Quick Hol", 5, new BigDecimal("56.70"), new BigDecimal("314")));
-    groupAccounts.add(new GroupAccount(4, "Car", "Quick Hol", 2, new BigDecimal("0"), new BigDecimal("100")));
+    groupAccounts.add(new GroupAccount(1, R.drawable.human_photo, "Pas De Casa", "Quick Hol", 3, new BigDecimal("47.23"), new BigDecimal("2500"), null));
+    groupAccounts.add(new GroupAccount(2, R.drawable.human_photo, "Dinner Today", "Quick Hol", 14, new BigDecimal("4"), new BigDecimal("25"), null));
+    groupAccounts.add(new GroupAccount(3, R.drawable.human_photo, "Monday", "Quick Hol", 5, new BigDecimal("56.70"), new BigDecimal("314"), null));
+    groupAccounts.add(new GroupAccount(4, R.drawable.human_photo, "Car", "Quick Hol", 2, new BigDecimal("0"), new BigDecimal("100"), null));
 
     setUpAccountPreviewRecyclerView(groupAccounts);
 
@@ -112,7 +112,7 @@ public class Home extends AppCompatActivity {
     accountsRecyclerView = (RecyclerView) findViewById(R.id.rvAccountsPreview);
     accountsRecyclerViewLayoutManager = new LinearLayoutManager(this);
     accountsRecyclerView.setLayoutManager(accountsRecyclerViewLayoutManager);
-    accountsRecyclerView.setAdapter(new ActiveAccountsRVAdapter(accountList, R.layout.activity_active_accounts_preview_list_item));
+    accountsRecyclerView.setAdapter(new ActiveAccountsRVAdapter(accountList, R.layout.activity_home_preview_list_item));
   }
 
   public void setUpActionBar() {
