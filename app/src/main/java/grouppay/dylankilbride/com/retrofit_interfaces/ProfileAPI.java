@@ -8,7 +8,7 @@ import retrofit2.http.Headers;
 import retrofit2.http.PATCH;
 import retrofit2.http.Path;
 
-public interface ProfileAPIInterface {
+public interface ProfileAPI {
 
   @Headers({"Accept: application/json"})
   @GET("/users/user/{userId}")

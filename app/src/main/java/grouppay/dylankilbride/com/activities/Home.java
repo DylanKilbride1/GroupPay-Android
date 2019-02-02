@@ -69,7 +69,7 @@ public class Home extends AppCompatActivity {
     fab.setOnClickListener(new View.OnClickListener() {
       @Override
       public void onClick(View view) {
-        Intent intent = new Intent(Home.this, CreateGroupAccountNameImg.class);
+        Intent intent = new Intent(Home.this, CreateGroupAccountStage1.class);
         intent.putExtra("userId", userId);
         startActivity(intent);
       }

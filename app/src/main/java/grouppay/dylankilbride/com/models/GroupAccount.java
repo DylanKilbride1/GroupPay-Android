@@ -10,6 +10,7 @@ import java.util.Map;
 public class GroupAccount {
 
   private long accountId;
+  private long adminId;
   //TODO Remove testResource in place for users profile image - retrieve from s3 bucket
   private int testResourceId;
   private String accountName;
@@ -29,6 +30,14 @@ public class GroupAccount {
     this.totalAmountPaid = totalAmountPaid;
     this.totalAmountOwed = totalAmountOwed;
     this.paymentLog = paymentLog;
+  }
+
+  /**For creating a basic account**/
+  public GroupAccount(long adminId, String accountName, String accountDescription, BigDecimal totalAmountOwed){
+    this.adminId = adminId;
+    this.accountName = accountName;
+    this.accountDescription = accountDescription;
+    this.totalAmountOwed = totalAmountOwed;
   }
 
   public List<Payments> getPaymentLog() {

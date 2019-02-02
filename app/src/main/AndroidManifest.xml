@@ -38,7 +38,7 @@
         <activity android:name="grouppay.dylankilbride.com.activities.ProfileEditPhoneNumber" />
         <activity android:name="grouppay.dylankilbride.com.activities.ProfileEditFullName" />
         <activity android:name="grouppay.dylankilbride.com.activities.GroupAccountDetailed" />
-        <activity android:name="grouppay.dylankilbride.com.activities.CreateGroupAccountNameImg"></activity>
+        <activity android:name="grouppay.dylankilbride.com.activities.CreateGroupAccountStage1"></activity>
     </application>
 
 </manifest>

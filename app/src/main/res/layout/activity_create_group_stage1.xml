@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="grouppay.dylankilbride.com.activities.CreateGroupAccountNameImg">
+    tools:context="grouppay.dylankilbride.com.activities.CreateGroupAccountStage1">
 
     <android.support.design.widget.AppBarLayout
         android:layout_width="match_parent"
@@ -48,6 +48,7 @@
                 app:civ_border_color="@color/profileImageBorder"/>
 
             <EditText
+                android:id="@+id/createGroupAccountStage1NameET"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="10dp"
@@ -66,16 +67,54 @@
             android:layout_weight="1">
 
             <EditText
+                android:id="@+id/createGroupAccountStage1DescriptionET"
+                android:layout_width="match_parent"
+                android:layout_height="120dp"
+                android:layout_alignParentTop="true"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="12dp"
+                android:background="@drawable/create_group_description_bg"
+                android:fontFamily="@font/cairo"
+                android:gravity="start"
+                android:hint="Add an optional group descripton here..."
+                android:maxLength="150"
+                android:padding="5dp" />
+
+            <LinearLayout
+                android:layout_marginTop="15dp"
+                android:layout_below="@+id/createGroupAccountStage1DescriptionET"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@null"
-                android:gravity="start"
-                android:maxLength="300"
-                android:fontFamily="@font/cairo"
-                android:hint="Add an optional group descripton here..."/>
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="30sp"
+                    android:text="Amount Needed:"
+                    android:fontFamily="@font/cairo"
+                    android:layout_marginRight="40dp"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="30sp"
+                    android:fontFamily="@font/cairo"
+                    android:text="€"/>
+
+                <EditText
+                    android:id="@+id/createGroupAccountStage1AmtNeededET"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/cairo"
+                    android:backgroundTint="@color/editTextBgTintStandard"/>
+
+
+
+            </LinearLayout>
 
             <Button
-                android:id="@+id/profileEditEmailBTN"
+                android:id="@+id/createGroupAccountStage1ContinueBTN"
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
                 android:layout_margin="30dp"

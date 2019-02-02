@@ -9,11 +9,15 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.GridLayout;
 import android.widget.TextView;
 
-import grouppay.dylankilbride.com.retrofit_interfaces.ProfileAPI;
+import java.math.BigDecimal;
+
+import grouppay.dylankilbride.com.constants.Constants;
 import grouppay.dylankilbride.com.grouppay.R;
-import grouppay.dylankilbride.com.models.User;
+import grouppay.dylankilbride.com.models.GroupAccount;
+import grouppay.dylankilbride.com.retrofit_interfaces.GroupAccountAPI;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -22,68 +26,75 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 import static grouppay.dylankilbride.com.constants.Constants.LOCALHOST_SERVER_BASEURL;
 
-public class ProfileEditPhoneNumber extends AppCompatActivity {
+public class CreateGroupAccountStage1 extends AppCompatActivity {
 
+  Button createStage1AccountBTN;
+  GroupAccountAPI apiInterface;
+  EditText groupName, groupDescription, amountNeeded;
   String userIdStr;
-  Button updatePhoneNumber;
-  EditText newPhoneNumber;
-  ProfileAPI apiInterface;
+  long userId;
 
   @Override
   protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
-    setContentView(R.layout.activity_profile_edit_phone_number);
+    setContentView(R.layout.activity_create_group_stage1);
 
     setUpActionBar();
     getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
     userIdStr = getIntent().getStringExtra("userId");
+    userId = Long.valueOf(userIdStr);
 
-    updatePhoneNumber = (Button) findViewById(R.id.profileEditPhoneBTN);
-    newPhoneNumber = (EditText) findViewById(R.id.profileNewPhoneNumberET);
+    createStage1AccountBTN = (Button) findViewById(R.id.createGroupAccountStage1ContinueBTN);
+    groupName = (EditText) findViewById(R.id.createGroupAccountStage1NameET);
+    groupDescription = (EditText) findViewById(R.id.createGroupAccountStage1DescriptionET);
+    amountNeeded = (EditText) findViewById(R.id.createGroupAccountStage1AmtNeededET);
 
-    updatePhoneNumber.setOnClickListener(new View.OnClickListener() {
+    createStage1AccountBTN.setOnClickListener(new View.OnClickListener() {
       @Override
       public void onClick(View view) {
-        Retrofit updatePhoneNumberRequest = new Retrofit.Builder()
+        Retrofit createBasicAccount = new Retrofit.Builder()
             .baseUrl(LOCALHOST_SERVER_BASEURL)
             .addConverterFactory(GsonConverterFactory.create())
             .build();
 
-        apiInterface = updatePhoneNumberRequest.create(ProfileAPI.class);
+        apiInterface = createBasicAccount.create(GroupAccountAPI.class);
 
-        updatePhoneNumber();
+        createBasicAccount();
       }
     });
   }
 
-  private void updatePhoneNumber() {
-    User user = new User(Long.valueOf(userIdStr), null, null, null, null, newPhoneNumber.getText().toString());
+  public void createBasicAccount() {
+    GroupAccount groupAccount = new GroupAccount(userId,
+        groupName.getText().toString(),
+        groupDescription.getText().toString(),
+        new BigDecimal(amountNeeded.getText().toString()));
 
-    Call<User> call = apiInterface.updateUserPhoneNumber(userIdStr, user);
+    Call<GroupAccount> call = apiInterface.createBasicAccount(groupAccount);
 
-    call.enqueue(new Callback<User>() {
+    call.enqueue(new Callback<GroupAccount>() {
       @Override
-      public void onResponse(Call<User> call, Response<User> response) {
+      public void onResponse(Call<GroupAccount> call, Response<GroupAccount> response) {
         if(!response.isSuccessful()) {
           //Handle
         } else {
-          Intent intent = new Intent(ProfileEditPhoneNumber.this, Profile.class);
-          intent.putExtra("userId", userIdStr);
-          startActivity(intent);
-          finish();
+//          Intent intent = new Intent(CreateGroupAccountStage1.this, Profile.class);
+//          intent.putExtra("userId", userIdStr);
+//          startActivity(intent);
+//          finish();
         }
       }
 
       @Override
-      public void onFailure(Call<User> call, Throwable t) {
+      public void onFailure(Call<GroupAccount> call, Throwable t) {
 
       }
     });
   }
 
   public void setUpActionBar() {
-    Toolbar toolbar = (Toolbar) findViewById(R.id.editPhoneNumberToolbar);
+    Toolbar toolbar = (Toolbar) findViewById(R.id.createGroupNameToolbar);
     setSupportActionBar(toolbar);
 
     if (getSupportActionBar() != null) {
@@ -93,7 +104,7 @@ public class ProfileEditPhoneNumber extends AppCompatActivity {
       LayoutInflater inflator = LayoutInflater.from(this);
       View v = inflator.inflate(R.layout.generic_titleview, null);
 
-      ((TextView) v.findViewById(R.id.title)).setText(R.string.toolbar_edit_phone_number_title);
+      ((TextView) v.findViewById(R.id.title)).setText(R.string.toolbar_create_group_stage1);
       ((TextView) v.findViewById(R.id.title)).setTextSize(20);
 
       this.getSupportActionBar().setCustomView(v);
