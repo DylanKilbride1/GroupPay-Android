@@ -69,9 +69,9 @@ public class Home extends AppCompatActivity {
     fab.setOnClickListener(new View.OnClickListener() {
       @Override
       public void onClick(View view) {
-//        Intent intent = new Intent(Home.this, CreateAccount.class);
-//        intent.putExtra("userId", userId);
-//        startActivity(intent);
+        Intent intent = new Intent(Home.this, CreateGroupAccountStage1.class);
+        intent.putExtra("userId", userId);
+        startActivity(intent);
       }
     });
 

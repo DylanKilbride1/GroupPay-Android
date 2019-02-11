@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="grouppay.dylankilbride.com.activities.CreateGroupAccountStage1">
+
+    <android.support.design.widget.AppBarLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:theme="@style/ToolbarTheme">
+
+        <android.support.v7.widget.Toolbar
+            android:id="@+id/createGroupNameToolbar"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:background="@color/whiteText"
+            app:popupTheme="@style/ToolbarTheme" />
+
+    </android.support.design.widget.AppBarLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+
+        android:orientation="vertical"
+        android:layout_marginTop="?attr/actionBarSize"
+        android:weightSum="5">
+
+        <LinearLayout
+            android:id="@+id/nameAndImageRL"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:padding="10dp"
+            android:layout_weight="4"
+            android:orientation="horizontal"
+            android:gravity="center_vertical"
+            android:background="@drawable/add_payment_header_bg">
+
+            <de.hdodenhof.circleimageview.CircleImageView
+                xmlns:app="http://schemas.android.com/apk/res-auto"
+                android:id="@+id/accountPreviewImage"
+                android:layout_width="80dp"
+                android:layout_height="80dp"
+                android:src="@drawable/human_photo"
+                app:civ_border_width="1dp"
+                app:civ_border_color="@color/profileImageBorder"/>
+
+            <EditText
+                android:id="@+id/createGroupAccountStage1NameET"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp"
+                android:hint="Group Name"
+                android:maxLength="20"
+                android:fontFamily="@font/cairo"
+                android:backgroundTint="@color/editTextBgTintStandard"/>
+
+        </LinearLayout>
+
+        <RelativeLayout
+            android:id="@+id/participantsRL"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:padding="10dp"
+            android:layout_weight="1">
+
+            <EditText
+                android:id="@+id/createGroupAccountStage1DescriptionET"
+                android:layout_width="match_parent"
+                android:layout_height="120dp"
+                android:layout_alignParentTop="true"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="12dp"
+                android:background="@drawable/create_group_description_bg"
+                android:fontFamily="@font/cairo"
+                android:gravity="start"
+                android:hint="Add an optional group descripton here..."
+                android:maxLength="150"
+                android:padding="5dp" />
+
+            <LinearLayout
+                android:layout_marginTop="15dp"
+                android:layout_below="@+id/createGroupAccountStage1DescriptionET"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="30sp"
+                    android:text="Amount Needed:"
+                    android:fontFamily="@font/cairo"
+                    android:layout_marginRight="40dp"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="30sp"
+                    android:fontFamily="@font/cairo"
+                    android:text="€"/>
+
+                <EditText
+                    android:id="@+id/createGroupAccountStage1AmtNeededET"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/cairo"
+                    android:backgroundTint="@color/editTextBgTintStandard"/>
+
+
+
+            </LinearLayout>
+
+            <Button
+                android:id="@+id/createGroupAccountStage1ContinueBTN"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:layout_margin="30dp"
+                android:layout_alignParentBottom="true"
+                android:text="@string/generic_continue"
+                android:textSize="15dp"
+                android:textColor="@color/whiteText"
+                android:background="@drawable/generic_rounded_continue_button_bg"/>
+
+
+        </RelativeLayout>
+
+    </LinearLayout>
+
+</android.support.design.widget.CoordinatorLayout>

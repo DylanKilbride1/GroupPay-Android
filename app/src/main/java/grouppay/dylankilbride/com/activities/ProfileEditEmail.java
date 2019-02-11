@@ -11,7 +11,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
-import grouppay.dylankilbride.com.retrofit_interfaces.ProfileAPIInterface;
+import grouppay.dylankilbride.com.retrofit_interfaces.ProfileAPI;
 import grouppay.dylankilbride.com.grouppay.R;
 import grouppay.dylankilbride.com.models.User;
 import retrofit2.Call;
@@ -27,7 +27,7 @@ public class ProfileEditEmail extends AppCompatActivity {
   String userIdStr;
   Button updateEmail;
   EditText newEmail;
-  ProfileAPIInterface apiInterface;
+  ProfileAPI apiInterface;
 
   @Override
   protected void onCreate(Bundle savedInstanceState) {
@@ -50,7 +50,7 @@ public class ProfileEditEmail extends AppCompatActivity {
             .addConverterFactory(GsonConverterFactory.create())
             .build();
 
-        apiInterface = updateEmailRequest.create(ProfileAPIInterface.class);
+        apiInterface = updateEmailRequest.create(ProfileAPI.class);
 
         updateEmail();
       }

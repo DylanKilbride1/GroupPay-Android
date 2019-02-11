@@ -10,7 +10,7 @@ import android.view.View;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import grouppay.dylankilbride.com.retrofit_interfaces.ProfileAPIInterface;
+import grouppay.dylankilbride.com.retrofit_interfaces.ProfileAPI;
 import grouppay.dylankilbride.com.grouppay.R;
 import grouppay.dylankilbride.com.models.User;
 import retrofit2.Call;
@@ -100,8 +100,8 @@ public class Profile extends AppCompatActivity {
         .addConverterFactory(GsonConverterFactory.create())
         .build();
 
-    ProfileAPIInterface profileAPIInterface = retrofit.create(ProfileAPIInterface.class); //Creates model for JSON
-    Call<User> call = profileAPIInterface.getUserDetails(userIdStr);
+    ProfileAPI profileAPI = retrofit.create(ProfileAPI.class); //Creates model for JSON
+    Call<User> call = profileAPI.getUserDetails(userIdStr);
     call.enqueue(new Callback<User>() { //Don't use execute as it will execute on main thread
       @Override
       public void onResponse(Call<User> call, Response<User> response) {
