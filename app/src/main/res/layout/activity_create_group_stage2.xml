@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="grouppay.dylankilbride.com.activities.CreateGroupAccountStage2">
+
+    <android.support.design.widget.AppBarLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:theme="@style/ToolbarTheme">
+
+        <android.support.v7.widget.Toolbar
+            android:id="@+id/createGroupNameToolbar"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:background="@color/whiteText"
+            app:popupTheme="@style/ToolbarTheme" />
+
+    </android.support.design.widget.AppBarLayout>
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/createGroupAccountStage2RV"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="?attr/actionBarSize">
+
+    </android.support.v7.widget.RecyclerView>
+
+    <Button
+        android:id="@+id/createGroupAccountStage2ContinueBTN"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_margin="30dp"
+        android:layout_alignParentBottom="true"
+        android:text="@string/generic_continue"
+        android:textSize="15dp"
+        android:textColor="@color/whiteText"
+        android:background="@drawable/generic_rounded_continue_button_bg"/>
+
+
+
+</RelativeLayout>

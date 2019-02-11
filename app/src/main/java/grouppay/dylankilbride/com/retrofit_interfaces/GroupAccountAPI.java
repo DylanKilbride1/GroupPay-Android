@@ -10,5 +10,4 @@ public interface GroupAccountAPI {
 
   @PUT("groupAccounts/createBasicAccount")
   Call<GroupAccount> createBasicAccount(@Body GroupAccount groupAccount);
-
 }
