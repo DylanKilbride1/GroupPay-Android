@@ -79,10 +79,10 @@ public class CreateGroupAccountStage1 extends AppCompatActivity {
         if(!response.isSuccessful()) {
           //Handle
         } else {
-//          Intent intent = new Intent(CreateGroupAccountStage1.this, Profile.class);
-//          intent.putExtra("userId", userIdStr);
-//          startActivity(intent);
-//          finish();
+          Intent intent = new Intent(CreateGroupAccountStage1.this, CreateGroupAccountStage2.class);
+          intent.putExtra("groupAccountId", response.body().getAccountId());
+          startActivity(intent);
+          finish();
         }
       }
 
