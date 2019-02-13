@@ -1,6 +1,5 @@
 package grouppay.dylankilbride.com.retrofit_interfaces;
 
-import java.security.acl.Group;
 import java.util.List;
 
 import grouppay.dylankilbride.com.models.GroupAccount;
@@ -16,6 +15,6 @@ public interface GroupAccountAPI {
   @PUT("groupAccounts/createBasicAccount")
   Call<GroupAccount> createBasicAccount(@Body GroupAccount groupAccount);
 
-  @POST("groupAccounts/addUsersToAccount/{groupId}")
-  Call<GroupAccount> addUsersToAccount(@Path("groupId") String groupId, @Body List<User> userList);
+  @POST("groupAccounts/addUsersToAccount/{groupAccountId}")
+  Call<List<User>> addUsersToAccount(@Path("groupAccountId") String groupId, @Body List<User> userList);
 }

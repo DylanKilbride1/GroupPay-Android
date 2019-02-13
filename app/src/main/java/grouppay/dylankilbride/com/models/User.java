@@ -93,8 +93,7 @@ public class User {
     return isPressed;
   }
 
-  public isPressed
-
-
-
+  public void setIsPressed(boolean value) {
+    isPressed = value;
+  }
 }

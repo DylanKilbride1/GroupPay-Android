@@ -38,7 +38,4 @@
         android:textSize="15dp"
         android:textColor="@color/whiteText"
         android:background="@drawable/generic_rounded_continue_button_bg"/>
-
-
-
 </RelativeLayout>

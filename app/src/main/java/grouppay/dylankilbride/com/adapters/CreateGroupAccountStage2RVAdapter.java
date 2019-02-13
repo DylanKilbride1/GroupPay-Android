@@ -2,6 +2,7 @@ package grouppay.dylankilbride.com.adapters;
 
 import android.content.Context;
 import android.support.annotation.NonNull;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -20,11 +21,12 @@ public class CreateGroupAccountStage2RVAdapter extends RecyclerView.Adapter<Crea
     public List<User> userList;
     private int itemLayout;
     private Context context;
-    private static ItemClickListener clickInterface;
+    private static ItemClickListener onItemClick;
 
-    public CreateGroupAccountStage2RVAdapter(List<User> userList, int itemLayout) {
+    public CreateGroupAccountStage2RVAdapter(List<User> userList, int itemLayout, Context context) {
         this.userList = userList;
         this.itemLayout = itemLayout;
+        this.context = context;
     }
 
     public CreateGroupAccountStage2RVAdapter(List<User> userList, Context context) {
@@ -44,21 +46,30 @@ public class CreateGroupAccountStage2RVAdapter extends RecyclerView.Adapter<Crea
         final User user = userList.get(position);
         viewHolder.username.setText(user.getFullName());
         viewHolder.userImage.setBackgroundResource(R.drawable.human_photo);
-
         viewHolder.viewLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
+                if(!user.isPressed()) {
+                    viewHolder.viewLayout.setBackgroundResource(R.color.createGroupAccountStage2UserItemClicked);
+                } else {
+                    viewHolder.viewLayout.setBackgroundResource(R.color.whiteText);
+                }
+                onItemClick.onItemClick(userList.get(position));
             }
         });
     }
+
+    public void setOnClick(ItemClickListener onClick) {
+        this.onItemClick=onClick;
+    }
+
 
     @Override
     public int getItemCount() {
         return userList.size();
     }
 
-    public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+    public class ViewHolder extends RecyclerView.ViewHolder {
 
         public LinearLayout viewLayout;
         public TextView username;
@@ -70,10 +81,6 @@ public class CreateGroupAccountStage2RVAdapter extends RecyclerView.Adapter<Crea
             viewLayout = itemView.findViewById(R.id.createGroupAccountStage2MainLL);
             username = itemView.findViewById(R.id.createGroupAccountStage2UserNameTV);
             userImage = itemView.findViewById(R.id.createGroupAccountStage2UserImage);
-        }
-
-        @Override
-        public void onClick(View view) {
         }
 
         public void removeAt(int position) {
