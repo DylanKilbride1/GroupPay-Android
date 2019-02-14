@@ -6,9 +6,11 @@ import android.os.Bundle;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.Toolbar;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
-import android.widget.Toast;
+import android.widget.TextView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -16,7 +18,7 @@ import java.util.List;
 import grouppay.dylankilbride.com.adapters.CreateGroupAccountStage2RVAdapter;
 import grouppay.dylankilbride.com.adapters.ItemClickListener;
 import grouppay.dylankilbride.com.grouppay.R;
-import grouppay.dylankilbride.com.models.User;
+import grouppay.dylankilbride.com.models.Contact;
 import grouppay.dylankilbride.com.retrofit_interfaces.GroupAccountAPI;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -30,10 +32,10 @@ public class CreateGroupAccountStage2 extends AppCompatActivity implements ItemC
 
     private CreateGroupAccountStage2RVAdapter adapter;
     private GroupAccountAPI apiInterface;
-    private RecyclerView usersRecyclerView;
-    private RecyclerView.LayoutManager usersRecyclerViewLayoutManager;
-    private Button addUsersButton;
-    private ArrayList<User> selectedUsers = new ArrayList<>();
+    private RecyclerView contactsRecyclerView;
+    private RecyclerView.LayoutManager contactsRecyclerViewLayoutManager;
+    private Button addContactsButton;
+    private ArrayList<Contact> selectedContacts = new ArrayList<>();
     String groupAccountIdStr;
 
     @Override
@@ -41,44 +43,46 @@ public class CreateGroupAccountStage2 extends AppCompatActivity implements ItemC
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_create_group_stage2);
 
+        setUpActionBar();
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
         groupAccountIdStr = getIntent().getStringExtra("groupAccountId");
-        addUsersButton = (Button)findViewById(R.id.createGroupAccountStage2ContinueBTN);
+        addContactsButton = (Button)findViewById(R.id.createGroupAccountStage2ContinueBTN);
 
-        ArrayList<User> usersList = new ArrayList<>();
-        usersList.add(new User("Chigo", "Benz", "0861524605"));
-        usersList.add(new User("Cian", "Hend", "0812345677"));
-        setUpAccountPreviewRecyclerView(usersList);
+        ArrayList<Contact> contactList = new ArrayList<>();
+        contactList.add(new Contact("FN1", "LN1", "testcontact1"));
+        contactList.add(new Contact("FN2", "LN2", "testcontact2"));
+        setUpAccountPreviewRecyclerView(contactList);
 
-        addUsersButton.setOnClickListener(new View.OnClickListener() {
+        addContactsButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Retrofit createBasicAccount = new Retrofit.Builder()
+                Retrofit addContactsToAccount = new Retrofit.Builder()
                     .baseUrl(LOCALHOST_SERVER_BASEURL)
                     .addConverterFactory(GsonConverterFactory.create())
                     .build();
 
-                apiInterface = createBasicAccount.create(GroupAccountAPI.class);
-                //addUsersToGroupAccount();
+                apiInterface = addContactsToAccount.create(GroupAccountAPI.class);
+                addContactsToGroupAccount(selectedContacts);
             }
         });
     }
 
-    public void setUpAccountPreviewRecyclerView(List<User> usersList) {
-        usersRecyclerView = (RecyclerView) findViewById(R.id.createGroupAccountStage2RV);
-        usersRecyclerViewLayoutManager = new LinearLayoutManager(this);
-        usersRecyclerView.setLayoutManager(usersRecyclerViewLayoutManager);
-        adapter = new CreateGroupAccountStage2RVAdapter(usersList, R.layout.activity_create_group_stage2_list_item, this);
-        usersRecyclerView.setAdapter(adapter);
+    public void setUpAccountPreviewRecyclerView(List<Contact> contactList) {
+        contactsRecyclerView = (RecyclerView) findViewById(R.id.createGroupAccountStage2RV);
+        contactsRecyclerViewLayoutManager = new LinearLayoutManager(this);
+        contactsRecyclerView.setLayoutManager(contactsRecyclerViewLayoutManager);
+        adapter = new CreateGroupAccountStage2RVAdapter(contactList, R.layout.activity_create_group_stage2_list_item, this);
+        contactsRecyclerView.setAdapter(adapter);
         adapter.setOnClick(CreateGroupAccountStage2.this);
-        usersRecyclerView.addItemDecoration(new DividerItemDecoration(usersRecyclerView.getContext(), DividerItemDecoration.VERTICAL));
+        contactsRecyclerView.addItemDecoration(new DividerItemDecoration(contactsRecyclerView.getContext(), DividerItemDecoration.VERTICAL));
     }
 
-    public void addUsersToGroupAccount(List<User> usersToAdd) {
-        Call<List<User>> call = apiInterface.addUsersToAccount(groupAccountIdStr, usersToAdd);
-
-        call.enqueue(new Callback<List<User>>() {
+    public void addContactsToGroupAccount(List<Contact> contactsToAdd) {
+        Call<List<Contact>> call = apiInterface.addContactsToAccount(groupAccountIdStr, contactsToAdd);
+        call.enqueue(new Callback<List<Contact>>() {
             @Override
-            public void onResponse(Call<List<User>> call, Response<List<User>> response) {
+            public void onResponse(Call<List<Contact>> call, Response<List<Contact>> response) {
                 if(!response.isSuccessful()) {
                     //Handle
                 } else {
@@ -87,19 +91,37 @@ public class CreateGroupAccountStage2 extends AppCompatActivity implements ItemC
                     finish();
                 }
             }
-
             @Override
-            public void onFailure(Call<List<User>> call, Throwable t) {
+            public void onFailure(Call<List<Contact>> call, Throwable t) {
 
             }
         });
     }
 
     @Override
-    public void onItemClick(User user) {
-        if(!user.isPressed()) {
+    public void onItemClick(Contact contact) {
+        if(contact.getIsPressedValue()) {
+            selectedContacts.add(contact);
+        } else {
+            selectedContacts.remove(contact);
+        }
+    }
 
-            selectedUsers.add(user);
+    public void setUpActionBar() {
+        Toolbar toolbar = (Toolbar) findViewById(R.id.createGroupNameToolbar);
+        setSupportActionBar(toolbar);
+
+        if (getSupportActionBar() != null) {
+            getSupportActionBar().setDisplayShowCustomEnabled(true);
+            getSupportActionBar().setDisplayShowTitleEnabled(false);
+
+            LayoutInflater inflator = LayoutInflater.from(this);
+            View v = inflator.inflate(R.layout.generic_titleview, null);
+
+            ((TextView) v.findViewById(R.id.title)).setText(R.string.toolbar_create_group_stage2);
+            ((TextView) v.findViewById(R.id.title)).setTextSize(20);
+
+            this.getSupportActionBar().setCustomView(v);
         }
     }
 }

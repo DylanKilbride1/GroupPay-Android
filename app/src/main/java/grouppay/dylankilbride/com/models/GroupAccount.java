@@ -9,7 +9,7 @@ import java.util.Map;
 
 public class GroupAccount {
 
-  private long accountId;
+  private long groupAccountId;
   private long adminId;
   //TODO Remove testResource in place for users profile image - retrieve from s3 bucket
   private int testResourceId;
@@ -22,7 +22,7 @@ public class GroupAccount {
   private BigDecimal paymentProgress = new BigDecimal(0);
 
   public GroupAccount(long accountId, int testResourceId, String accountName, String accountDescription, int numberOfMembers, BigDecimal totalAmountPaid, BigDecimal totalAmountOwed, List<Payments> paymentLog) {
-    this.accountId = accountId;
+    this.groupAccountId = accountId;
     this.testResourceId = testResourceId;
     this.accountName = accountName;
     this.accountDescription = accountDescription;
@@ -58,8 +58,8 @@ public class GroupAccount {
 
   public GroupAccount() {}
 
-  public long getAccountId() {
-    return accountId;
+  public long getGroupAccountId() {
+    return groupAccountId;
   }
 
   public String getAccountName() {
@@ -94,8 +94,8 @@ public class GroupAccount {
     return noOfMembers + " Members";
   }
 
-  public void setAccountId(long accountId) {
-    this.accountId = accountId;
+  public void setGroupAccountId(long accountId) {
+    this.groupAccountId = accountId;
   }
 
   public void setAccountName(String accountName) {

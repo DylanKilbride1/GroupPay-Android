@@ -2,7 +2,6 @@ package grouppay.dylankilbride.com.adapters;
 
 import android.content.Context;
 import android.support.annotation.NonNull;
-import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,23 +13,23 @@ import android.widget.TextView;
 import java.util.List;
 
 import grouppay.dylankilbride.com.grouppay.R;
-import grouppay.dylankilbride.com.models.User;
+import grouppay.dylankilbride.com.models.Contact;
 
 public class CreateGroupAccountStage2RVAdapter extends RecyclerView.Adapter<CreateGroupAccountStage2RVAdapter.ViewHolder>{
 
-    public List<User> userList;
+    public List<Contact> contactList;
     private int itemLayout;
     private Context context;
     private static ItemClickListener onItemClick;
 
-    public CreateGroupAccountStage2RVAdapter(List<User> userList, int itemLayout, Context context) {
-        this.userList = userList;
+    public CreateGroupAccountStage2RVAdapter(List<Contact> contactList, int itemLayout, Context context) {
+        this.contactList = contactList;
         this.itemLayout = itemLayout;
         this.context = context;
     }
 
-    public CreateGroupAccountStage2RVAdapter(List<User> userList, Context context) {
-        this.userList = userList;
+    public CreateGroupAccountStage2RVAdapter(List<Contact> contactList, Context context) {
+        this.contactList = contactList;
         this.context = context;
     }
 
@@ -43,18 +42,20 @@ public class CreateGroupAccountStage2RVAdapter extends RecyclerView.Adapter<Crea
 
     @Override
     public void onBindViewHolder(@NonNull final ViewHolder viewHolder, final int position) {
-        final User user = userList.get(position);
-        viewHolder.username.setText(user.getFullName());
-        viewHolder.userImage.setBackgroundResource(R.drawable.human_photo);
+        final Contact contact = contactList.get(position);
+        viewHolder.contactName.setText(contact.getFullName());
+        viewHolder.contactImage.setBackgroundResource(R.drawable.human_photo);
         viewHolder.viewLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(!user.isPressed()) {
-                    viewHolder.viewLayout.setBackgroundResource(R.color.createGroupAccountStage2UserItemClicked);
+                if (!contact.getIsPressedValue()) {
+                    contact.setPressedTrue();
+                    viewHolder.viewLayout.setBackgroundResource(R.color.createGroupAccountContactItemPressed);
                 } else {
                     viewHolder.viewLayout.setBackgroundResource(R.color.whiteText);
+                    contact.setPressedFalse();
                 }
-                onItemClick.onItemClick(userList.get(position));
+                onItemClick.onItemClick(contactList.get(position));
             }
         });
     }
@@ -66,27 +67,27 @@ public class CreateGroupAccountStage2RVAdapter extends RecyclerView.Adapter<Crea
 
     @Override
     public int getItemCount() {
-        return userList.size();
+        return contactList.size();
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
 
         public LinearLayout viewLayout;
-        public TextView username;
-        public ImageView userImage;
+        public TextView contactName;
+        public ImageView contactImage;
 
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
             viewLayout = itemView.findViewById(R.id.createGroupAccountStage2MainLL);
-            username = itemView.findViewById(R.id.createGroupAccountStage2UserNameTV);
-            userImage = itemView.findViewById(R.id.createGroupAccountStage2UserImage);
+            contactName = itemView.findViewById(R.id.createGroupAccountStage2ContactNameTV);
+            contactImage = itemView.findViewById(R.id.createGroupAccountStage2ContactImageTV);
         }
 
         public void removeAt(int position) {
-            userList.remove(position);
+            contactList.remove(position);
             notifyItemRemoved(position);
-            notifyItemRangeChanged(position, userList.size());
+            notifyItemRangeChanged(position, contactList.size());
         }
     }
 }

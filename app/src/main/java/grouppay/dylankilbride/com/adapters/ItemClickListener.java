@@ -2,9 +2,9 @@ package grouppay.dylankilbride.com.adapters;
 
 import android.view.View;
 
-import grouppay.dylankilbride.com.models.User;
+import grouppay.dylankilbride.com.models.Contact;
 
 public interface ItemClickListener {
 
-  void onItemClick(User user);
+  void onItemClick(Contact contact);
 }
