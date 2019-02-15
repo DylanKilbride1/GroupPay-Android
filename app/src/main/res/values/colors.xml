@@ -32,5 +32,6 @@
     <color name="groupAccountDetailedInitialsBg">#68bff9</color>
     <color name="toolbarBackButton">#636363</color>
     <color name="homeFAB">#e926df</color>
+    <color name="createGroupAccountContactItemPressed">#9fd4f1</color>
 
 </resources>

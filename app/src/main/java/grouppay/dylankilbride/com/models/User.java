@@ -9,6 +9,7 @@ public class User {
   private String emailAddress;
   private String password;
   private String mobileNumber;
+  private boolean isPressed = false;
 
   public User(long id, String firstName, String lastName, String emailAddress, String password, String mobileNumber) {
     this.id = id;
@@ -16,6 +17,12 @@ public class User {
     this.lastName = lastName;
     this.emailAddress = emailAddress;
     this.password = password;
+    this.mobileNumber = mobileNumber;
+  }
+
+  public User(String firstName, String lastName, String mobileNumber) {
+    this.firstName = firstName;
+    this.lastName = lastName;
     this.mobileNumber = mobileNumber;
   }
 
@@ -80,5 +87,13 @@ public class User {
     String fnInitial = Character.toString(firstNameInitial).toUpperCase();
     String lnInitial = Character.toString(lastNameInitial).toUpperCase();
     return new StringBuilder().append(fnInitial).append(lnInitial).toString();
+  }
+
+  public boolean isPressed() {
+    return isPressed;
+  }
+
+  public void setIsPressed(boolean value) {
+    isPressed = value;
   }
 }

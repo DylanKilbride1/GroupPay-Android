@@ -2,14 +2,15 @@ package grouppay.dylankilbride.com.models;
 
 import android.media.Image;
 
+import java.io.Serializable;
 import java.math.BigDecimal;
 import java.text.DecimalFormat;
 import java.util.List;
 import java.util.Map;
 
-public class GroupAccount {
+public class GroupAccount implements Serializable {
 
-  private long accountId;
+  private long groupAccountId;
   private long adminId;
   //TODO Remove testResource in place for users profile image - retrieve from s3 bucket
   private int testResourceId;
@@ -22,7 +23,7 @@ public class GroupAccount {
   private BigDecimal paymentProgress = new BigDecimal(0);
 
   public GroupAccount(long accountId, int testResourceId, String accountName, String accountDescription, int numberOfMembers, BigDecimal totalAmountPaid, BigDecimal totalAmountOwed, List<Payments> paymentLog) {
-    this.accountId = accountId;
+    this.groupAccountId = accountId;
     this.testResourceId = testResourceId;
     this.accountName = accountName;
     this.accountDescription = accountDescription;
@@ -38,6 +39,17 @@ public class GroupAccount {
     this.accountName = accountName;
     this.accountDescription = accountDescription;
     this.totalAmountOwed = totalAmountOwed;
+  }
+
+  public GroupAccount(long groupAccountId,
+                      long adminId,
+                      String accountName,
+                      String accountDescription,
+                      int numberOfMembers,
+                      BigDecimal totalAmountPaid,
+                      BigDecimal totalAmountOwed,
+                      int testResourceId) {
+
   }
 
   public List<Payments> getPaymentLog() {
@@ -58,8 +70,16 @@ public class GroupAccount {
 
   public GroupAccount() {}
 
-  public long getAccountId() {
-    return accountId;
+  public long getGroupAccountId() {
+    return groupAccountId;
+  }
+
+  public long getAdminId() {
+    return adminId;
+  }
+
+  public void setAdminId(long adminId) {
+    this.adminId = adminId;
   }
 
   public String getAccountName() {
@@ -94,8 +114,8 @@ public class GroupAccount {
     return noOfMembers + " Members";
   }
 
-  public void setAccountId(long accountId) {
-    this.accountId = accountId;
+  public void setGroupAccountId(long accountId) {
+    this.groupAccountId = accountId;
   }
 
   public void setAccountName(String accountName) {

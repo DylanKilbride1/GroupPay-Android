@@ -9,12 +9,10 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.GridLayout;
 import android.widget.TextView;
 
 import java.math.BigDecimal;
 
-import grouppay.dylankilbride.com.constants.Constants;
 import grouppay.dylankilbride.com.grouppay.R;
 import grouppay.dylankilbride.com.models.GroupAccount;
 import grouppay.dylankilbride.com.retrofit_interfaces.GroupAccountAPI;
@@ -79,10 +77,11 @@ public class CreateGroupAccountStage1 extends AppCompatActivity {
         if(!response.isSuccessful()) {
           //Handle
         } else {
-//          Intent intent = new Intent(CreateGroupAccountStage1.this, Profile.class);
-//          intent.putExtra("userId", userIdStr);
-//          startActivity(intent);
-//          finish();
+          Intent intent = new Intent(CreateGroupAccountStage1.this, CreateGroupAccountStage2.class);
+          String groupId = String.valueOf(response.body().getGroupAccountId());
+          intent.putExtra("groupAccountId", groupId);
+          startActivity(intent);
+          finish();
         }
       }
 
