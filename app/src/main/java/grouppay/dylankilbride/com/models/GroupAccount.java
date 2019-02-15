@@ -2,12 +2,13 @@ package grouppay.dylankilbride.com.models;
 
 import android.media.Image;
 
+import java.io.Serializable;
 import java.math.BigDecimal;
 import java.text.DecimalFormat;
 import java.util.List;
 import java.util.Map;
 
-public class GroupAccount {
+public class GroupAccount implements Serializable {
 
   private long groupAccountId;
   private long adminId;
@@ -40,6 +41,17 @@ public class GroupAccount {
     this.totalAmountOwed = totalAmountOwed;
   }
 
+  public GroupAccount(long groupAccountId,
+                      long adminId,
+                      String accountName,
+                      String accountDescription,
+                      int numberOfMembers,
+                      BigDecimal totalAmountPaid,
+                      BigDecimal totalAmountOwed,
+                      int testResourceId) {
+
+  }
+
   public List<Payments> getPaymentLog() {
     return paymentLog;
   }
@@ -60,6 +72,14 @@ public class GroupAccount {
 
   public long getGroupAccountId() {
     return groupAccountId;
+  }
+
+  public long getAdminId() {
+    return adminId;
+  }
+
+  public void setAdminId(long adminId) {
+    this.adminId = adminId;
   }
 
   public String getAccountName() {

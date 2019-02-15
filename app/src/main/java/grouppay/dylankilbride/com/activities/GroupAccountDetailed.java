@@ -1,5 +1,6 @@
 package grouppay.dylankilbride.com.activities;
 
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.DividerItemDecoration;
@@ -22,8 +23,14 @@ import java.util.List;
 
 import grouppay.dylankilbride.com.adapters.ActiveAccountPaymentLogRVAdapter;
 import grouppay.dylankilbride.com.grouppay.R;
+import grouppay.dylankilbride.com.models.Contact;
+import grouppay.dylankilbride.com.models.GroupAccount;
 import grouppay.dylankilbride.com.models.Payments;
 import grouppay.dylankilbride.com.models.User;
+import grouppay.dylankilbride.com.retrofit_interfaces.GroupAccountAPI;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class GroupAccountDetailed extends AppCompatActivity {
 
@@ -32,8 +39,10 @@ public class GroupAccountDetailed extends AppCompatActivity {
   TextView progressStartAmount, progressFinalAmount;
   private RecyclerView paymentsLogRecyclerView;
   private RecyclerView.LayoutManager paymentsLogRecyclerViewLayoutManager;
-  String paymentStartAmountStr = "€0";
-  String getPaymentEndAmountStr = "€500";
+  String groupAccountIdStr;
+  GroupAccountAPI apiInterface;
+
+  GroupAccount intentReceivedGroupAccount = new GroupAccount();
 
   @Override
   protected void onCreate(Bundle savedInstanceState) {
@@ -43,13 +52,12 @@ public class GroupAccountDetailed extends AppCompatActivity {
     setUpActionBar();
     getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
+    groupAccountIdStr = getIntent().getStringExtra("groupAccountId");
+
     paymentProgress = (ProgressBar) findViewById(R.id.detailedAccountPaymentProgress);
     groupImage = (ImageView) findViewById(R.id.activeAccountDetailedGroupImage);
     progressStartAmount = (TextView) findViewById(R.id.activeAccountProgressStartTV);
     progressFinalAmount = (TextView) findViewById(R.id.activeAccountProgressEndTV);
-
-    progressStartAmount.setText(paymentStartAmountStr);
-    progressFinalAmount.setText(getPaymentEndAmountStr);
 
     User userTest = new User(4, "Dylan", "Kilbride", "blah", "blah", "blah");
     Date date = new Date();
@@ -66,7 +74,6 @@ public class GroupAccountDetailed extends AppCompatActivity {
     testpaymentLog.add(new Payments(userTest, new BigDecimal("2"), new Date()));
 
     setUpAccountPreviewRecyclerView(testpaymentLog);
-
   }
 
   public void setUpAccountPreviewRecyclerView(List<Payments> tempList) {
@@ -107,5 +114,24 @@ public class GroupAccountDetailed extends AppCompatActivity {
       default:
         return super.onOptionsItemSelected(item);
     }
+  }
+
+
+  public void getDetailedGroupInfo(String groupAccountIdStr) {
+    Call<GroupAccount> call = apiInterface.getDetailedGroupInfo(groupAccountIdStr);
+    call.enqueue(new Callback<GroupAccount>() {
+      @Override
+      public void onResponse(Call<GroupAccount> call, Response<GroupAccount> response) {
+        if(!response.isSuccessful()) {
+          //Handle
+        } else {
+
+        }
+      }
+      @Override
+      public void onFailure(Call<GroupAccount> call, Throwable t) {
+
+      }
+    });
   }
 }

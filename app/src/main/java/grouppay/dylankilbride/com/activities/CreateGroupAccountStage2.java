@@ -12,6 +12,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
+import java.security.acl.Group;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -19,6 +20,7 @@ import grouppay.dylankilbride.com.adapters.CreateGroupAccountStage2RVAdapter;
 import grouppay.dylankilbride.com.adapters.ItemClickListener;
 import grouppay.dylankilbride.com.grouppay.R;
 import grouppay.dylankilbride.com.models.Contact;
+import grouppay.dylankilbride.com.models.GroupAccount;
 import grouppay.dylankilbride.com.retrofit_interfaces.GroupAccountAPI;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -79,20 +81,29 @@ public class CreateGroupAccountStage2 extends AppCompatActivity implements ItemC
     }
 
     public void addContactsToGroupAccount(List<Contact> contactsToAdd) {
-        Call<List<Contact>> call = apiInterface.addContactsToAccount(groupAccountIdStr, contactsToAdd);
-        call.enqueue(new Callback<List<Contact>>() {
+        Call<GroupAccount> call = apiInterface.addContactsToAccount(groupAccountIdStr, contactsToAdd);
+        call.enqueue(new Callback<GroupAccount>() {
             @Override
-            public void onResponse(Call<List<Contact>> call, Response<List<Contact>> response) {
+            public void onResponse(Call<GroupAccount> call, Response<GroupAccount> response) {
                 if(!response.isSuccessful()) {
                     //Handle
                 } else {
+//                    GroupAccount newGroupAccount = new GroupAccount(response.body().getGroupAccountId(),
+//                        response.body().getAdminId(),
+//                        response.body().getAccountName(),
+//                        response.body().getAccountDescription(),
+//                        response.body().getNumberOfMembers(),
+//                        response.body().getTotalAmountPaid(),
+//                        response.body().getTotalAmountOwed(),
+//                        response.body().getTestResourceId());
                     Intent intent = new Intent(CreateGroupAccountStage2.this, GroupAccountDetailed.class);
+                    intent.putExtra("groupAccountId", groupAccountIdStr);
                     startActivity(intent);
                     finish();
                 }
             }
             @Override
-            public void onFailure(Call<List<Contact>> call, Throwable t) {
+            public void onFailure(Call<GroupAccount> call, Throwable t) {
 
             }
         });
