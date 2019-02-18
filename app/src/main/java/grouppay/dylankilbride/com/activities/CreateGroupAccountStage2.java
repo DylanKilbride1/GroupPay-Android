@@ -12,7 +12,6 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
-import java.security.acl.Group;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -50,6 +49,8 @@ public class CreateGroupAccountStage2 extends AppCompatActivity implements ItemC
 
         groupAccountIdStr = getIntent().getStringExtra("groupAccountId");
         addContactsButton = (Button)findViewById(R.id.createGroupAccountStage2ContinueBTN);
+
+        showHideContinueButton(selectedContacts);
 
         ArrayList<Contact> contactList = new ArrayList<>();
         contactList.add(new Contact("FN1", "LN1", "testcontact1"));
@@ -113,8 +114,20 @@ public class CreateGroupAccountStage2 extends AppCompatActivity implements ItemC
     public void onItemClick(Contact contact) {
         if(contact.getIsPressedValue()) {
             selectedContacts.add(contact);
+            showHideContinueButton(selectedContacts);
         } else {
+          showHideContinueButton(selectedContacts);
             selectedContacts.remove(contact);
+        }
+    }
+
+    public void showHideContinueButton(List<Contact> selectedContacts){
+        if(selectedContacts.size() == 0) {
+            addContactsButton.setVisibility(View.INVISIBLE);
+        } else {
+            String numberOfContactsSelected = "Continue - " + selectedContacts.size() + " Contacts";
+            addContactsButton.setVisibility(View.VISIBLE);
+            addContactsButton.setText(numberOfContactsSelected);
         }
     }
 

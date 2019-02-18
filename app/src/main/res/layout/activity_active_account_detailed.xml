@@ -74,8 +74,6 @@
                     android:layout_width="match_parent"
                     android:layout_height="30dp"
                     android:paddingBottom="20dp"
-                    android:max="500"
-                    android:progress="250"
                     style="@style/Widget.AppCompat.ProgressBar.Horizontal"
                     android:progressDrawable="@drawable/active_account_detailed_progress_bar"/>
             </LinearLayout>

@@ -15,6 +15,7 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -31,6 +32,10 @@ import grouppay.dylankilbride.com.retrofit_interfaces.GroupAccountAPI;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
+import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
+
+import static grouppay.dylankilbride.com.constants.Constants.LOCALHOST_SERVER_BASEURL;
 
 public class GroupAccountDetailed extends AppCompatActivity {
 
@@ -49,10 +54,17 @@ public class GroupAccountDetailed extends AppCompatActivity {
     super.onCreate(savedInstanceState);
     setContentView(R.layout.activity_active_account_detailed);
 
-    setUpActionBar();
-    getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-
     groupAccountIdStr = getIntent().getStringExtra("groupAccountId");
+
+    Retrofit getDetailedAccountsInfo = new Retrofit.Builder()
+        .baseUrl(LOCALHOST_SERVER_BASEURL)
+        .addConverterFactory(GsonConverterFactory.create())
+        .build();
+    apiInterface = getDetailedAccountsInfo.create(GroupAccountAPI.class);
+    getDetailedGroupInfo(groupAccountIdStr);
+
+    setUpActionBar("GroupName");
+    getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
     paymentProgress = (ProgressBar) findViewById(R.id.detailedAccountPaymentProgress);
     groupImage = (ImageView) findViewById(R.id.activeAccountDetailedGroupImage);
@@ -85,11 +97,9 @@ public class GroupAccountDetailed extends AppCompatActivity {
     paymentsLogRecyclerView.addItemDecoration(new DividerItemDecoration(paymentsLogRecyclerView.getContext(), DividerItemDecoration.VERTICAL));
   }
 
-  public void setUpActionBar() {
+  public void setUpActionBar(String groupName) {
     Toolbar toolbar = (Toolbar) findViewById(R.id.detailedAccountsToolbar);
     setSupportActionBar(toolbar);
-
-    String groupName = "Group Account Name";
 
     if (getSupportActionBar() != null) {
       getSupportActionBar().setDisplayShowCustomEnabled(true);
@@ -125,7 +135,16 @@ public class GroupAccountDetailed extends AppCompatActivity {
         if(!response.isSuccessful()) {
           //Handle
         } else {
-
+          paymentProgress.setMax(roundBigDecimalUp(response.body().getTotalAmountOwed()));
+          if(response.body().getTotalAmountPaid().compareTo(BigDecimal.ZERO) == 0) {
+            String totalAmountPaid = "€" + Integer.toString(roundBigDecimalUp(response.body().getTotalAmountPaid()));
+            progressStartAmount.setText(totalAmountPaid);
+          } else {
+            String totalAmountPaid = "€" + response.body().getTotalAmountPaid().toString();
+            progressStartAmount.setText(totalAmountPaid);
+          }
+          String totalAmountOwed = "€" + response.body().getTotalAmountOwed().stripTrailingZeros().toString();
+          progressFinalAmount.setText(totalAmountOwed);
         }
       }
       @Override
@@ -133,5 +152,10 @@ public class GroupAccountDetailed extends AppCompatActivity {
 
       }
     });
+  }
+
+  public int roundBigDecimalUp(BigDecimal amount){
+    BigDecimal roundedBigDecimal = amount.setScale(0, RoundingMode.CEILING);
+    return roundedBigDecimal.intValueExact();
   }
 }
