@@ -16,15 +16,13 @@ import android.widget.TextView;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
 import grouppay.dylankilbride.com.adapters.ActiveAccountPaymentLogRVAdapter;
 import grouppay.dylankilbride.com.grouppay.R;
-import grouppay.dylankilbride.com.models.Contact;
 import grouppay.dylankilbride.com.models.GroupAccount;
 import grouppay.dylankilbride.com.models.Payments;
 import grouppay.dylankilbride.com.models.User;
@@ -72,18 +70,15 @@ public class GroupAccountDetailed extends AppCompatActivity {
     progressFinalAmount = (TextView) findViewById(R.id.activeAccountProgressEndTV);
 
     User userTest = new User(4, "Dylan", "Kilbride", "blah", "blah", "blah");
-    Date date = new Date();
-    String strDateFormat = "hh:mm";
-    DateFormat dateFormat = new SimpleDateFormat(strDateFormat);
-    String formattedDate = dateFormat.format(date);
+    Calendar calendar = Calendar.getInstance();
 
     ArrayList<Payments> testpaymentLog = new ArrayList<>();
-    testpaymentLog.add(new Payments(userTest, new BigDecimal("30.45"), new Date()));
-    testpaymentLog.add(new Payments(userTest, new BigDecimal("20"), new Date()));
-    testpaymentLog.add(new Payments(userTest, new BigDecimal("40"), new Date()));
-    testpaymentLog.add(new Payments(userTest, new BigDecimal("2"), new Date()));
-    testpaymentLog.add(new Payments(userTest, new BigDecimal("40"), new Date()));
-    testpaymentLog.add(new Payments(userTest, new BigDecimal("2"), new Date()));
+    testpaymentLog.add(new Payments(userTest, new BigDecimal("30.45"), calendar));
+    testpaymentLog.add(new Payments(userTest, new BigDecimal("20"), calendar));
+    testpaymentLog.add(new Payments(userTest, new BigDecimal("40"), calendar));
+    testpaymentLog.add(new Payments(userTest, new BigDecimal("2"), calendar));
+    testpaymentLog.add(new Payments(userTest, new BigDecimal("40"), calendar));
+    testpaymentLog.add(new Payments(userTest, new BigDecimal("2"), calendar));
 
     setUpAccountPreviewRecyclerView(testpaymentLog);
   }

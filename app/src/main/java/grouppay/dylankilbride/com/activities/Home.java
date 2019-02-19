@@ -17,17 +17,25 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
 
-import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
 import grouppay.dylankilbride.com.adapters.ActiveAccountsRVAdapter;
 import grouppay.dylankilbride.com.grouppay.R;
 import grouppay.dylankilbride.com.models.GroupAccount;
+import grouppay.dylankilbride.com.retrofit_interfaces.GroupAccountAPI;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
+
+import static grouppay.dylankilbride.com.constants.Constants.LOCALHOST_SERVER_BASEURL;
 
 public class Home extends AppCompatActivity {
 
   ActiveAccountsRVAdapter adapter;
+  ArrayList<GroupAccount> groupAccounts = new ArrayList<>();
   private RecyclerView accountsRecyclerView;
   private RecyclerView.LayoutManager accountsRecyclerViewLayoutManager;
   private TextView noAccountsTextView, navName, navEmail;
@@ -35,6 +43,7 @@ public class Home extends AppCompatActivity {
   private ActionBarDrawerToggle actionBarDrawerToggle;
   private NavigationView navigationView;
   private String userId, userName, userEmail;
+  private GroupAccountAPI apiInterface;
 
   @Override
   protected void onCreate(Bundle savedInstanceState) {
@@ -48,14 +57,11 @@ public class Home extends AppCompatActivity {
     drawerLayout.addDrawerListener(actionBarDrawerToggle);
     actionBarDrawerToggle.syncState();
 
-    ArrayList<GroupAccount> groupAccounts = new ArrayList<>();
-    groupAccounts.add(new GroupAccount(1, R.drawable.human_photo, "Pas De Casa", "Quick Hol", 3, new BigDecimal("47.23"), new BigDecimal("2500"), null));
-    groupAccounts.add(new GroupAccount(2, R.drawable.human_photo, "Dinner Today", "Quick Hol", 14, new BigDecimal("4"), new BigDecimal("25"), null));
-    groupAccounts.add(new GroupAccount(3, R.drawable.human_photo, "Monday", "Quick Hol", 5, new BigDecimal("56.70"), new BigDecimal("314"), null));
-    groupAccounts.add(new GroupAccount(4, R.drawable.human_photo, "Car", "Quick Hol", 2, new BigDecimal("0"), new BigDecimal("100"), null));
-
+//    groupAccounts.add(new GroupAccount(1, R.drawable.human_photo, "Pas De Casa", "Quick Hol", 3, new BigDecimal("47.23"), new BigDecimal("2500"), null));
+//    groupAccounts.add(new GroupAccount(2, R.drawable.human_photo, "Dinner Today", "Quick Hol", 14, new BigDecimal("4"), new BigDecimal("25"), null));
+//    groupAccounts.add(new GroupAccount(3, R.drawable.human_photo, "Monday", "Quick Hol", 5, new BigDecimal("56.70"), new BigDecimal("314"), null));
+//    groupAccounts.add(new GroupAccount(4, R.drawable.human_photo, "Car", "Quick Hol", 2, new BigDecimal("0"), new BigDecimal("100"), null));
     setUpAccountPreviewRecyclerView(groupAccounts);
-
     emptyRVTextViewSetUp(checkIfListIsEmpty(groupAccounts));
 
     setUpActionBar();
@@ -64,6 +70,8 @@ public class Home extends AppCompatActivity {
     userId = getIntent().getStringExtra("userId");
     userName = getIntent().getStringExtra("name");
     userEmail = getIntent().getStringExtra("email");
+
+    setUpAssociatedAccountsCall(userId);
 
     FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fabAddAccount);
     fab.setOnClickListener(new View.OnClickListener() {
@@ -168,6 +176,40 @@ public class Home extends AppCompatActivity {
       accountsRecyclerView.setVisibility(View.VISIBLE);
       noAccountsTextView.setVisibility(View.GONE);
     }
+  }
+
+  public void setUpAssociatedAccountsCall(String userId) {
+    Retrofit getAssociatedAccounts = new Retrofit.Builder()
+        .baseUrl(LOCALHOST_SERVER_BASEURL)
+        .addConverterFactory(GsonConverterFactory.create())
+        .build();
+    apiInterface = getAssociatedAccounts.create(GroupAccountAPI.class);
+    getUserAssociatedAccounts(userId);
+  }
+
+  public void getUserAssociatedAccounts(String userId){
+    Call<List<GroupAccount>> call = apiInterface.getUserAssociatedAccounts(userId);
+    call.enqueue(new Callback<List<GroupAccount>>() {
+      @Override
+      public void onResponse(Call<List<GroupAccount>> call, Response<List<GroupAccount>> response) {
+        if(!response.isSuccessful()) {
+          //Handle
+        } else {
+          if(response.body().size() > 0){
+//            for(GroupAccount groupAccount: response.body()){
+//              groupAccounts.add(groupAccount);
+//              groupAccounts.addAll(response.body());
+//            }
+            groupAccounts.addAll(response.body());
+          }
+        }
+      }
+
+      @Override
+      public void onFailure(Call<List<GroupAccount>> call, Throwable t) {
+
+      }
+    });
   }
 
   @Override
