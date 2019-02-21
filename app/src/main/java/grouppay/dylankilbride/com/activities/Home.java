@@ -17,6 +17,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -35,7 +36,7 @@ import static grouppay.dylankilbride.com.constants.Constants.LOCALHOST_SERVER_BA
 public class Home extends AppCompatActivity {
 
   ActiveAccountsRVAdapter adapter;
-  ArrayList<GroupAccount> groupAccounts = new ArrayList<>();
+  List<GroupAccount> groupAccounts = new ArrayList<>();
   private RecyclerView accountsRecyclerView;
   private RecyclerView.LayoutManager accountsRecyclerViewLayoutManager;
   private TextView noAccountsTextView, navName, navEmail;
@@ -49,6 +50,11 @@ public class Home extends AppCompatActivity {
   protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
     setContentView(R.layout.activity_home);
+    userId = getIntent().getStringExtra("userId");
+    userName = getIntent().getStringExtra("name");
+    userEmail = getIntent().getStringExtra("email");
+    setUpAssociatedAccountsCall(userId);
+
     noAccountsTextView= (TextView) findViewById(R.id.noAccountPreviewsTextView);
 
     drawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -56,32 +62,12 @@ public class Home extends AppCompatActivity {
 
     drawerLayout.addDrawerListener(actionBarDrawerToggle);
     actionBarDrawerToggle.syncState();
-
 //    groupAccounts.add(new GroupAccount(1, R.drawable.human_photo, "Pas De Casa", "Quick Hol", 3, new BigDecimal("47.23"), new BigDecimal("2500"), null));
 //    groupAccounts.add(new GroupAccount(2, R.drawable.human_photo, "Dinner Today", "Quick Hol", 14, new BigDecimal("4"), new BigDecimal("25"), null));
 //    groupAccounts.add(new GroupAccount(3, R.drawable.human_photo, "Monday", "Quick Hol", 5, new BigDecimal("56.70"), new BigDecimal("314"), null));
-//    groupAccounts.add(new GroupAccount(4, R.drawable.human_photo, "Car", "Quick Hol", 2, new BigDecimal("0"), new BigDecimal("100"), null));
-    setUpAccountPreviewRecyclerView(groupAccounts);
-    emptyRVTextViewSetUp(checkIfListIsEmpty(groupAccounts));
-
+//    groupAccounts.add(new GroupAccount(4, R.drawable.human_photo, "Car", "Quick Hol", 2, new BigDecimal("0"), new BigDecimal("100"), null)
     setUpActionBar();
     getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-
-    userId = getIntent().getStringExtra("userId");
-    userName = getIntent().getStringExtra("name");
-    userEmail = getIntent().getStringExtra("email");
-
-    setUpAssociatedAccountsCall(userId);
-
-    FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fabAddAccount);
-    fab.setOnClickListener(new View.OnClickListener() {
-      @Override
-      public void onClick(View view) {
-        Intent intent = new Intent(Home.this, CreateGroupAccountStage1.class);
-        intent.putExtra("userId", userId);
-        startActivity(intent);
-      }
-    });
 
     navigationView = (NavigationView) findViewById(R.id.navView);
     View headerView = navigationView.getHeaderView(0);
@@ -89,6 +75,9 @@ public class Home extends AppCompatActivity {
     navEmail = (TextView) headerView.findViewById(R.id.navEmail);
     navName.setText(userName);
     navEmail.setText(userEmail);
+  }
+
+  private void setUpNavDrawer() {
     navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
 
       @Override
@@ -115,12 +104,24 @@ public class Home extends AppCompatActivity {
     });
   }
 
-  public void setUpAccountPreviewRecyclerView(List<GroupAccount> accountList) {
+  private void setUpFAB() {
+    FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fabAddAccount);
+    fab.setOnClickListener(new View.OnClickListener() {
+      @Override
+      public void onClick(View view) {
+        Intent intent = new Intent(Home.this, CreateGroupAccountStage1.class);
+        intent.putExtra("userId", userId);
+        startActivity(intent);
+      }
+    });
+  }
+
+  public void setUpAccountPreviewRecyclerView() {
     // set up the RecyclerView
     accountsRecyclerView = (RecyclerView) findViewById(R.id.rvAccountsPreview);
     accountsRecyclerViewLayoutManager = new LinearLayoutManager(this);
     accountsRecyclerView.setLayoutManager(accountsRecyclerViewLayoutManager);
-    accountsRecyclerView.setAdapter(new ActiveAccountsRVAdapter(accountList, R.layout.activity_home_preview_list_item));
+    accountsRecyclerView.setAdapter(new ActiveAccountsRVAdapter(groupAccounts, R.layout.activity_home_preview_list_item));
   }
 
   public void setUpActionBar() {
@@ -196,11 +197,34 @@ public class Home extends AppCompatActivity {
           //Handle
         } else {
           if(response.body().size() > 0){
-//            for(GroupAccount groupAccount: response.body()){
-//              groupAccounts.add(groupAccount);
-//              groupAccounts.addAll(response.body());
-//            }
-            groupAccounts.addAll(response.body());
+            for(int i=0; i<response.body().size(); i++) {
+
+              //This is just for clarity
+              long groupAccountId = response.body().get(i).getGroupAccountId();
+              long adminId = response.body().get(i).getAdminId();
+              String accountName = response.body().get(i).getAccountName();
+              String accountDescription = response.body().get(i).getAccountDescription();
+              int numberOfMembers = response.body().get(i).getNumberOfMembers();
+              BigDecimal amountPaid = response.body().get(i).getTotalAmountPaid();
+              BigDecimal amountOwed = response.body().get(i).getTotalAmountOwed();
+              int testRes = R.drawable.human_photo;
+
+
+              GroupAccount groupAccount = new GroupAccount(groupAccountId,
+                  accountName,
+                  accountDescription,
+                  numberOfMembers,
+                  amountPaid,
+                  amountOwed,
+                  testRes);
+
+
+              groupAccounts.add(groupAccount);
+            }
+            setUpFAB();
+            setUpNavDrawer();
+            setUpAccountPreviewRecyclerView();
+            emptyRVTextViewSetUp(checkIfListIsEmpty(groupAccounts));
           }
         }
       }

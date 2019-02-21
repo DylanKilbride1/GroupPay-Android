@@ -7,6 +7,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import java.util.List;
@@ -46,16 +47,7 @@ public class ActiveAccountsRVAdapter extends RecyclerView.Adapter<ActiveAccounts
     viewHolder.accountValues.setText(groupAccount.getAccountFinanceString());
     viewHolder.numberOfMembers.setText(groupAccount.getNumberOfMembersString());
 
-    viewHolder.groupName.setOnClickListener(new View.OnClickListener() {
-      @Override
-      public void onClick(View view) {
-        accountsList.remove(position);
-        notifyItemRemoved(position);
-        notifyItemRangeChanged(position, accountsList.size());
-      }
-    });
-
-    viewHolder.accountValues.setOnClickListener(new View.OnClickListener() {
+    viewHolder.listItem.setOnClickListener(new View.OnClickListener() {
 
       @Override
       public void onClick(View view) {
@@ -76,9 +68,10 @@ public class ActiveAccountsRVAdapter extends RecyclerView.Adapter<ActiveAccounts
     notifyDataSetChanged();
   }
 
-  public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+  public class ViewHolder extends RecyclerView.ViewHolder {
 
     public TextView groupName, accountValues, numberOfMembers;
+    public LinearLayout listItem;
 
 
     public ViewHolder(@NonNull View itemView) {
@@ -87,13 +80,7 @@ public class ActiveAccountsRVAdapter extends RecyclerView.Adapter<ActiveAccounts
       groupName = itemView.findViewById(R.id.groupNameView);
       accountValues = itemView.findViewById(R.id.accountValuesView);
       numberOfMembers = itemView.findViewById(R.id.numberOfMembers);
-    }
-
-    @Override
-    public void onClick(View view) {
-      if(view.equals(groupName)){
-        removeAt(getAdapterPosition());
-      }
+      listItem = itemView.findViewById(R.id.homeAccountPreviewItemLL);
     }
 
     public void removeAt(int position) {

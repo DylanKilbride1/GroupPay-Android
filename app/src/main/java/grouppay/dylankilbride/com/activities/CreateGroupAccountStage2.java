@@ -89,14 +89,6 @@ public class CreateGroupAccountStage2 extends AppCompatActivity implements ItemC
                 if(!response.isSuccessful()) {
                     //Handle
                 } else {
-//                    GroupAccount newGroupAccount = new GroupAccount(response.body().getGroupAccountId(),
-//                        response.body().getAdminId(),
-//                        response.body().getAccountName(),
-//                        response.body().getAccountDescription(),
-//                        response.body().getNumberOfMembers(),
-//                        response.body().getTotalAmountPaid(),
-//                        response.body().getTotalAmountOwed(),
-//                        response.body().getTestResourceId());
                     Intent intent = new Intent(CreateGroupAccountStage2.this, GroupAccountDetailed.class);
                     intent.putExtra("groupAccountId", groupAccountIdStr);
                     startActivity(intent);

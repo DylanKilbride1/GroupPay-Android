@@ -16,7 +16,7 @@
     <string name="toolbar_add_payment_method_title">Add Credit/Debit Card</string>
     <string name="toolbar_edit_email_address_title">Edit Email Address</string>
     <string name="toolbar_edit_phone_number_title">Edit Phone Number</string>
-    <string name="toolbar_edit_full_name_title">Edit Phone Number</string>
+    <string name="toolbar_edit_full_name_title">Edit Full Name</string>
     <string name="toolbar_create_group_stage1">Create New Group</string>
     <string name="toolbar_create_group_stage2">Add Group Members</string>
     <string name="add_card_secure_details">Card details are saved securely</string>
