@@ -194,39 +194,28 @@ public class Home extends AppCompatActivity {
       @Override
       public void onResponse(Call<List<GroupAccount>> call, Response<List<GroupAccount>> response) {
         if(!response.isSuccessful()) {
-          //Handle
+          setUpFAB();
+          setUpNavDrawer();
+          setUpAccountPreviewRecyclerView();
+          emptyRVTextViewSetUp(checkIfListIsEmpty(groupAccounts));
         } else {
           if(response.body().size() > 0){
             for(int i=0; i<response.body().size(); i++) {
-
-              //This is just for clarity
-              long groupAccountId = response.body().get(i).getGroupAccountId();
-              long adminId = response.body().get(i).getAdminId();
-              String accountName = response.body().get(i).getAccountName();
-              String accountDescription = response.body().get(i).getAccountDescription();
-              int numberOfMembers = response.body().get(i).getNumberOfMembers();
-              BigDecimal amountPaid = response.body().get(i).getTotalAmountPaid();
-              BigDecimal amountOwed = response.body().get(i).getTotalAmountOwed();
-              int testRes = R.drawable.human_photo;
-
-
-              GroupAccount groupAccount = new GroupAccount(groupAccountId,
-                  accountName,
-                  accountDescription,
-                  numberOfMembers,
-                  amountPaid,
-                  amountOwed,
-                  testRes);
-
-
+              GroupAccount groupAccount = new GroupAccount(response.body().get(i).getGroupAccountId(),
+                  response.body().get(i).getAccountName(),
+                  response.body().get(i).getAccountDescription(),
+                  response.body().get(i).getNumberOfMembers(),
+                  response.body().get(i).getTotalAmountPaid(),
+                  response.body().get(i).getTotalAmountOwed(),
+                  R.drawable.human_photo);
               groupAccounts.add(groupAccount);
             }
-            setUpFAB();
-            setUpNavDrawer();
-            setUpAccountPreviewRecyclerView();
-            emptyRVTextViewSetUp(checkIfListIsEmpty(groupAccounts));
           }
         }
+        setUpFAB();
+        setUpNavDrawer();
+        setUpAccountPreviewRecyclerView();
+        emptyRVTextViewSetUp(checkIfListIsEmpty(groupAccounts));
       }
 
       @Override
