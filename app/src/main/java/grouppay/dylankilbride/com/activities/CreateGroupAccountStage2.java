@@ -113,6 +113,11 @@ public class CreateGroupAccountStage2 extends AppCompatActivity implements ItemC
         }
     }
 
+    @Override
+    public void onItemClick(GroupAccount groupAccount) {
+
+    }
+
     public void showHideContinueButton(List<Contact> selectedContacts){
         if(selectedContacts.size() == 0) {
             addContactsButton.setVisibility(View.INVISIBLE);

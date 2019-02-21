@@ -22,7 +22,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 import grouppay.dylankilbride.com.adapters.ActiveAccountsRVAdapter;
+import grouppay.dylankilbride.com.adapters.ItemClickListener;
 import grouppay.dylankilbride.com.grouppay.R;
+import grouppay.dylankilbride.com.models.Contact;
 import grouppay.dylankilbride.com.models.GroupAccount;
 import grouppay.dylankilbride.com.retrofit_interfaces.GroupAccountAPI;
 import retrofit2.Call;
@@ -33,7 +35,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 import static grouppay.dylankilbride.com.constants.Constants.LOCALHOST_SERVER_BASEURL;
 
-public class Home extends AppCompatActivity {
+public class Home extends AppCompatActivity implements ItemClickListener {
 
   ActiveAccountsRVAdapter adapter;
   List<GroupAccount> groupAccounts = new ArrayList<>();
@@ -121,7 +123,9 @@ public class Home extends AppCompatActivity {
     accountsRecyclerView = (RecyclerView) findViewById(R.id.rvAccountsPreview);
     accountsRecyclerViewLayoutManager = new LinearLayoutManager(this);
     accountsRecyclerView.setLayoutManager(accountsRecyclerViewLayoutManager);
-    accountsRecyclerView.setAdapter(new ActiveAccountsRVAdapter(groupAccounts, R.layout.activity_home_preview_list_item));
+    adapter = new ActiveAccountsRVAdapter(groupAccounts, R.layout.activity_home_preview_list_item, this);
+    accountsRecyclerView.setAdapter(adapter);
+    adapter.setOnClick(Home.this);
   }
 
   public void setUpActionBar() {
@@ -228,5 +232,17 @@ public class Home extends AppCompatActivity {
   @Override
   public void onBackPressed() {
     moveTaskToBack(true);
+  }
+
+  @Override
+  public void onItemClick(Contact contact) {
+
+  }
+
+  @Override
+  public void onItemClick(GroupAccount groupAccount) {
+    Intent viewDetailedInfo = new Intent(Home.this, GroupAccountDetailed.class);
+    viewDetailedInfo.putExtra("groupAccountId", groupAccount.getGroupAccountId());
+    startActivity(viewDetailedInfo);
   }
 }

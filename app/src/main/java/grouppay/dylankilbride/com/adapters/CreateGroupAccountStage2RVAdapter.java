@@ -64,7 +64,6 @@ public class CreateGroupAccountStage2RVAdapter extends RecyclerView.Adapter<Crea
         this.onItemClick=onClick;
     }
 
-
     @Override
     public int getItemCount() {
         return contactList.size();
