@@ -20,4 +20,7 @@ public interface GroupAccountAPI {
 
   @GET("groupAccounts/getDetailedGroupInfo/{groupAccountId}")
   Call<GroupAccount> getDetailedGroupInfo(@Path("groupAccountId") String groupId);
+
+  @GET("groupAccounts/getAllUserAssociatedAccounts/{userId}")
+  Call<List<GroupAccount>> getUserAssociatedAccounts(@Path("userId") String userId);
 }

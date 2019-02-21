@@ -1,16 +1,16 @@
 package grouppay.dylankilbride.com.models;
 
 import java.math.BigDecimal;
-import java.util.Date;
+import java.util.Calendar;
 
 public class Payments {
 
   private User user;
   private BigDecimal amountPaid;
   private String paymentType;
-  private Date paymentDateAndTime;
+  private Calendar paymentDateAndTime;
 
-  public Payments(User user, BigDecimal amountPaid, Date paymentDateAndTime) {
+  public Payments(User user, BigDecimal amountPaid, Calendar paymentDateAndTime) {
     this.user = user;
     this.amountPaid = amountPaid;
     this.paymentDateAndTime = paymentDateAndTime;
@@ -45,11 +45,11 @@ public class Payments {
     this.amountPaid = amountPaid;
   }
 
-  public Date getPaymentDateAndTime() {
+  public Calendar getPaymentDateAndTime() {
     return paymentDateAndTime;
   }
 
-  public void setPaymentDateAndTime(Date paymentDateAndTime) {
+  public void setPaymentDateAndTime(Calendar paymentDateAndTime) {
     this.paymentDateAndTime = paymentDateAndTime;
   }
 }
