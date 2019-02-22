@@ -2,6 +2,8 @@ package grouppay.dylankilbride.com.activities;
 
 import android.content.Intent;
 import android.content.res.Configuration;
+import android.os.Handler;
+import android.os.Looper;
 import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
@@ -37,7 +39,7 @@ import static grouppay.dylankilbride.com.constants.Constants.LOCALHOST_SERVER_BA
 
 public class Home extends AppCompatActivity implements ItemClickListener {
 
-  ActiveAccountsRVAdapter adapter;
+  public ActiveAccountsRVAdapter adapter;
   List<GroupAccount> groupAccounts = new ArrayList<>();
   private RecyclerView accountsRecyclerView;
   private RecyclerView.LayoutManager accountsRecyclerViewLayoutManager;
@@ -55,8 +57,9 @@ public class Home extends AppCompatActivity implements ItemClickListener {
     userId = getIntent().getStringExtra("userId");
     userName = getIntent().getStringExtra("name");
     userEmail = getIntent().getStringExtra("email");
-    setUpAssociatedAccountsCall(userId);
 
+    setUpFAB();
+    setUpAccountPreviewRecyclerView();
     noAccountsTextView= (TextView) findViewById(R.id.noAccountPreviewsTextView);
 
     drawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -64,10 +67,7 @@ public class Home extends AppCompatActivity implements ItemClickListener {
 
     drawerLayout.addDrawerListener(actionBarDrawerToggle);
     actionBarDrawerToggle.syncState();
-//    groupAccounts.add(new GroupAccount(1, R.drawable.human_photo, "Pas De Casa", "Quick Hol", 3, new BigDecimal("47.23"), new BigDecimal("2500"), null));
-//    groupAccounts.add(new GroupAccount(2, R.drawable.human_photo, "Dinner Today", "Quick Hol", 14, new BigDecimal("4"), new BigDecimal("25"), null));
-//    groupAccounts.add(new GroupAccount(3, R.drawable.human_photo, "Monday", "Quick Hol", 5, new BigDecimal("56.70"), new BigDecimal("314"), null));
-//    groupAccounts.add(new GroupAccount(4, R.drawable.human_photo, "Car", "Quick Hol", 2, new BigDecimal("0"), new BigDecimal("100"), null)
+
     setUpActionBar();
     getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
@@ -77,6 +77,9 @@ public class Home extends AppCompatActivity implements ItemClickListener {
     navEmail = (TextView) headerView.findViewById(R.id.navEmail);
     navName.setText(userName);
     navEmail.setText(userEmail);
+
+    setUpNavDrawer();
+
   }
 
   private void setUpNavDrawer() {
@@ -203,23 +206,21 @@ public class Home extends AppCompatActivity implements ItemClickListener {
           setUpAccountPreviewRecyclerView();
           emptyRVTextViewSetUp(checkIfListIsEmpty(groupAccounts));
         } else {
-          if(response.body().size() > 0){
+          if(response.body().size() > 0 && !response.body().equals("null")){
             for(int i=0; i<response.body().size(); i++) {
               GroupAccount groupAccount = new GroupAccount(response.body().get(i).getGroupAccountId(),
                   response.body().get(i).getAccountName(),
                   response.body().get(i).getAccountDescription(),
                   response.body().get(i).getNumberOfMembers(),
-                  response.body().get(i).getTotalAmountPaid(),
                   response.body().get(i).getTotalAmountOwed(),
+                  response.body().get(i).getTotalAmountPaid(),
                   R.drawable.human_photo);
               groupAccounts.add(groupAccount);
             }
           }
         }
-        setUpFAB();
-        setUpNavDrawer();
-        setUpAccountPreviewRecyclerView();
         emptyRVTextViewSetUp(checkIfListIsEmpty(groupAccounts));
+        adapter.notifyDataSetChanged();
       }
 
       @Override
@@ -244,5 +245,12 @@ public class Home extends AppCompatActivity implements ItemClickListener {
     Intent viewDetailedInfo = new Intent(Home.this, GroupAccountDetailed.class);
     viewDetailedInfo.putExtra("groupAccountId", groupAccount.getGroupAccountId());
     startActivity(viewDetailedInfo);
+  }
+
+  @Override
+  protected void onResume() {
+    super.onResume();
+    setUpAssociatedAccountsCall(userId);
+    groupAccounts.clear();
   }
 }

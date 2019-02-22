@@ -10,6 +10,7 @@ import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import grouppay.dylankilbride.com.activities.GroupAccountDetailed;
@@ -55,6 +56,11 @@ public class ActiveAccountsRVAdapter extends RecyclerView.Adapter<ActiveAccounts
         onItemClick.onItemClick(accountsList.get(position));
       }
     });
+  }
+
+  public void updateData(final List<GroupAccount> groupAccounts) {
+    List<GroupAccount> updatedGroupAccounts = new ArrayList<>();
+    updatedGroupAccounts.addAll(groupAccounts);
   }
 
   public void setOnClick(ItemClickListener onClick) {

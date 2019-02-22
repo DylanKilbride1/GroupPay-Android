@@ -107,7 +107,9 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/cairo"
-                    android:backgroundTint="@color/editTextBgTintStandard"/>
+                    android:textSize="27sp"
+                    android:backgroundTint="@color/editTextBgTintStandard"
+                    tools:text="100"/>
 
 
 
