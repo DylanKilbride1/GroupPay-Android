@@ -1,13 +1,16 @@
 package grouppay.dylankilbride.com.activities;
 
+import android.Manifest;
 import android.content.Intent;
 import android.content.res.Configuration;
+import android.os.Build;
 import android.os.Handler;
 import android.os.Looper;
 import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
 import android.support.v4.widget.DrawerLayout;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -47,6 +50,7 @@ public class Home extends AppCompatActivity implements ItemClickListener {
   private DrawerLayout drawerLayout;
   private ActionBarDrawerToggle actionBarDrawerToggle;
   private NavigationView navigationView;
+  private SwipeRefreshLayout pullToRefresh;
   private String userId, userName, userEmail;
   private GroupAccountAPI apiInterface;
 
@@ -60,7 +64,17 @@ public class Home extends AppCompatActivity implements ItemClickListener {
 
     setUpFAB();
     setUpAccountPreviewRecyclerView();
-    noAccountsTextView= (TextView) findViewById(R.id.noAccountPreviewsTextView);
+    noAccountsTextView = (TextView) findViewById(R.id.noAccountPreviewsTextView);
+
+    pullToRefresh = findViewById(R.id.homePullToRefresh);
+    pullToRefresh.setColorSchemeResources(R.color.colorAccent);
+    pullToRefresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+      @Override
+      public void onRefresh() {
+        setUpAssociatedAccountsCall(userId);
+        emptyRVTextViewSetUp(checkIfListIsEmpty(groupAccounts));
+      }
+    });
 
     drawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
     actionBarDrawerToggle = new ActionBarDrawerToggle(this, drawerLayout, R.string.nav_drawer_open, R.string.nav_drawer_close);
@@ -207,6 +221,7 @@ public class Home extends AppCompatActivity implements ItemClickListener {
           emptyRVTextViewSetUp(checkIfListIsEmpty(groupAccounts));
         } else {
           if(response.body().size() > 0 && !response.body().equals("null")){
+            groupAccounts.clear();
             for(int i=0; i<response.body().size(); i++) {
               GroupAccount groupAccount = new GroupAccount(response.body().get(i).getGroupAccountId(),
                   response.body().get(i).getAccountName(),
@@ -216,6 +231,9 @@ public class Home extends AppCompatActivity implements ItemClickListener {
                   response.body().get(i).getTotalAmountPaid(),
                   R.drawable.human_photo);
               groupAccounts.add(groupAccount);
+            }
+            if (pullToRefresh.isRefreshing()) {
+              pullToRefresh.setRefreshing(false);
             }
           }
         }
@@ -243,7 +261,7 @@ public class Home extends AppCompatActivity implements ItemClickListener {
   @Override
   public void onItemClick(GroupAccount groupAccount) {
     Intent viewDetailedInfo = new Intent(Home.this, GroupAccountDetailed.class);
-    viewDetailedInfo.putExtra("groupAccountId", groupAccount.getGroupAccountId());
+    viewDetailedInfo.putExtra("groupAccountId", Long.toString(groupAccount.getGroupAccountId()));
     startActivity(viewDetailedInfo);
   }
 
@@ -252,5 +270,12 @@ public class Home extends AppCompatActivity implements ItemClickListener {
     super.onResume();
     setUpAssociatedAccountsCall(userId);
     groupAccounts.clear();
+  }
+
+  public void getPermissions() {
+    if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+      requestPermissions(new String[]{Manifest.permission.WRITE_CONTACTS,
+          Manifest.permission.READ_CONTACTS}, 1);
+    }
   }
 }

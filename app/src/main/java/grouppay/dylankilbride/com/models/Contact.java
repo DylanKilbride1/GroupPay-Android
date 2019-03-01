@@ -5,7 +5,9 @@ public class Contact {
   private int testResourceId;
   private String firstName;
   private String lastName;
+  private String fullname;
   private String contactEmail;
+  private String phoneNumber;
   private boolean isPressed = false;
 
   public Contact(int testResourceId, String firstName, String lastName, String contactEmail) {
@@ -21,6 +23,10 @@ public class Contact {
     this.contactEmail = contactEmail;
   }
 
+  public Contact(String fullname, String phoneNumber) {
+    this.fullname = fullname;
+    this.phoneNumber = phoneNumber;
+  }
   public Contact() {}
 
   public int getTestResourceId() {
@@ -67,7 +73,23 @@ public class Contact {
     return isPressed;
   }
 
-  public String getFullName() {
+  public String getNamesAppended() {
     return firstName + " " + lastName;
+  }
+
+  public String getFullname() {
+    return fullname;
+  }
+
+  public void setFullname(String fullname) {
+    this.fullname = fullname;
+  }
+
+  public String getPhoneNumber() {
+    return phoneNumber;
+  }
+
+  public void setPhoneNumber(String phoneNumber) {
+    this.phoneNumber = phoneNumber;
   }
 }

@@ -1,6 +1,12 @@
 package grouppay.dylankilbride.com.activities;
 
+import android.Manifest;
+import android.content.ContentResolver;
 import android.content.Intent;
+import android.database.Cursor;
+import android.net.Uri;
+import android.os.Build;
+import android.provider.ContactsContract;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.DividerItemDecoration;
@@ -8,6 +14,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
@@ -37,6 +44,7 @@ public class CreateGroupAccountStage2 extends AppCompatActivity implements ItemC
     private RecyclerView.LayoutManager contactsRecyclerViewLayoutManager;
     private Button addContactsButton;
     private ArrayList<Contact> selectedContacts = new ArrayList<>();
+    private ArrayList<Contact> contactList;
     String groupAccountIdStr;
 
     @Override
@@ -52,9 +60,8 @@ public class CreateGroupAccountStage2 extends AppCompatActivity implements ItemC
 
         showHideContinueButton(selectedContacts);
 
-        ArrayList<Contact> contactList = new ArrayList<>();
-        contactList.add(new Contact("FN1", "LN1", "testcontact1"));
-        contactList.add(new Contact("FN2", "LN2", "testcontact2"));
+        contactList = new ArrayList<>();
+        getContactsList();
         setUpAccountPreviewRecyclerView(contactList);
 
         addContactsButton.setOnClickListener(new View.OnClickListener() {
@@ -143,6 +150,31 @@ public class CreateGroupAccountStage2 extends AppCompatActivity implements ItemC
             ((TextView) v.findViewById(R.id.title)).setTextSize(20);
 
             this.getSupportActionBar().setCustomView(v);
+        }
+    }
+
+    public void getContactsList() {
+        Cursor phones = getContentResolver().query(ContactsContract.CommonDataKinds.Phone.CONTENT_URI,
+            null,
+            null,
+            null,
+            null);
+        while(phones.moveToNext()) {
+            Contact contact = new Contact(phones.getString(phones.getColumnIndex(ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME)),
+                phones.getString(phones.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER)));
+            contactList.add(contact);
+        }
+
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                onBackPressed();
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
         }
     }
 }

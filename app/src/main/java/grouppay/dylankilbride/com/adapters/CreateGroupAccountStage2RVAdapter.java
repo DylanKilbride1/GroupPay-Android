@@ -43,7 +43,7 @@ public class CreateGroupAccountStage2RVAdapter extends RecyclerView.Adapter<Crea
     @Override
     public void onBindViewHolder(@NonNull final ViewHolder viewHolder, final int position) {
         final Contact contact = contactList.get(position);
-        viewHolder.contactName.setText(contact.getFullName());
+        viewHolder.contactName.setText(contact.getFullname());
         viewHolder.contactImage.setBackgroundResource(R.drawable.human_photo);
         viewHolder.viewLayout.setOnClickListener(new View.OnClickListener() {
             @Override
