@@ -1,11 +1,16 @@
 package grouppay.dylankilbride.com.activities;
 
+import android.Manifest;
 import android.content.Intent;
 import android.content.res.Configuration;
+import android.os.Build;
+import android.os.Handler;
+import android.os.Looper;
 import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
 import android.support.v4.widget.DrawerLayout;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -22,7 +27,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 import grouppay.dylankilbride.com.adapters.ActiveAccountsRVAdapter;
+import grouppay.dylankilbride.com.adapters.ItemClickListener;
 import grouppay.dylankilbride.com.grouppay.R;
+import grouppay.dylankilbride.com.models.Contact;
 import grouppay.dylankilbride.com.models.GroupAccount;
 import grouppay.dylankilbride.com.retrofit_interfaces.GroupAccountAPI;
 import retrofit2.Call;
@@ -33,9 +40,9 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 import static grouppay.dylankilbride.com.constants.Constants.LOCALHOST_SERVER_BASEURL;
 
-public class Home extends AppCompatActivity {
+public class Home extends AppCompatActivity implements ItemClickListener {
 
-  ActiveAccountsRVAdapter adapter;
+  public ActiveAccountsRVAdapter adapter;
   List<GroupAccount> groupAccounts = new ArrayList<>();
   private RecyclerView accountsRecyclerView;
   private RecyclerView.LayoutManager accountsRecyclerViewLayoutManager;
@@ -43,6 +50,7 @@ public class Home extends AppCompatActivity {
   private DrawerLayout drawerLayout;
   private ActionBarDrawerToggle actionBarDrawerToggle;
   private NavigationView navigationView;
+  private SwipeRefreshLayout pullToRefresh;
   private String userId, userName, userEmail;
   private GroupAccountAPI apiInterface;
 
@@ -53,19 +61,27 @@ public class Home extends AppCompatActivity {
     userId = getIntent().getStringExtra("userId");
     userName = getIntent().getStringExtra("name");
     userEmail = getIntent().getStringExtra("email");
-    setUpAssociatedAccountsCall(userId);
 
-    noAccountsTextView= (TextView) findViewById(R.id.noAccountPreviewsTextView);
+    setUpFAB();
+    setUpAccountPreviewRecyclerView();
+    noAccountsTextView = (TextView) findViewById(R.id.noAccountPreviewsTextView);
+
+    pullToRefresh = findViewById(R.id.homePullToRefresh);
+    pullToRefresh.setColorSchemeResources(R.color.colorAccent);
+    pullToRefresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+      @Override
+      public void onRefresh() {
+        setUpAssociatedAccountsCall(userId);
+        emptyRVTextViewSetUp(checkIfListIsEmpty(groupAccounts));
+      }
+    });
 
     drawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
     actionBarDrawerToggle = new ActionBarDrawerToggle(this, drawerLayout, R.string.nav_drawer_open, R.string.nav_drawer_close);
 
     drawerLayout.addDrawerListener(actionBarDrawerToggle);
     actionBarDrawerToggle.syncState();
-//    groupAccounts.add(new GroupAccount(1, R.drawable.human_photo, "Pas De Casa", "Quick Hol", 3, new BigDecimal("47.23"), new BigDecimal("2500"), null));
-//    groupAccounts.add(new GroupAccount(2, R.drawable.human_photo, "Dinner Today", "Quick Hol", 14, new BigDecimal("4"), new BigDecimal("25"), null));
-//    groupAccounts.add(new GroupAccount(3, R.drawable.human_photo, "Monday", "Quick Hol", 5, new BigDecimal("56.70"), new BigDecimal("314"), null));
-//    groupAccounts.add(new GroupAccount(4, R.drawable.human_photo, "Car", "Quick Hol", 2, new BigDecimal("0"), new BigDecimal("100"), null)
+
     setUpActionBar();
     getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
@@ -75,6 +91,9 @@ public class Home extends AppCompatActivity {
     navEmail = (TextView) headerView.findViewById(R.id.navEmail);
     navName.setText(userName);
     navEmail.setText(userEmail);
+
+    setUpNavDrawer();
+
   }
 
   private void setUpNavDrawer() {
@@ -121,7 +140,9 @@ public class Home extends AppCompatActivity {
     accountsRecyclerView = (RecyclerView) findViewById(R.id.rvAccountsPreview);
     accountsRecyclerViewLayoutManager = new LinearLayoutManager(this);
     accountsRecyclerView.setLayoutManager(accountsRecyclerViewLayoutManager);
-    accountsRecyclerView.setAdapter(new ActiveAccountsRVAdapter(groupAccounts, R.layout.activity_home_preview_list_item));
+    adapter = new ActiveAccountsRVAdapter(groupAccounts, R.layout.activity_home_preview_list_item, this);
+    accountsRecyclerView.setAdapter(adapter);
+    adapter.setOnClick(Home.this);
   }
 
   public void setUpActionBar() {
@@ -194,39 +215,30 @@ public class Home extends AppCompatActivity {
       @Override
       public void onResponse(Call<List<GroupAccount>> call, Response<List<GroupAccount>> response) {
         if(!response.isSuccessful()) {
-          //Handle
+          setUpFAB();
+          setUpNavDrawer();
+          setUpAccountPreviewRecyclerView();
+          emptyRVTextViewSetUp(checkIfListIsEmpty(groupAccounts));
         } else {
-          if(response.body().size() > 0){
+          if(response.body().size() > 0 && !response.body().equals("null")){
+            groupAccounts.clear();
             for(int i=0; i<response.body().size(); i++) {
-
-              //This is just for clarity
-              long groupAccountId = response.body().get(i).getGroupAccountId();
-              long adminId = response.body().get(i).getAdminId();
-              String accountName = response.body().get(i).getAccountName();
-              String accountDescription = response.body().get(i).getAccountDescription();
-              int numberOfMembers = response.body().get(i).getNumberOfMembers();
-              BigDecimal amountPaid = response.body().get(i).getTotalAmountPaid();
-              BigDecimal amountOwed = response.body().get(i).getTotalAmountOwed();
-              int testRes = R.drawable.human_photo;
-
-
-              GroupAccount groupAccount = new GroupAccount(groupAccountId,
-                  accountName,
-                  accountDescription,
-                  numberOfMembers,
-                  amountPaid,
-                  amountOwed,
-                  testRes);
-
-
+              GroupAccount groupAccount = new GroupAccount(response.body().get(i).getGroupAccountId(),
+                  response.body().get(i).getAccountName(),
+                  response.body().get(i).getAccountDescription(),
+                  response.body().get(i).getNumberOfMembers(),
+                  response.body().get(i).getTotalAmountOwed(),
+                  response.body().get(i).getTotalAmountPaid(),
+                  R.drawable.human_photo);
               groupAccounts.add(groupAccount);
             }
-            setUpFAB();
-            setUpNavDrawer();
-            setUpAccountPreviewRecyclerView();
-            emptyRVTextViewSetUp(checkIfListIsEmpty(groupAccounts));
+            if (pullToRefresh.isRefreshing()) {
+              pullToRefresh.setRefreshing(false);
+            }
           }
         }
+        emptyRVTextViewSetUp(checkIfListIsEmpty(groupAccounts));
+        adapter.notifyDataSetChanged();
       }
 
       @Override
@@ -239,5 +251,31 @@ public class Home extends AppCompatActivity {
   @Override
   public void onBackPressed() {
     moveTaskToBack(true);
+  }
+
+  @Override
+  public void onItemClick(Contact contact) {
+
+  }
+
+  @Override
+  public void onItemClick(GroupAccount groupAccount) {
+    Intent viewDetailedInfo = new Intent(Home.this, GroupAccountDetailed.class);
+    viewDetailedInfo.putExtra("groupAccountId", Long.toString(groupAccount.getGroupAccountId()));
+    startActivity(viewDetailedInfo);
+  }
+
+  @Override
+  protected void onResume() {
+    super.onResume();
+    setUpAssociatedAccountsCall(userId);
+    groupAccounts.clear();
+  }
+
+  public void getPermissions() {
+    if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+      requestPermissions(new String[]{Manifest.permission.WRITE_CONTACTS,
+          Manifest.permission.READ_CONTACTS}, 1);
+    }
   }
 }

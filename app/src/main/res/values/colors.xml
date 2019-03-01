@@ -31,7 +31,7 @@
     <color name="groupAccountDetailedProgressBarStart">#1652ca</color>
     <color name="groupAccountDetailedInitialsBg">#68bff9</color>
     <color name="toolbarBackButton">#636363</color>
-    <color name="homeFAB">#e926df</color>
+    <color name="homeFAB">#195fc9</color>
     <color name="createGroupAccountContactItemPressed">#9fd4f1</color>
 
 </resources>

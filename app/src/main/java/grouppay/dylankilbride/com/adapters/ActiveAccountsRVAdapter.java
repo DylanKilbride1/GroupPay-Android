@@ -10,6 +10,7 @@ import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import grouppay.dylankilbride.com.activities.GroupAccountDetailed;
@@ -21,11 +22,12 @@ public class ActiveAccountsRVAdapter extends RecyclerView.Adapter<ActiveAccounts
   public List<GroupAccount> accountsList;
   private int itemLayout;
   private Context context;
-  private static ItemClickListener clickInterface;
+  private static ItemClickListener onItemClick;
 
-  public ActiveAccountsRVAdapter(List<GroupAccount> accountsList, int itemLayout) {
+  public ActiveAccountsRVAdapter(List<GroupAccount> accountsList, int itemLayout, Context context) {
     this.accountsList = accountsList;
     this.itemLayout = itemLayout;
+    this.context = context;
   }
 
   public ActiveAccountsRVAdapter(List<GroupAccount> accountsList, Context context) {
@@ -51,21 +53,23 @@ public class ActiveAccountsRVAdapter extends RecyclerView.Adapter<ActiveAccounts
 
       @Override
       public void onClick(View view) {
-        Intent intent = new Intent(view.getContext(), GroupAccountDetailed.class);
-        view.getContext().startActivity(intent);
+        onItemClick.onItemClick(accountsList.get(position));
       }
     });
+  }
+
+  public void updateData(final List<GroupAccount> groupAccounts) {
+    List<GroupAccount> updatedGroupAccounts = new ArrayList<>();
+    updatedGroupAccounts.addAll(groupAccounts);
+  }
+
+  public void setOnClick(ItemClickListener onClick) {
+    this.onItemClick=onClick;
   }
 
   @Override
   public int getItemCount() {
     return accountsList.size();
-  }
-
-
-  public void setAccounts(List<GroupAccount> accountsList) {
-    this.accountsList = accountsList;
-    notifyDataSetChanged();
   }
 
   public class ViewHolder extends RecyclerView.ViewHolder {
@@ -76,7 +80,6 @@ public class ActiveAccountsRVAdapter extends RecyclerView.Adapter<ActiveAccounts
 
     public ViewHolder(@NonNull View itemView) {
       super(itemView);
-
       groupName = itemView.findViewById(R.id.groupNameView);
       accountValues = itemView.findViewById(R.id.accountValuesView);
       numberOfMembers = itemView.findViewById(R.id.numberOfMembers);

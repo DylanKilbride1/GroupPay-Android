@@ -1,6 +1,7 @@
 package grouppay.dylankilbride.com.models;
 
 import java.math.BigDecimal;
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
 public class Payments {
@@ -45,8 +46,11 @@ public class Payments {
     this.amountPaid = amountPaid;
   }
 
-  public Calendar getPaymentDateAndTime() {
-    return paymentDateAndTime;
+  public String getPaymentDateAndTime() {
+    Calendar calendar = Calendar.getInstance();
+    calendar.add(Calendar.DATE, 1);
+    SimpleDateFormat format = new SimpleDateFormat("dd MMM, H:mm");
+    return format.format(calendar.getTime());
   }
 
   public void setPaymentDateAndTime(Calendar paymentDateAndTime) {

@@ -54,12 +54,7 @@ public class GroupAccountDetailed extends AppCompatActivity {
 
     groupAccountIdStr = getIntent().getStringExtra("groupAccountId");
 
-    Retrofit getDetailedAccountsInfo = new Retrofit.Builder()
-        .baseUrl(LOCALHOST_SERVER_BASEURL)
-        .addConverterFactory(GsonConverterFactory.create())
-        .build();
-    apiInterface = getDetailedAccountsInfo.create(GroupAccountAPI.class);
-    getDetailedGroupInfo(groupAccountIdStr);
+    getInfoRequestSetUp();
 
     setUpActionBar("GroupName");
     getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -81,6 +76,15 @@ public class GroupAccountDetailed extends AppCompatActivity {
     testpaymentLog.add(new Payments(userTest, new BigDecimal("2"), calendar));
 
     setUpAccountPreviewRecyclerView(testpaymentLog);
+  }
+
+  private void getInfoRequestSetUp() {
+    Retrofit getDetailedAccountsInfo = new Retrofit.Builder()
+        .baseUrl(LOCALHOST_SERVER_BASEURL)
+        .addConverterFactory(GsonConverterFactory.create())
+        .build();
+    apiInterface = getDetailedAccountsInfo.create(GroupAccountAPI.class);
+    getDetailedGroupInfo(groupAccountIdStr);
   }
 
   public void setUpAccountPreviewRecyclerView(List<Payments> tempList) {
@@ -135,7 +139,7 @@ public class GroupAccountDetailed extends AppCompatActivity {
             String totalAmountPaid = "€" + Integer.toString(roundBigDecimalUp(response.body().getTotalAmountPaid()));
             progressStartAmount.setText(totalAmountPaid);
           } else {
-            String totalAmountPaid = "€" + response.body().getTotalAmountPaid().toString();
+            String totalAmountPaid = "€" + response.body().getTotalAmountPaid().toPlainString();
             progressStartAmount.setText(totalAmountPaid);
           }
           String totalAmountOwed = "€" + response.body().getTotalAmountOwed().stripTrailingZeros().toString();
