@@ -3,7 +3,7 @@ package grouppay.dylankilbride.com.models;
 public class User {
 
   private long id;
-  //TODO Add photo field
+  private String profileUrl;
   private String firstName;
   private String lastName;
   private String emailAddress;
@@ -11,13 +11,14 @@ public class User {
   private String mobileNumber;
   private boolean isPressed = false;
 
-  public User(long id, String firstName, String lastName, String emailAddress, String password, String mobileNumber) {
+  public User(long id, String firstName, String lastName, String emailAddress, String password, String mobileNumber, String profileUrl) {
     this.id = id;
     this.firstName = firstName;
     this.lastName = lastName;
     this.emailAddress = emailAddress;
     this.password = password;
     this.mobileNumber = mobileNumber;
+    this.profileUrl = profileUrl;
   }
 
   public User(String firstName, String lastName, String mobileNumber) {
@@ -95,5 +96,13 @@ public class User {
 
   public void setIsPressed(boolean value) {
     isPressed = value;
+  }
+
+  public String getProfileUrl() {
+    return profileUrl;
+  }
+
+  public void setProfileUrl(String profileUrl) {
+    this.profileUrl = profileUrl;
   }
 }

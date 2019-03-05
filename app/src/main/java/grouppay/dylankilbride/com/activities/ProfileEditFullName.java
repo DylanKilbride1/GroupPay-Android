@@ -59,7 +59,7 @@ public class ProfileEditFullName extends AppCompatActivity {
   }
 
   private void updateFullName() {
-    User user = new User(Long.valueOf(userIdStr), newFirstName.getText().toString(), newLastName.getText().toString(), null, null, null);
+    User user = new User(Long.valueOf(userIdStr), newFirstName.getText().toString(), newLastName.getText().toString(), null, null, null, null);
 
     Call<User> call = apiInterface.updateUserFullName(userIdStr, user);
 

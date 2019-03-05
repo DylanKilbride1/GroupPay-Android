@@ -58,7 +58,7 @@ public class ProfileEditPhoneNumber extends AppCompatActivity {
   }
 
   private void updatePhoneNumber() {
-    User user = new User(Long.valueOf(userIdStr), null, null, null, null, newPhoneNumber.getText().toString());
+    User user = new User(Long.valueOf(userIdStr), null, null, null, null, newPhoneNumber.getText().toString(), null);
 
     Call<User> call = apiInterface.updateUserPhoneNumber(userIdStr, user);
 

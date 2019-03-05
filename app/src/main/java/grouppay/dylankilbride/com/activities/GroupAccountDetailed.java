@@ -64,7 +64,7 @@ public class GroupAccountDetailed extends AppCompatActivity {
     progressStartAmount = (TextView) findViewById(R.id.activeAccountProgressStartTV);
     progressFinalAmount = (TextView) findViewById(R.id.activeAccountProgressEndTV);
 
-    User userTest = new User(4, "Dylan", "Kilbride", "blah", "blah", "blah");
+    User userTest = new User(4, "Dylan", "Kilbride", "blah", "blah", "blah", null);
     Calendar calendar = Calendar.getInstance();
 
     ArrayList<Payments> testpaymentLog = new ArrayList<>();
