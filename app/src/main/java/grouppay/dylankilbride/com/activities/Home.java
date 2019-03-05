@@ -72,7 +72,6 @@ public class Home extends AppCompatActivity implements ItemClickListener {
       @Override
       public void onRefresh() {
         setUpAssociatedAccountsCall(userId);
-        emptyRVTextViewSetUp(checkIfListIsEmpty(groupAccounts));
       }
     });
 
@@ -93,7 +92,6 @@ public class Home extends AppCompatActivity implements ItemClickListener {
     navEmail.setText(userEmail);
 
     setUpNavDrawer();
-
   }
 
   private void setUpNavDrawer() {
@@ -218,10 +216,9 @@ public class Home extends AppCompatActivity implements ItemClickListener {
           setUpFAB();
           setUpNavDrawer();
           setUpAccountPreviewRecyclerView();
-          emptyRVTextViewSetUp(checkIfListIsEmpty(groupAccounts));
+          //emptyRVTextViewSetUp(checkIfListIsEmpty(groupAccounts));
         } else {
           if(response.body().size() > 0 && !response.body().equals("null")){
-            groupAccounts.clear();
             for(int i=0; i<response.body().size(); i++) {
               GroupAccount groupAccount = new GroupAccount(response.body().get(i).getGroupAccountId(),
                   response.body().get(i).getAccountName(),
@@ -232,9 +229,9 @@ public class Home extends AppCompatActivity implements ItemClickListener {
                   R.drawable.human_photo);
               groupAccounts.add(groupAccount);
             }
-            if (pullToRefresh.isRefreshing()) {
-              pullToRefresh.setRefreshing(false);
-            }
+          }
+          if (pullToRefresh.isRefreshing()) {
+            pullToRefresh.setRefreshing(false);
           }
         }
         emptyRVTextViewSetUp(checkIfListIsEmpty(groupAccounts));

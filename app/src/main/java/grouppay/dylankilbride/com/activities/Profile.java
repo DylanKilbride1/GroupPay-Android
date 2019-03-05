@@ -20,6 +20,8 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestOptions;
 
 import java.io.File;
 
@@ -35,7 +37,6 @@ import retrofit2.Callback;
 import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
-import retrofit2.http.Multipart;
 
 import static grouppay.dylankilbride.com.constants.Constants.LOCALHOST_SERVER_BASEURL;
 
@@ -47,6 +48,7 @@ public class Profile extends AppCompatActivity {
   RelativeLayout fullNameRL, emailAddressRL, phoneNumberRL;
   private static final int GALLERY_REQUEST_CODE = 1234;
   ProfileAPI profileAPI;
+  RequestOptions noProfileImageDefault = new RequestOptions().error(R.drawable.no_profile_photo);
 
   @Override
   protected void onCreate(Bundle savedInstanceState) {
@@ -64,9 +66,6 @@ public class Profile extends AppCompatActivity {
     phoneNumberRL = (RelativeLayout) findViewById(R.id.profilePhoneNumberRL);
     mainEmailTV = (TextView) findViewById(R.id.profileMainEmailAddressTV);
     mainNameTV = (TextView) findViewById(R.id.profileMainFullNameTV);
-
-
-    getProifleDetails();
 
     profileImage.setOnClickListener(new View.OnClickListener() {
       @Override
@@ -150,7 +149,6 @@ public class Profile extends AppCompatActivity {
           MultipartBody.Part fileToUpload = MultipartBody.Part.createFormData("file", file.getName(), mFile);
           RequestBody filename = RequestBody.create(MediaType.parse("text/plain"), file.getName());
           setUpImageUploadRequest(fileToUpload, filename);
-          profileImage.setImageURI(selectedImage);
       }
     }
   }
@@ -184,8 +182,10 @@ public class Profile extends AppCompatActivity {
         if(!response.isSuccessful()){
           //Handle
         } else {
-          Toast.makeText(Profile.this, "Response " + response.raw().message(), Toast.LENGTH_LONG).show();
-          Toast.makeText(Profile.this, "Success " + response.body().getSuccess(), Toast.LENGTH_LONG).show();
+          Glide.with(profileImage.getContext())
+              .load(response.body().getFileUrl())
+              .apply(noProfileImageDefault)
+              .into(profileImage);
         }
       }
 
@@ -202,7 +202,7 @@ public class Profile extends AppCompatActivity {
         .addConverterFactory(GsonConverterFactory.create())
         .build();
 
-    ProfileAPI profileAPI = retrofit.create(ProfileAPI.class); //Creates model for JSON
+    final ProfileAPI profileAPI = retrofit.create(ProfileAPI.class); //Creates model for JSON
     Call<User> call = profileAPI.getUserDetails(userIdStr);
     call.enqueue(new Callback<User>() { //Don't use execute as it will execute on main thread
       @Override
@@ -220,6 +220,14 @@ public class Profile extends AppCompatActivity {
           editPhoneNumberTV.setText(response.body().getMobileNumber());
           mainNameTV.setText(response.body().getFullName());
           mainEmailTV.setText(response.body().getEmailAddress());
+          if(response.body().getProfileUrl() == null) {
+            profileImage.setImageDrawable(getResources().getDrawable(R.drawable.no_profile_photo));
+          } else {
+            Glide.with(profileImage.getContext())
+                .load(response.body().getProfileUrl())
+                .apply(noProfileImageDefault)
+                .into(profileImage);
+          }
         }
       }
 
@@ -239,5 +247,11 @@ public class Profile extends AppCompatActivity {
       default:
         return super.onOptionsItemSelected(item);
     }
+  }
+
+  @Override
+  protected void onResume() {
+    super.onResume();
+    getProifleDetails();
   }
 }

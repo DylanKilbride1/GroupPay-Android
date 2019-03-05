@@ -58,7 +58,7 @@ public class ProfileEditEmail extends AppCompatActivity {
   }
 
   private void updateEmail() {
-    User user = new User(Long.valueOf(userIdStr), null, null, newEmail.getText().toString(), null, null);
+    User user = new User(Long.valueOf(userIdStr), null, null, newEmail.getText().toString(), null, null, null);
 
     Call<User> call = apiInterface.updateUserEmail(userIdStr, user);
 
