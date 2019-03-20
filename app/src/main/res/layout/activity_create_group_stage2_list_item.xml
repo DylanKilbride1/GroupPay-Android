@@ -8,23 +8,27 @@
     android:padding="10dp"
     android:id="@+id/createGroupAccountStage2MainLL">
 
-        <de.hdodenhof.circleimageview.CircleImageView
-            xmlns:app="http://schemas.android.com/apk/res-auto"
-            android:id="@+id/createGroupAccountStage2ContactImageTV"
-            android:layout_width="50dp"
-            android:layout_height="50dp"
-            android:src="@drawable/human_photo"
-            app:civ_border_width="1dp"
-            app:civ_border_color="@color/profileImageBorder"/>
+    <TextView
+        android:id="@+id/createGroupAccountStage2ContactInitialsTV"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginRight="10dp"
+        android:background="@drawable/circular_name_initials_textview"
+        android:fontFamily="@font/cairo"
+        android:gravity="center"
+        android:textColor="@color/colorAccent"
+        android:textSize="17sp"
+        android:textStyle="bold"
+        tools:text="DK" />
 
-        <TextView
-            android:id="@+id/createGroupAccountStage2ContactNameTV"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_margin="10dp"
-            android:textSize="20sp"
-            android:fontFamily="@font/cairo"
-            tools:text="Dylan Kilbride"
-            />
+    <TextView
+        android:id="@+id/createGroupAccountStage2ContactNameTV"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+        android:textSize="20sp"
+        android:fontFamily="@font/cairo"
+        tools:text="Dylan Kilbride"
+        />
 
     </LinearLayout>

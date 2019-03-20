@@ -4,8 +4,6 @@ import android.Manifest;
 import android.content.ContentResolver;
 import android.content.Intent;
 import android.database.Cursor;
-import android.net.Uri;
-import android.os.Build;
 import android.provider.ContactsContract;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -18,6 +16,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -25,8 +24,8 @@ import java.util.List;
 import grouppay.dylankilbride.com.adapters.CreateGroupAccountStage2RVAdapter;
 import grouppay.dylankilbride.com.adapters.ItemClickListener;
 import grouppay.dylankilbride.com.grouppay.R;
-import grouppay.dylankilbride.com.models.Contact;
 import grouppay.dylankilbride.com.models.GroupAccount;
+import grouppay.dylankilbride.com.models.User;
 import grouppay.dylankilbride.com.retrofit_interfaces.GroupAccountAPI;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -43,8 +42,8 @@ public class CreateGroupAccountStage2 extends AppCompatActivity implements ItemC
     private RecyclerView contactsRecyclerView;
     private RecyclerView.LayoutManager contactsRecyclerViewLayoutManager;
     private Button addContactsButton;
-    private ArrayList<Contact> selectedContacts = new ArrayList<>();
-    private ArrayList<Contact> contactList;
+    private ArrayList<User> selectedContacts = new ArrayList<>();
+    private ArrayList<User> contactList;
     String groupAccountIdStr;
 
     @Override
@@ -61,8 +60,7 @@ public class CreateGroupAccountStage2 extends AppCompatActivity implements ItemC
         showHideContinueButton(selectedContacts);
 
         contactList = new ArrayList<>();
-        getContactsList();
-        setUpAccountPreviewRecyclerView(contactList);
+        getContactsPhoneNumbers();
 
         addContactsButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -78,7 +76,7 @@ public class CreateGroupAccountStage2 extends AppCompatActivity implements ItemC
         });
     }
 
-    public void setUpAccountPreviewRecyclerView(List<Contact> contactList) {
+    public void setUpAccountPreviewRecyclerView(List<User> contactList) {
         contactsRecyclerView = (RecyclerView) findViewById(R.id.createGroupAccountStage2RV);
         contactsRecyclerViewLayoutManager = new LinearLayoutManager(this);
         contactsRecyclerView.setLayoutManager(contactsRecyclerViewLayoutManager);
@@ -88,7 +86,7 @@ public class CreateGroupAccountStage2 extends AppCompatActivity implements ItemC
         contactsRecyclerView.addItemDecoration(new DividerItemDecoration(contactsRecyclerView.getContext(), DividerItemDecoration.VERTICAL));
     }
 
-    public void addContactsToGroupAccount(List<Contact> contactsToAdd) {
+    public void addContactsToGroupAccount(List<User> contactsToAdd) {
         Call<GroupAccount> call = apiInterface.addContactsToAccount(groupAccountIdStr, contactsToAdd);
         call.enqueue(new Callback<GroupAccount>() {
             @Override
@@ -110,7 +108,7 @@ public class CreateGroupAccountStage2 extends AppCompatActivity implements ItemC
     }
 
     @Override
-    public void onItemClick(Contact contact) {
+    public void onItemClick(User contact) {
         if(contact.getIsPressedValue()) {
             selectedContacts.add(contact);
             showHideContinueButton(selectedContacts);
@@ -125,7 +123,7 @@ public class CreateGroupAccountStage2 extends AppCompatActivity implements ItemC
 
     }
 
-    public void showHideContinueButton(List<Contact> selectedContacts){
+    public void showHideContinueButton(List<User> selectedContacts){
         if(selectedContacts.size() == 0) {
             addContactsButton.setVisibility(View.INVISIBLE);
         } else {
@@ -153,18 +151,49 @@ public class CreateGroupAccountStage2 extends AppCompatActivity implements ItemC
         }
     }
 
-    public void getContactsList() {
+    public void getContactsPhoneNumbers() {
+        List<String> contactsPhoneNumbers = new ArrayList<>();
         Cursor phones = getContentResolver().query(ContactsContract.CommonDataKinds.Phone.CONTENT_URI,
             null,
             null,
             null,
             null);
         while(phones.moveToNext()) {
-            Contact contact = new Contact(phones.getString(phones.getColumnIndex(ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME)),
-                phones.getString(phones.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER)));
-            contactList.add(contact);
+               String phoneNumber = phones.getString(phones.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER));
+               contactsPhoneNumbers.add(phoneNumber);
         }
+        setUpContactsWithGPAccountsCall(contactsPhoneNumbers);
+    }
 
+    public void setUpContactsWithGPAccountsCall(List<String> contactsPhoneNumbers) {
+        Retrofit getContactsWithGPAccounts = new Retrofit.Builder()
+            .baseUrl(LOCALHOST_SERVER_BASEURL)
+            .addConverterFactory(GsonConverterFactory.create())
+            .build();
+
+        apiInterface = getContactsWithGPAccounts.create(GroupAccountAPI.class);
+        getAllContactsWithGPAccounts(contactsPhoneNumbers);
+    }
+
+    public void getAllContactsWithGPAccounts(List<String> contactsPhoneNumbers) {
+        Call<List<User>> call = apiInterface.getAllContactsWithGrouppayAccounts(contactsPhoneNumbers);
+        call.enqueue(new Callback<List<User>>() {
+            @Override
+            public void onResponse(Call<List<User>> call, Response<List<User>> response) {
+                if(!response.isSuccessful()) {
+                    //Handle
+                } else {
+                    for(int i=0; i<response.body().size(); i++){
+                        contactList.add(response.body().get(i));
+                    }
+                    setUpAccountPreviewRecyclerView(contactList);
+                }
+            }
+            @Override
+            public void onFailure(Call<List<User>> call, Throwable t) {
+                Toast.makeText(getApplicationContext(), "Unable to retreive contacts", Toast.LENGTH_LONG).show();
+            }
+        });
     }
 
     @Override

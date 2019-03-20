@@ -80,6 +80,7 @@ public class Login extends AppCompatActivity {
                     intent.putExtra("userId", response.get("userId").toString());
                     intent.putExtra("email", emailBox.getText().toString());
                     intent.putExtra("name", response.get("name").toString());
+                    intent.putExtra("profileImgUrl", response.get("profileImageUrl").toString());
                     startActivity(intent);
                   } else {
                     ColorStateList colorStateList = ColorStateList.valueOf(getResources().getColor(R.color.incorrectField));

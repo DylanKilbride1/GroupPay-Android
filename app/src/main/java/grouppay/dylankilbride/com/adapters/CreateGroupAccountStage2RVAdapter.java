@@ -13,22 +13,22 @@ import android.widget.TextView;
 import java.util.List;
 
 import grouppay.dylankilbride.com.grouppay.R;
-import grouppay.dylankilbride.com.models.Contact;
+import grouppay.dylankilbride.com.models.User;
 
 public class CreateGroupAccountStage2RVAdapter extends RecyclerView.Adapter<CreateGroupAccountStage2RVAdapter.ViewHolder>{
 
-    public List<Contact> contactList;
+    public List<User> contactList;
     private int itemLayout;
     private Context context;
     private static ItemClickListener onItemClick;
 
-    public CreateGroupAccountStage2RVAdapter(List<Contact> contactList, int itemLayout, Context context) {
+    public CreateGroupAccountStage2RVAdapter(List<User> contactList, int itemLayout, Context context) {
         this.contactList = contactList;
         this.itemLayout = itemLayout;
         this.context = context;
     }
 
-    public CreateGroupAccountStage2RVAdapter(List<Contact> contactList, Context context) {
+    public CreateGroupAccountStage2RVAdapter(List<User> contactList, Context context) {
         this.contactList = contactList;
         this.context = context;
     }
@@ -42,9 +42,9 @@ public class CreateGroupAccountStage2RVAdapter extends RecyclerView.Adapter<Crea
 
     @Override
     public void onBindViewHolder(@NonNull final ViewHolder viewHolder, final int position) {
-        final Contact contact = contactList.get(position);
-        viewHolder.contactName.setText(contact.getFullname());
-        viewHolder.contactImage.setBackgroundResource(R.drawable.human_photo);
+        final User contact = contactList.get(position);
+        viewHolder.contactName.setText(contact.getFullName());
+        viewHolder.contactInitials.setText(contact.getInitials());
         viewHolder.viewLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -61,7 +61,7 @@ public class CreateGroupAccountStage2RVAdapter extends RecyclerView.Adapter<Crea
     }
 
     public void setOnClick(ItemClickListener onClick) {
-        this.onItemClick=onClick;
+        this.onItemClick = onClick;
     }
 
     @Override
@@ -73,14 +73,14 @@ public class CreateGroupAccountStage2RVAdapter extends RecyclerView.Adapter<Crea
 
         public LinearLayout viewLayout;
         public TextView contactName;
-        public ImageView contactImage;
+        public TextView contactInitials;
 
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
             viewLayout = itemView.findViewById(R.id.createGroupAccountStage2MainLL);
             contactName = itemView.findViewById(R.id.createGroupAccountStage2ContactNameTV);
-            contactImage = itemView.findViewById(R.id.createGroupAccountStage2ContactImageTV);
+            contactInitials = itemView.findViewById(R.id.createGroupAccountStage2ContactInitialsTV);
         }
 
         public void removeAt(int position) {
