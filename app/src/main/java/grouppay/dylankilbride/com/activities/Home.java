@@ -4,8 +4,6 @@ import android.Manifest;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.Build;
-import android.os.Handler;
-import android.os.Looper;
 import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
@@ -20,17 +18,18 @@ import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.TextView;
 
-import java.math.BigDecimal;
+import com.bumptech.glide.Glide;
 import java.util.ArrayList;
 import java.util.List;
 
 import grouppay.dylankilbride.com.adapters.ActiveAccountsRVAdapter;
 import grouppay.dylankilbride.com.adapters.ItemClickListener;
 import grouppay.dylankilbride.com.grouppay.R;
-import grouppay.dylankilbride.com.models.Contact;
 import grouppay.dylankilbride.com.models.GroupAccount;
+import grouppay.dylankilbride.com.models.User;
 import grouppay.dylankilbride.com.retrofit_interfaces.GroupAccountAPI;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -51,8 +50,9 @@ public class Home extends AppCompatActivity implements ItemClickListener {
   private ActionBarDrawerToggle actionBarDrawerToggle;
   private NavigationView navigationView;
   private SwipeRefreshLayout pullToRefresh;
-  private String userId, userName, userEmail;
+  private String userId, userName, userEmail, profileImgUrl;
   private GroupAccountAPI apiInterface;
+  private ImageView navDrawerProfileImage;
 
   @Override
   protected void onCreate(Bundle savedInstanceState) {
@@ -61,6 +61,7 @@ public class Home extends AppCompatActivity implements ItemClickListener {
     userId = getIntent().getStringExtra("userId");
     userName = getIntent().getStringExtra("name");
     userEmail = getIntent().getStringExtra("email");
+    profileImgUrl = getIntent().getStringExtra("profileImgUrl");
 
     setUpFAB();
     setUpAccountPreviewRecyclerView();
@@ -84,17 +85,24 @@ public class Home extends AppCompatActivity implements ItemClickListener {
     setUpActionBar();
     getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
+    setUpNavDrawer();
+  }
+
+  private void setUpNavDrawer() {
     navigationView = (NavigationView) findViewById(R.id.navView);
     View headerView = navigationView.getHeaderView(0);
     navName = (TextView) headerView.findViewById(R.id.navName);
     navEmail = (TextView) headerView.findViewById(R.id.navEmail);
     navName.setText(userName);
     navEmail.setText(userEmail);
-
-    setUpNavDrawer();
-  }
-
-  private void setUpNavDrawer() {
+    navDrawerProfileImage = (ImageView)headerView.findViewById(R.id.navDrawerProfileImage);
+    if(profileImgUrl != null) {
+      Glide.with(navDrawerProfileImage.getContext())
+          .load(profileImgUrl)
+          .into(navDrawerProfileImage);
+    } else {
+      navDrawerProfileImage.setImageDrawable(getResources().getDrawable(R.drawable.no_profile_photo));
+    }
     navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
 
       @Override
@@ -251,7 +259,7 @@ public class Home extends AppCompatActivity implements ItemClickListener {
   }
 
   @Override
-  public void onItemClick(Contact contact) {
+  public void onItemClick(User contact) {
 
   }
 

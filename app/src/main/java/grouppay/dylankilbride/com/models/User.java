@@ -90,6 +90,18 @@ public class User {
     return new StringBuilder().append(fnInitial).append(lnInitial).toString();
   }
 
+  public void setPressedTrue(){
+    isPressed = true;
+  }
+
+  public void setPressedFalse() {
+    isPressed = false;
+  }
+
+  public boolean getIsPressedValue() {
+    return isPressed;
+  }
+
   public boolean isPressed() {
     return isPressed;
   }
