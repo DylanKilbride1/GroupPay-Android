@@ -102,7 +102,6 @@ public class GroupAccount implements Serializable {
   }
 
   public String getAccountFinanceString(){
-    //DecimalFormat decimalFormat = new DecimalFormat("#.##");
     String amountPaid = String.valueOf(totalAmountPaid);
     String amountOwed = String.valueOf(totalAmountOwed);
     return "€" + amountPaid + " of €" + amountOwed;
