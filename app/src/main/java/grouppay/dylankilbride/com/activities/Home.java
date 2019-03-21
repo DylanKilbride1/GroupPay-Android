@@ -111,7 +111,7 @@ public class Home extends AppCompatActivity implements ItemClickListener {
           case R.id.nav_profile:
             Intent profileIntent = new Intent(Home.this, Profile.class);
             profileIntent.putExtra("userId", userId);
-            startActivity(profileIntent);
+            startActivityForResult(profileIntent, 100);
             break;
           case R.id.nav_cards:
             Intent intentPaymentMethods = new Intent(Home.this, PaymentMethods.class);
@@ -282,6 +282,16 @@ public class Home extends AppCompatActivity implements ItemClickListener {
     if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
       requestPermissions(new String[]{Manifest.permission.WRITE_CONTACTS,
           Manifest.permission.READ_CONTACTS}, 1);
+    }
+  }
+
+  public void onActivityResult(int requestCode, int resultCode, Intent data) {
+    super.onActivityResult(requestCode, resultCode, data);
+    if (requestCode == 100) {
+      if(resultCode == RESULT_OK) {
+        profileImgUrl = data.getStringExtra("profileUrl");
+        setUpNavDrawer();
+      }
     }
   }
 }

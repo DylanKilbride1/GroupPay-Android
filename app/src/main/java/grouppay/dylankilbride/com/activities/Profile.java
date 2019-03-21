@@ -42,7 +42,7 @@ import static grouppay.dylankilbride.com.constants.Constants.LOCALHOST_SERVER_BA
 
 public class Profile extends AppCompatActivity {
 
-  String userIdStr;
+  String userIdStr, profileUrl;
   TextView editFullNameTV, editEmailTV, editPhoneNumberTV, mainEmailTV, mainNameTV;
   ImageView profileImage;
   RelativeLayout fullNameRL, emailAddressRL, phoneNumberRL;
@@ -182,8 +182,10 @@ public class Profile extends AppCompatActivity {
         if(!response.isSuccessful()){
           //Handle
         } else {
+          profileUrl = response.body().getFileUrl();
           Glide.with(profileImage.getContext())
               .load(response.body().getFileUrl())
+              .apply(noProfileImageDefault)
               .into(profileImage);
         }
       }
@@ -219,11 +221,13 @@ public class Profile extends AppCompatActivity {
           editPhoneNumberTV.setText(response.body().getMobileNumber());
           mainNameTV.setText(response.body().getFullName());
           mainEmailTV.setText(response.body().getEmailAddress());
+          profileUrl = response.body().getProfileUrl();
           if(response.body().getProfileUrl() == null) {
             profileImage.setImageDrawable(getResources().getDrawable(R.drawable.no_profile_photo));
           } else {
             Glide.with(profileImage.getContext())
                 .load(response.body().getProfileUrl())
+                .apply(noProfileImageDefault)
                 .into(profileImage);
           }
         }
@@ -240,7 +244,10 @@ public class Profile extends AppCompatActivity {
   public boolean onOptionsItemSelected(MenuItem item) {
     switch (item.getItemId()) {
       case android.R.id.home:
-        onBackPressed();
+        Intent backToHome = new Intent(Profile.this, Home.class);
+        backToHome.putExtra("profileUrl", profileUrl);
+        setResult(RESULT_OK, backToHome);
+        finish();
         return true;
       default:
         return super.onOptionsItemSelected(item);
