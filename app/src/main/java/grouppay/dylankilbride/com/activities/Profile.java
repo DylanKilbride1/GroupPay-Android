@@ -184,7 +184,6 @@ public class Profile extends AppCompatActivity {
         } else {
           Glide.with(profileImage.getContext())
               .load(response.body().getFileUrl())
-              .apply(noProfileImageDefault)
               .into(profileImage);
         }
       }
@@ -225,7 +224,6 @@ public class Profile extends AppCompatActivity {
           } else {
             Glide.with(profileImage.getContext())
                 .load(response.body().getProfileUrl())
-                .apply(noProfileImageDefault)
                 .into(profileImage);
           }
         }

@@ -111,4 +111,15 @@
         app:layout_anchor="@id/viewA"
         app:layout_anchorGravity="center|bottom"/>
 
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/fabDepositMoney"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|end"
+        android:layout_margin="@dimen/fab_margin"
+        android:backgroundTint="@color/whiteText"
+        app:backgroundTint="@color/homeFAB"
+        app:borderWidth="1dp"
+        app:srcCompat="@drawable/plus_icon_blue" />
+
 </android.support.design.widget.CoordinatorLayout>

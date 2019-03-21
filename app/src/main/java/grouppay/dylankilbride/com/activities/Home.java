@@ -227,6 +227,7 @@ public class Home extends AppCompatActivity implements ItemClickListener {
           //emptyRVTextViewSetUp(checkIfListIsEmpty(groupAccounts));
         } else {
           if(response.body().size() > 0 && !response.body().equals("null")){
+            groupAccounts.clear();
             for(int i=0; i<response.body().size(); i++) {
               GroupAccount groupAccount = new GroupAccount(response.body().get(i).getGroupAccountId(),
                   response.body().get(i).getAccountName(),
