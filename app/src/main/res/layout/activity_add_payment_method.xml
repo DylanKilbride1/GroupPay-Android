@@ -69,6 +69,7 @@
                 android:layout_marginLeft="@dimen/add_card_standard_margin"
                 android:layout_marginBottom="15dp"
                 android:maxLines="1"
+                android:inputType="number"
                 android:backgroundTint="@color/editTextBgTintStandard"
                 android:drawableStart="@drawable/add_card_cardtype_generic_icon"
                 android:drawablePadding="10dp"
@@ -101,6 +102,7 @@
             android:layout_weight="0.5"
             android:layout_marginRight="15dp"
             android:maxLines="1"
+            android:inputType="number"
             android:backgroundTint="@color/editTextBgTintStandard"
             android:hint="Expiry Date"/>
 
@@ -111,6 +113,7 @@
             android:layout_weight="0.5"
             android:layout_marginLeft="15dp"
             android:maxLines="1"
+            android:inputType="number"
             android:backgroundTint="@color/editTextBgTintStandard"
             android:hint="CVV"/>
 
@@ -121,6 +124,7 @@
         android:layout_height="match_parent">
 
         <Button
+            android:id="@+id/addPaymentMethodContinueBTN"
             android:layout_width="match_parent"
             android:layout_height="50dp"
             android:layout_margin="40dp"

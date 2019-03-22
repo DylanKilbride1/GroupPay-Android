@@ -4,10 +4,12 @@ import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
-import android.view.MotionEvent;
 import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
@@ -19,6 +21,8 @@ public class AddPaymentMethod extends AppCompatActivity {
 
   public final int MY_SCAN_REQUEST_CODE = 1234;
   private EditText cardholderName, cardNumber, expiryDate, cvv;
+  private Button addPaymentMethodContinueBTN;
+  private String expiryMonth, expiryYear;
 
   @Override
   protected void onCreate(Bundle savedInstanceState) {
@@ -32,6 +36,18 @@ public class AddPaymentMethod extends AppCompatActivity {
     cardNumber = (EditText) findViewById(R.id.addCardNumberET);
     expiryDate = (EditText) findViewById(R.id.addCardExpiryET);
     cvv = (EditText) findViewById(R.id.addCardCvvET);
+    addPaymentMethodContinueBTN = (Button) findViewById(R.id.addPaymentMethodContinueBTN);
+
+   // addTextWatchers(cardNumber, expiryDate, cvv);
+
+    addPaymentMethodContinueBTN.setOnClickListener(new View.OnClickListener() {
+      @Override
+      public void onClick(View view) {
+        parseCardExpiryDate();
+      }
+    });
+
+
   }
 
   public void onScanPress(View v) {
@@ -58,7 +74,6 @@ public class AddPaymentMethod extends AppCompatActivity {
         // Never log a raw card number. Avoid displaying it, but if necessary use getFormattedCardNumber()
         cardNumberResultStr = scanResult.getRedactedCardNumber();
 
-        //TODO Perform Luhn Algorithm check here
 
         cardNumber.setText(cardNumberResultStr);
         if(scanResult.getCardType().toString().equals("American Express")) {
@@ -96,6 +111,16 @@ public class AddPaymentMethod extends AppCompatActivity {
       // resultTextView.setText(resultDisplayStr);
     }
     // else handle other activity results
+  }
+
+  private void parseCardExpiryDate() {
+    String[] expiryDateSegments = expiryDate.getText().toString().split("/");
+    expiryMonth = expiryDateSegments[0];
+    expiryYear = "20" + expiryDateSegments[1];
+  }
+
+  private void addTextWatchers(EditText cardNumber, EditText expiryDate, EditText cvv) {
+
   }
 
   public void setUpActionBar() {
