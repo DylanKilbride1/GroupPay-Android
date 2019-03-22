@@ -268,6 +268,7 @@ public class Home extends AppCompatActivity implements ItemClickListener {
   public void onItemClick(GroupAccount groupAccount) {
     Intent viewDetailedInfo = new Intent(Home.this, GroupAccountDetailed.class);
     viewDetailedInfo.putExtra("groupAccountId", Long.toString(groupAccount.getGroupAccountId()));
+    viewDetailedInfo.putExtra("userIdStr", userId);
     startActivity(viewDetailedInfo);
   }
 
