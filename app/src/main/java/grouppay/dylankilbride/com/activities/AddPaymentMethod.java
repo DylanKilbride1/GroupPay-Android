@@ -4,8 +4,6 @@ import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
-import android.text.Editable;
-import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -46,8 +44,6 @@ public class AddPaymentMethod extends AppCompatActivity {
         parseCardExpiryDate();
       }
     });
-
-
   }
 
   public void onScanPress(View v) {
