@@ -1,12 +1,13 @@
 package grouppay.dylankilbride.com.activities;
 
 import android.content.Intent;
-import android.support.v7.app.AppCompatActivity;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
-import android.support.v7.widget.DividerItemDecoration;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.Toolbar;
+import androidx.recyclerview.widget.DividerItemDecoration;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+import androidx.appcompat.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -18,7 +19,6 @@ import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Date;
 import java.util.List;
 
 import grouppay.dylankilbride.com.adapters.ActiveAccountPaymentLogRVAdapter;
@@ -42,7 +42,7 @@ public class GroupAccountDetailed extends AppCompatActivity {
   TextView progressStartAmount, progressFinalAmount;
   private RecyclerView paymentsLogRecyclerView;
   private RecyclerView.LayoutManager paymentsLogRecyclerViewLayoutManager;
-  String groupAccountIdStr;
+  String groupAccountIdStr, userIdStr, groupAccountName;
   GroupAccountAPI apiInterface;
 
   GroupAccount intentReceivedGroupAccount = new GroupAccount();
@@ -53,8 +53,7 @@ public class GroupAccountDetailed extends AppCompatActivity {
     setContentView(R.layout.activity_active_account_detailed);
 
     groupAccountIdStr = getIntent().getStringExtra("groupAccountId");
-
-    getInfoRequestSetUp();
+    userIdStr = getIntent().getStringExtra("userIdStr");
 
     setUpActionBar("GroupName");
     getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -76,6 +75,21 @@ public class GroupAccountDetailed extends AppCompatActivity {
     testpaymentLog.add(new Payments(userTest, new BigDecimal("2"), calendar));
 
     setUpAccountPreviewRecyclerView(testpaymentLog);
+    setUpFAB();
+  }
+
+  private void setUpFAB() {
+    FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fabDepositMoney);
+    fab.setOnClickListener(new View.OnClickListener() {
+      @Override
+      public void onClick(View view) {
+        Intent intent = new Intent(GroupAccountDetailed.this, DepositMoneyToGroup.class);
+        intent.putExtra("userIdStr", userIdStr);
+        intent.putExtra("groupAccountIdStr", groupAccountIdStr);
+        intent.putExtra("groupAccountName", groupAccountName);
+        startActivity(intent);
+      }
+    });
   }
 
   private void getInfoRequestSetUp() {
@@ -135,6 +149,7 @@ public class GroupAccountDetailed extends AppCompatActivity {
           //Handle
         } else {
           paymentProgress.setMax(roundBigDecimalUp(response.body().getTotalAmountOwed()));
+          paymentProgress.setProgress(roundBigDecimalUp(response.body().getTotalAmountPaid()));
           if(response.body().getTotalAmountPaid().compareTo(BigDecimal.ZERO) == 0) {
             String totalAmountPaid = "€" + Integer.toString(roundBigDecimalUp(response.body().getTotalAmountPaid()));
             progressStartAmount.setText(totalAmountPaid);
@@ -144,6 +159,7 @@ public class GroupAccountDetailed extends AppCompatActivity {
           }
           String totalAmountOwed = "€" + response.body().getTotalAmountOwed().stripTrailingZeros().toPlainString();
           progressFinalAmount.setText(totalAmountOwed);
+          groupAccountName = response.body().getAccountName();
         }
       }
       @Override
@@ -156,5 +172,11 @@ public class GroupAccountDetailed extends AppCompatActivity {
   public int roundBigDecimalUp(BigDecimal amount){
     BigDecimal roundedBigDecimal = amount.setScale(0, RoundingMode.CEILING);
     return roundedBigDecimal.intValueExact();
+  }
+
+  @Override
+  protected void onResume() {
+    super.onResume();
+    getInfoRequestSetUp();
   }
 }

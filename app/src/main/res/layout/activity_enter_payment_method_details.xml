@@ -1,26 +1,27 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:gravity="center_horizontal"
     android:orientation="vertical"
-    tools:context="grouppay.dylankilbride.com.activities.AddPaymentMethod">
+    android:gravity="center_horizontal"
+    tools:context="grouppay.dylankilbride.com.activities.EnterPaymentMethodDetails">
 
-        <com.google.android.material.appbar.AppBarLayout
+    <com.google.android.material.appbar.AppBarLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:theme="@style/ToolbarTheme">
+
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/enterPaymentMethodDetailsToolbar"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:theme="@style/ToolbarTheme">
+            android:layout_height="?attr/actionBarSize"
+            android:background="@color/whiteText"
+            app:popupTheme="@style/ToolbarTheme" />
 
-            <androidx.appcompat.widget.Toolbar
-                android:id="@+id/addPaymentMethodToolbar"
-                android:layout_width="match_parent"
-                android:layout_height="?attr/actionBarSize"
-                android:background="@color/whiteText"
-                app:popupTheme="@style/ToolbarTheme" />
-
-        </com.google.android.material.appbar.AppBarLayout>
+    </com.google.android.material.appbar.AppBarLayout>
 
     <LinearLayout
         android:layout_width="wrap_content"
@@ -39,52 +40,54 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textSize="17sp"
-            android:text="@string/add_card_secure_details"/>
+            android:text="@string/enter_payment_method_header"/>
 
     </LinearLayout>
 
+    <EditText
+        android:id="@+id/enterPaymentMethodDetailsCardholderNameET"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/add_card_standard_margin"
+        android:layout_marginRight="@dimen/add_card_standard_margin"
+        android:layout_marginLeft="@dimen/add_card_standard_margin"
+        android:layout_marginBottom="15dp"
+        android:maxLines="1"
+        android:backgroundTint="@color/editTextBgTintStandard"
+        android:hint="Cardholder Name"
+        android:text="Dylan Kilbride"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:weightSum="1"
+        android:orientation="horizontal">
+
         <EditText
-            android:id="@+id/addCardCardholderNameET"
-            android:layout_width="match_parent"
+            android:id="@+id/enterPaymentMethodDetailsNumberET"
+            android:layout_width="0dp"
+            android:layout_weight="0.9"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/add_card_standard_margin"
-            android:layout_marginRight="@dimen/add_card_standard_margin"
             android:layout_marginLeft="@dimen/add_card_standard_margin"
             android:layout_marginBottom="15dp"
             android:maxLines="1"
+            android:inputType="number"
             android:backgroundTint="@color/editTextBgTintStandard"
-            android:hint="Cardholder Name"/>
+            android:drawableStart="@drawable/add_card_cardtype_generic_icon"
+            android:drawablePadding="10dp"
+            android:hint="Card Number"
+            android:text="4242424242424242"/>
 
-        <LinearLayout
-            android:layout_width="match_parent"
+        <ImageView
+            android:id="@+id/scanCardImgIcon"
+            android:layout_width="0dp"
+            android:layout_weight="0.1"
             android:layout_height="wrap_content"
-            android:weightSum="1"
-            android:orientation="horizontal">
+            android:layout_marginRight="30dp"
+            android:src="@drawable/camera_icon"
+            android:onClick="onScanPress"/> <!--App crashes here - Add method to implement logic-->
 
-            <EditText
-                android:id="@+id/addCardNumberET"
-                android:layout_width="0dp"
-                android:layout_weight="0.9"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="@dimen/add_card_standard_margin"
-                android:layout_marginBottom="15dp"
-                android:maxLines="1"
-                android:inputType="number"
-                android:backgroundTint="@color/editTextBgTintStandard"
-                android:drawableStart="@drawable/add_card_cardtype_generic_icon"
-                android:drawablePadding="10dp"
-                android:hint="Card Number"/>
-
-            <ImageView
-                android:id="@+id/scanCardImgIcon"
-                android:layout_width="0dp"
-                android:layout_weight="0.1"
-                android:layout_height="wrap_content"
-                android:layout_marginRight="30dp"
-                android:src="@drawable/camera_icon"
-                android:onClick="onScanPress"/> <!--App crashes here - Add method to implement logic-->
-
-        </LinearLayout>
+    </LinearLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -96,17 +99,18 @@
 
 
         <EditText
-            android:id="@+id/addCardExpiryET"
+            android:id="@+id/enterPaymentMethodDetailsExpiryET"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="0.5"
             android:layout_marginRight="15dp"
             android:maxLines="1"
             android:backgroundTint="@color/editTextBgTintStandard"
-            android:hint="Expiry Date"/>
+            android:hint="Expiry Date"
+            android:text="05/20"/>
 
         <EditText
-            android:id="@+id/addCardCvvET"
+            android:id="@+id/enterPaymentMethodDetailsCvvET"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="0.5"
@@ -114,7 +118,8 @@
             android:maxLines="1"
             android:inputType="number"
             android:backgroundTint="@color/editTextBgTintStandard"
-            android:hint="CVV"/>
+            android:hint="CVV"
+            android:text="123"/>
 
     </LinearLayout>
 
@@ -123,7 +128,7 @@
         android:layout_height="match_parent">
 
         <Button
-            android:id="@+id/addPaymentMethodContinueBTN"
+            android:id="@+id/enterPaymentMethodDetailsContinueBTN"
             android:layout_width="match_parent"
             android:layout_height="50dp"
             android:layout_margin="40dp"
