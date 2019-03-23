@@ -15,6 +15,8 @@ import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
 import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -22,16 +24,15 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.FrameLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.pnikosis.materialishprogress.ProgressWheel;
 import com.stripe.android.Stripe;
 import com.stripe.android.TokenCallback;
 import com.stripe.android.model.Card;
 import com.stripe.android.model.Token;
-
-import java.math.BigDecimal;
-import java.util.Map;
 
 import static grouppay.dylankilbride.com.constants.Constants.LOCALHOST_SERVER_BASEURL;
 
@@ -42,6 +43,8 @@ public class EnterPaymentMethodDetails extends AppCompatActivity {
   private Button usePaymentDetailsBTN;
   private String expiryMonth, expiryYear, amountToDepositStr, userId, groupAccountId;
   private double amountToDeposit;
+  private ProgressWheel paymentProgressSpinner;
+  private FrameLayout progressOverlay;
   private CardManagerAPI cardManagerApiInterface;
 
   @Override
@@ -63,6 +66,8 @@ public class EnterPaymentMethodDetails extends AppCompatActivity {
     expiryDate = (EditText) findViewById(R.id.enterPaymentMethodDetailsExpiryET);
     cvv = (EditText) findViewById(R.id.enterPaymentMethodDetailsCvvET);
     usePaymentDetailsBTN = (Button) findViewById(R.id.enterPaymentMethodDetailsContinueBTN);
+    paymentProgressSpinner = (ProgressWheel) findViewById(R.id.progressWheel);
+    progressOverlay = (FrameLayout) findViewById(R.id.progress_overlay);
 
     usePaymentDetailsBTN.setOnClickListener(new View.OnClickListener() {
       @Override
@@ -75,6 +80,7 @@ public class EnterPaymentMethodDetails extends AppCompatActivity {
         if(!cardToAdd.validateCard()) {
           Toast.makeText(getApplicationContext(), "Card Details Invalid!", Toast.LENGTH_LONG).show();
         }
+        startSpinnerOverlay();
         stripeProcess(cardToAdd);
       }
     });
@@ -96,6 +102,18 @@ public class EnterPaymentMethodDetails extends AppCompatActivity {
     );
   }
 
+  private void startSpinnerOverlay() {
+    progressOverlay.setBackground(new ColorDrawable(Color.TRANSPARENT));
+    progressOverlay.setVisibility(View.VISIBLE);
+    paymentProgressSpinner.spin();
+    paymentProgressSpinner.setSpinSpeed(0.75f);
+  }
+
+  private void stopSpinnerOverlay() {
+    progressOverlay.setVisibility(View.INVISIBLE);
+    paymentProgressSpinner.stopSpinning();
+  }
+
   private void setUpTokenToServerCall(StripeCharge stripeCharge){
     Retrofit sendToken = new Retrofit.Builder()
         .baseUrl(LOCALHOST_SERVER_BASEURL)
@@ -110,6 +128,7 @@ public class EnterPaymentMethodDetails extends AppCompatActivity {
     call.enqueue(new Callback<StripeChargeReceipt>() {
       @Override
       public void onResponse(Call<StripeChargeReceipt> call, Response<StripeChargeReceipt> response) {
+        stopSpinnerOverlay();
         if(response.body().getAmountPaid() != 0L &&
             response.body().getFailureCode() == null) {
           Intent groupAccountDetailed = new Intent(EnterPaymentMethodDetails.this, GroupAccountDetailed.class);
