@@ -23,6 +23,8 @@
 
     </com.google.android.material.appbar.AppBarLayout>
 
+    <include layout="@layout/progress_wheel_spinner"/>
+
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -139,6 +141,5 @@
             android:background="@drawable/add_card_button_bg"/>
 
     </RelativeLayout>
-
 
 </LinearLayout>
