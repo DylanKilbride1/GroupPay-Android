@@ -1,10 +1,21 @@
 package grouppay.dylankilbride.com.activities;
 
-import android.content.Intent;
 import androidx.appcompat.app.AppCompatActivity;
-import android.os.Bundle;
 import androidx.appcompat.widget.Toolbar;
+import grouppay.dylankilbride.com.grouppay.R;
+import grouppay.dylankilbride.com.models.StripeCharge;
+import grouppay.dylankilbride.com.models.StripeChargeReceipt;
+import grouppay.dylankilbride.com.retrofit_interfaces.CardManagerAPI;
+import io.card.payment.CardIOActivity;
+import io.card.payment.CreditCard;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
 
+import android.content.Intent;
+import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
@@ -19,43 +30,41 @@ import com.stripe.android.TokenCallback;
 import com.stripe.android.model.Card;
 import com.stripe.android.model.Token;
 
-import grouppay.dylankilbride.com.grouppay.R;
-import grouppay.dylankilbride.com.retrofit_interfaces.CardManagerAPI;
-import io.card.payment.CardIOActivity;
-import io.card.payment.CreditCard;
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
-import retrofit2.Retrofit;
-import retrofit2.converter.gson.GsonConverterFactory;
+import java.math.BigDecimal;
+import java.util.Map;
 
 import static grouppay.dylankilbride.com.constants.Constants.LOCALHOST_SERVER_BASEURL;
 
-public class AddPaymentMethod extends AppCompatActivity {
+public class EnterPaymentMethodDetails extends AppCompatActivity {
 
   public final int MY_SCAN_REQUEST_CODE = 1234;
   private EditText cardholderName, cardNumber, expiryDate, cvv;
-  private Button addPaymentMethodContinueBTN;
-  private String expiryMonth, expiryYear;
+  private Button usePaymentDetailsBTN;
+  private String expiryMonth, expiryYear, amountToDepositStr, userId, groupAccountId;
+  private double amountToDeposit;
   private CardManagerAPI cardManagerApiInterface;
 
   @Override
   protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
-    setContentView(R.layout.activity_add_payment_method);
+    setContentView(R.layout.activity_enter_payment_method_details);
+
+    userId = getIntent().getStringExtra("userIdStr");
+    groupAccountId = getIntent().getStringExtra("groupAccountIdStr");
+
+    amountToDepositStr = getIntent().getStringExtra("amountToDepositStr");
+    amountToDeposit = Double.parseDouble(amountToDepositStr);
 
     setUpActionBar();
     getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-    cardholderName = (EditText) findViewById(R.id.addCardCardholderNameET);
-    cardNumber = (EditText) findViewById(R.id.addCardNumberET);
-    expiryDate = (EditText) findViewById(R.id.addCardExpiryET);
-    cvv = (EditText) findViewById(R.id.addCardCvvET);
-    addPaymentMethodContinueBTN = (Button) findViewById(R.id.addPaymentMethodContinueBTN);
+    cardholderName = (EditText) findViewById(R.id.enterPaymentMethodDetailsCardholderNameET);
+    cardNumber = (EditText) findViewById(R.id.enterPaymentMethodDetailsNumberET);
+    expiryDate = (EditText) findViewById(R.id.enterPaymentMethodDetailsExpiryET);
+    cvv = (EditText) findViewById(R.id.enterPaymentMethodDetailsCvvET);
+    usePaymentDetailsBTN = (Button) findViewById(R.id.enterPaymentMethodDetailsContinueBTN);
 
-   // addTextWatchers(cardNumber, expiryDate, cvv);
-
-    addPaymentMethodContinueBTN.setOnClickListener(new View.OnClickListener() {
+    usePaymentDetailsBTN.setOnClickListener(new View.OnClickListener() {
       @Override
       public void onClick(View view) {
         parseCardExpiryDate();
@@ -66,7 +75,54 @@ public class AddPaymentMethod extends AppCompatActivity {
         if(!cardToAdd.validateCard()) {
           Toast.makeText(getApplicationContext(), "Card Details Invalid!", Toast.LENGTH_LONG).show();
         }
-        //stripeProcess(cardToAdd);
+        stripeProcess(cardToAdd);
+      }
+    });
+  }
+
+  private void stripeProcess(Card cardToAdd){
+    Stripe stripe = new Stripe(this, "pk_test_kwfy65ynBeJFLDiklvYHV2tI00fUxcehhP");
+    stripe.createToken(
+        cardToAdd,
+        new TokenCallback() {
+          public void onSuccess(Token token) {
+            setUpTokenToServerCall(new StripeCharge(token.getId(), amountToDeposit, userId, groupAccountId));
+          }
+          public void onError(Exception error) {
+            // Show localized error message
+            Log.e("Stripe Error on Token: ", error.getLocalizedMessage());
+          }
+        }
+    );
+  }
+
+  private void setUpTokenToServerCall(StripeCharge stripeCharge){
+    Retrofit sendToken = new Retrofit.Builder()
+        .baseUrl(LOCALHOST_SERVER_BASEURL)
+        .addConverterFactory(GsonConverterFactory.create())
+        .build();
+    cardManagerApiInterface = sendToken.create(CardManagerAPI.class);
+    sendTokenToServer(stripeCharge);
+  }
+
+  private void sendTokenToServer(StripeCharge stripeCharge) {
+    Call<StripeChargeReceipt> call = cardManagerApiInterface.sendStripeTokenToServer(stripeCharge);
+    call.enqueue(new Callback<StripeChargeReceipt>() {
+      @Override
+      public void onResponse(Call<StripeChargeReceipt> call, Response<StripeChargeReceipt> response) {
+        if(response.body().getAmountPaid() != 0L &&
+            response.body().getFailureCode() == null) {
+          Intent groupAccountDetailed = new Intent(EnterPaymentMethodDetails.this, GroupAccountDetailed.class);
+          groupAccountDetailed.putExtra("groupAccountId", groupAccountId);
+          startActivity(groupAccountDetailed);
+          finish();
+        } else {
+          Toast.makeText(getApplicationContext(), "Something went wrong!", Toast.LENGTH_LONG).show();
+        }
+      }
+      @Override
+      public void onFailure(Call<StripeChargeReceipt> call, Throwable t) {
+
       }
     });
   }
@@ -81,6 +137,12 @@ public class AddPaymentMethod extends AppCompatActivity {
 
     // MY_SCAN_REQUEST_CODE is arbitrary and is only used within this activity.
     startActivityForResult(scanIntent, MY_SCAN_REQUEST_CODE);
+  }
+
+  private void parseCardExpiryDate() {
+    String[] expiryDateSegments = expiryDate.getText().toString().split("/"); //App will crash if no / exists
+    expiryMonth = expiryDateSegments[0];
+    expiryYear = "20" + expiryDateSegments[1];
   }
 
   @Override
@@ -134,53 +196,8 @@ public class AddPaymentMethod extends AppCompatActivity {
     // else handle other activity results
   }
 
-  private void parseCardExpiryDate() {
-    String[] expiryDateSegments = expiryDate.getText().toString().split("/"); //App will crash if no / exists
-    expiryMonth = expiryDateSegments[0];
-    expiryYear = "20" + expiryDateSegments[1];
-  }
-//
-//  private void stripeProcess(Card cardToAdd){
-//    Stripe stripe = new Stripe(this, "pk_test_kwfy65ynBeJFLDiklvYHV2tI00fUxcehhP");
-//    stripe.createToken(
-//        cardToAdd,
-//        new TokenCallback() {
-//          public void onSuccess(Token token) {
-//            setUpTokenToServerCall(token.toString());
-//          }
-//          public void onError(Exception error) {
-//            // Show localized error message
-//            Log.e("Stripe Error on Token: ", error.getLocalizedMessage());
-//          }
-//        }
-//    );
-//  }
-//
-//  private void setUpTokenToServerCall(String token){
-//    Retrofit sendToken = new Retrofit.Builder()
-//        .baseUrl(LOCALHOST_SERVER_BASEURL)
-//        .addConverterFactory(GsonConverterFactory.create())
-//        .build();
-//    cardManagerApiInterface = sendToken.create(CardManagerAPI.class);
-//    sendTokenToServer(token);
-//  }
-//
-//  private void sendTokenToServer(String token) {
-//    Call<String> call = cardManagerApiInterface.sendStripeTokenToServer(token);
-//    call.enqueue(new Callback<String>() {
-//      @Override
-//      public void onResponse(Call<String> call, Response<String> response) {
-//
-//      }
-//      @Override
-//      public void onFailure(Call<String> call, Throwable t) {
-//
-//      }
-//    });
-//  }
-
   public void setUpActionBar() {
-    Toolbar toolbar = (Toolbar) findViewById(R.id.addPaymentMethodToolbar);
+    Toolbar toolbar = (Toolbar) findViewById(R.id.enterPaymentMethodDetailsToolbar);
     setSupportActionBar(toolbar);
 
     if (getSupportActionBar() != null) {
@@ -190,7 +207,7 @@ public class AddPaymentMethod extends AppCompatActivity {
       LayoutInflater inflator = LayoutInflater.from(this);
       View v = inflator.inflate(R.layout.generic_titleview, null);
 
-      ((TextView) v.findViewById(R.id.title)).setText(R.string.toolbar_add_payment_method_title);
+      ((TextView) v.findViewById(R.id.title)).setText(R.string.toolbar_enter_payment_details_title);
       ((TextView) v.findViewById(R.id.title)).setTextSize(20);
 
       this.getSupportActionBar().setCustomView(v);

@@ -55,8 +55,6 @@ public class GroupAccountDetailed extends AppCompatActivity {
     groupAccountIdStr = getIntent().getStringExtra("groupAccountId");
     userIdStr = getIntent().getStringExtra("userIdStr");
 
-    getInfoRequestSetUp();
-
     setUpActionBar("GroupName");
     getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
@@ -151,6 +149,7 @@ public class GroupAccountDetailed extends AppCompatActivity {
           //Handle
         } else {
           paymentProgress.setMax(roundBigDecimalUp(response.body().getTotalAmountOwed()));
+          paymentProgress.setProgress(roundBigDecimalUp(response.body().getTotalAmountPaid()));
           if(response.body().getTotalAmountPaid().compareTo(BigDecimal.ZERO) == 0) {
             String totalAmountPaid = "€" + Integer.toString(roundBigDecimalUp(response.body().getTotalAmountPaid()));
             progressStartAmount.setText(totalAmountPaid);
@@ -173,5 +172,11 @@ public class GroupAccountDetailed extends AppCompatActivity {
   public int roundBigDecimalUp(BigDecimal amount){
     BigDecimal roundedBigDecimal = amount.setScale(0, RoundingMode.CEILING);
     return roundedBigDecimal.intValueExact();
+  }
+
+  @Override
+  protected void onResume() {
+    super.onResume();
+    getInfoRequestSetUp();
   }
 }

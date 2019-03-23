@@ -14,6 +14,7 @@
     <string name="toolbar_payment_methods_title">Payment Methods</string>
     <string name="toolbar_profile_title">Profile Details</string>
     <string name="toolbar_add_payment_method_title">Add Credit/Debit Card</string>
+    <string name="toolbar_enter_payment_details_title">Enter Payment Details</string>
     <string name="toolbar_edit_email_address_title">Edit Email Address</string>
     <string name="toolbar_edit_phone_number_title">Edit Phone Number</string>
     <string name="toolbar_deposit_money_to_group_title">Deposit Money</string>
@@ -30,5 +31,6 @@
     <string name="profile_edit_lastname_hint">New Last Name</string>
     <string name="deposit_amount_to_group_header">Deposit Money Into</string>
     <string name="deposit_amount_to_group_currency">EURO</string>
+    <string name="enter_payment_method_header">Payments are always made securely</string>
     <string name="euro_currency_symbol">€</string>
 </resources>

@@ -1,10 +1,14 @@
 package grouppay.dylankilbride.com.activities;
 
 import androidx.appcompat.app.AppCompatActivity;
+
+import android.content.Intent;
 import android.os.Bundle;
 import androidx.appcompat.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.TextView;
 
 import grouppay.dylankilbride.com.grouppay.R;
@@ -12,6 +16,8 @@ import grouppay.dylankilbride.com.grouppay.R;
 public class DepositMoneyToGroup extends AppCompatActivity {
 
   String groupAccountId, groupAccountName, userId, activityHeader;
+  EditText amountToPay;
+  Button continueBtn;
   TextView depositMoneyToGroupHeader;
 
   @Override
@@ -26,9 +32,22 @@ public class DepositMoneyToGroup extends AppCompatActivity {
     setUpActionBar();
     getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
+    continueBtn = (Button) findViewById(R.id.depositMoneyToGroupBTN);
     depositMoneyToGroupHeader = (TextView) findViewById(R.id.depositMoneyToGroupTitle);
     activityHeader = getResources().getString(R.string.deposit_amount_to_group_header) + " " + groupAccountName;
     depositMoneyToGroupHeader.setText(activityHeader);
+    amountToPay = (EditText) findViewById(R.id.depositMoneyToGroupAmountET);
+
+    continueBtn.setOnClickListener(new View.OnClickListener() {
+      @Override
+      public void onClick(View view) {
+        Intent enterPaymentDetails = new Intent(DepositMoneyToGroup.this, EnterPaymentMethodDetails.class);
+        enterPaymentDetails.putExtra("amountToDepositStr", amountToPay.getText().toString());
+        enterPaymentDetails.putExtra("userIdStr", userId);
+        enterPaymentDetails.putExtra("groupAccountIdStr", groupAccountId);
+        startActivity(enterPaymentDetails);
+      }
+    });
   }
 
   public void setUpActionBar() {
