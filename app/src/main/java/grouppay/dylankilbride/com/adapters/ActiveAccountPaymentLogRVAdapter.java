@@ -11,22 +11,22 @@ import android.widget.TextView;
 import java.util.List;
 
 import grouppay.dylankilbride.com.grouppay.R;
-import grouppay.dylankilbride.com.models.Payments;
+import grouppay.dylankilbride.com.models.Transaction;
 
 public class ActiveAccountPaymentLogRVAdapter extends RecyclerView.Adapter<ActiveAccountPaymentLogRVAdapter.ViewHolder> {
 
-  public List<Payments> paymentsList;
+  public List<Transaction> transactionsList;
   private int itemLayout;
   private Context context;
   private static ItemClickListener clickInterface;
 
-  public ActiveAccountPaymentLogRVAdapter(List<Payments> paymentsList, int itemLayout) {
-    this.paymentsList = paymentsList;
+  public ActiveAccountPaymentLogRVAdapter(List<Transaction> transactionsList, int itemLayout) {
+    this.transactionsList = transactionsList;
     this.itemLayout = itemLayout;
   }
 
-  public ActiveAccountPaymentLogRVAdapter(List<Payments> paymentsList, Context context) {
-    this.paymentsList = paymentsList;
+  public ActiveAccountPaymentLogRVAdapter(List<Transaction> transactionsList, Context context) {
+    this.transactionsList = transactionsList;
     this.context = context;
   }
 
@@ -39,21 +39,21 @@ public class ActiveAccountPaymentLogRVAdapter extends RecyclerView.Adapter<Activ
 
   @Override
   public void onBindViewHolder(@NonNull final ViewHolder viewHolder, final int position) {
-    final Payments payments = paymentsList.get(position);
+    final Transaction transaction = transactionsList.get(position);
     String paymentTypeStr = "Paid";
-    String paymentAmountEuro = "€" + payments.getAmountPaidStr();
-    viewHolder.userInitials.setText(payments.getUser().getInitials());
-    viewHolder.userFullName.setText(payments.getUser().getFullName());
-    viewHolder.paymentTime.setText(payments.getPaymentDateAndTime().toString());
+    String paymentAmountEuro = "€" + transaction.getAmountPaidStr();
+    viewHolder.userInitials.setText(transaction.getUser().getInitials());
+    viewHolder.userFullName.setText(transaction.getUser().getFullName());
+    viewHolder.paymentTime.setText(transaction.getFormattedPaymentDateAndTime(transaction.getPaymentDateAndTime()));
     viewHolder.paymentType.setText(paymentTypeStr);
     viewHolder.paymentAmount.setText(paymentAmountEuro);
 
     viewHolder.userFullName.setOnClickListener(new View.OnClickListener() {
       @Override
       public void onClick(View view) {
-        paymentsList.remove(position);
+        transactionsList.remove(position);
         notifyItemRemoved(position);
-        notifyItemRangeChanged(position, paymentsList.size());
+        notifyItemRangeChanged(position, transactionsList.size());
       }
     });
 
@@ -72,7 +72,7 @@ public class ActiveAccountPaymentLogRVAdapter extends RecyclerView.Adapter<Activ
 
   @Override
   public int getItemCount() {
-    return paymentsList.size();
+    return transactionsList.size();
   }
 
   public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
@@ -97,9 +97,9 @@ public class ActiveAccountPaymentLogRVAdapter extends RecyclerView.Adapter<Activ
     }
 
     public void removeAt(int position) {
-      paymentsList.remove(position);
+      transactionsList.remove(position);
       notifyItemRemoved(position);
-      notifyItemRangeChanged(position, paymentsList.size());
+      notifyItemRangeChanged(position, transactionsList.size());
     }
   }
 }

@@ -14,6 +14,7 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
@@ -24,7 +25,7 @@ import java.util.List;
 import grouppay.dylankilbride.com.adapters.ActiveAccountPaymentLogRVAdapter;
 import grouppay.dylankilbride.com.grouppay.R;
 import grouppay.dylankilbride.com.models.GroupAccount;
-import grouppay.dylankilbride.com.models.Payments;
+import grouppay.dylankilbride.com.models.Transaction;
 import grouppay.dylankilbride.com.models.User;
 import grouppay.dylankilbride.com.retrofit_interfaces.GroupAccountAPI;
 import retrofit2.Call;
@@ -44,6 +45,7 @@ public class GroupAccountDetailed extends AppCompatActivity {
   private RecyclerView.LayoutManager paymentsLogRecyclerViewLayoutManager;
   String groupAccountIdStr, userIdStr, groupAccountName;
   GroupAccountAPI apiInterface;
+  ArrayList<Transaction> transactionLog;
 
   GroupAccount intentReceivedGroupAccount = new GroupAccount();
 
@@ -58,6 +60,8 @@ public class GroupAccountDetailed extends AppCompatActivity {
     setUpActionBar("GroupName");
     getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
+    transactionLog = new ArrayList<>();
+
     paymentProgress = (ProgressBar) findViewById(R.id.detailedAccountPaymentProgress);
     groupImage = (ImageView) findViewById(R.id.activeAccountDetailedGroupImage);
     progressStartAmount = (TextView) findViewById(R.id.activeAccountProgressStartTV);
@@ -66,15 +70,12 @@ public class GroupAccountDetailed extends AppCompatActivity {
     User userTest = new User(4, "Dylan", "Kilbride", "blah", "blah", "blah", null);
     Calendar calendar = Calendar.getInstance();
 
-    ArrayList<Payments> testpaymentLog = new ArrayList<>();
-    testpaymentLog.add(new Payments(userTest, new BigDecimal("30.45"), calendar));
-    testpaymentLog.add(new Payments(userTest, new BigDecimal("20"), calendar));
-    testpaymentLog.add(new Payments(userTest, new BigDecimal("40"), calendar));
-    testpaymentLog.add(new Payments(userTest, new BigDecimal("2"), calendar));
-    testpaymentLog.add(new Payments(userTest, new BigDecimal("40"), calendar));
-    testpaymentLog.add(new Payments(userTest, new BigDecimal("2"), calendar));
-
-    setUpAccountPreviewRecyclerView(testpaymentLog);
+//    transactionLog.add(new Transaction(userTest, new BigDecimal("30.45"), calendar));
+//    transactionLog.add(new Transaction(userTest, new BigDecimal("20"), calendar));
+//    transactionLog.add(new Transaction(userTest, new BigDecimal("40"), calendar));
+//    transactionLog.add(new Transaction(userTest, new BigDecimal("2"), calendar));
+//    transactionLog.add(new Transaction(userTest, new BigDecimal("40"), calendar));
+//    transactionLog.add(new Transaction(userTest, new BigDecimal("2"), calendar));
     setUpFAB();
   }
 
@@ -101,7 +102,16 @@ public class GroupAccountDetailed extends AppCompatActivity {
     getDetailedGroupInfo(groupAccountIdStr);
   }
 
-  public void setUpAccountPreviewRecyclerView(List<Payments> tempList) {
+  private void getGroupTransactionsRequestSetUp() {
+    Retrofit getAccountTransactions = new Retrofit.Builder()
+        .baseUrl(LOCALHOST_SERVER_BASEURL)
+        .addConverterFactory(GsonConverterFactory.create())
+        .build();
+    apiInterface = getAccountTransactions.create(GroupAccountAPI.class);
+    getAccountTransactions(groupAccountIdStr); //TODO Change!
+  }
+
+  public void setUpAccountPreviewRecyclerView(List<Transaction> tempList) {
     // set up the RecyclerView
     paymentsLogRecyclerView = (RecyclerView) findViewById(R.id.groupAccountsPaymentLogRV);
     paymentsLogRecyclerViewLayoutManager = new LinearLayoutManager(this);
@@ -169,6 +179,38 @@ public class GroupAccountDetailed extends AppCompatActivity {
     });
   }
 
+  public void getAccountTransactions(String groupAccountIdStr) {
+    Call<List<Transaction>> call = apiInterface.getAllAccountTransactions(groupAccountIdStr);
+    call.enqueue(new Callback<List<Transaction>>() {
+      @Override
+      public void onResponse(Call<List<Transaction>> call, Response<List<Transaction>> response) {
+        if(!response.isSuccessful()) {
+          //Handle
+        } else {
+          if(!response.body().isEmpty()) {
+            for (int i = 0; i < response.body().size(); i++) {
+              transactionLog.add(new Transaction(new User(response.body().get(i).getUser().getId(),
+                  response.body().get(i).getUser().getFirstName(),
+                  response.body().get(i).getUser().getLastName(),
+                  response.body().get(i).getUser().getEmailAddress(),
+                  response.body().get(i).getUser().getMobileNumber()),
+                  response.body().get(i).getAmountPaid(),
+                  response.body().get(i).getPaymentDateAndTime()
+                  ));
+            }
+            setUpAccountPreviewRecyclerView(transactionLog);
+          } else {
+            //TODO Show text and image saying there has not been any transactions
+          }
+        }
+      }
+      @Override
+      public void onFailure(Call<List<Transaction>> call, Throwable t) {
+
+      }
+    });
+  }
+
   public int roundBigDecimalUp(BigDecimal amount){
     BigDecimal roundedBigDecimal = amount.setScale(0, RoundingMode.CEILING);
     return roundedBigDecimal.intValueExact();
@@ -178,5 +220,6 @@ public class GroupAccountDetailed extends AppCompatActivity {
   protected void onResume() {
     super.onResume();
     getInfoRequestSetUp();
+    getGroupTransactionsRequestSetUp();
   }
 }
