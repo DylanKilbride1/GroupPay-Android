@@ -75,12 +75,6 @@ public class ActiveAccountPaymentLogRVAdapter extends RecyclerView.Adapter<Activ
     return paymentsList.size();
   }
 
-
-  public void setAccounts(List<Payments> paymentsList) {
-    this.paymentsList = paymentsList;
-    notifyDataSetChanged();
-  }
-
   public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
     public TextView userInitials, userFullName, paymentTime, paymentType, paymentAmount;
