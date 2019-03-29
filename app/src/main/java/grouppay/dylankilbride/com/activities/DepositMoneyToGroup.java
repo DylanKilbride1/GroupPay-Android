@@ -46,6 +46,7 @@ public class DepositMoneyToGroup extends AppCompatActivity {
         enterPaymentDetails.putExtra("userIdStr", userId);
         enterPaymentDetails.putExtra("groupAccountIdStr", groupAccountId);
         startActivity(enterPaymentDetails);
+        finish();
       }
     });
   }

@@ -4,14 +4,14 @@ import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
-public class Payments {
+public class Transaction {
 
-  private User user;
   private BigDecimal amountPaid;
   private String paymentType;
-  private Calendar paymentDateAndTime;
+  private String paymentDateAndTime;
+  private User user;
 
-  public Payments(User user, BigDecimal amountPaid, Calendar paymentDateAndTime) {
+  public Transaction(User user, BigDecimal amountPaid, String paymentDateAndTime) {
     this.user = user;
     this.amountPaid = amountPaid;
     this.paymentDateAndTime = paymentDateAndTime;
@@ -46,14 +46,21 @@ public class Payments {
     this.amountPaid = amountPaid;
   }
 
-  public String getPaymentDateAndTime() {
-    Calendar calendar = Calendar.getInstance();
-    calendar.add(Calendar.DATE, 1);
+  public String getFormattedPaymentDateAndTime(Calendar paymentDateTime) {
+    paymentDateTime.add(Calendar.DATE, 1);
     SimpleDateFormat format = new SimpleDateFormat("dd MMM, H:mm");
-    return format.format(calendar.getTime());
+    return format.format(paymentDateTime.getTime());
   }
 
-  public void setPaymentDateAndTime(Calendar paymentDateAndTime) {
+  public String getPaymentDateAndTime() {
+    return paymentDateAndTime;
+  }
+
+  public void setPaymentDateAndTime(String paymentDateAndTime) {
     this.paymentDateAndTime = paymentDateAndTime;
+  }
+
+  public void convertStringToCalendar(String paymentDateAndTime) {
+
   }
 }

@@ -2,8 +2,8 @@ package grouppay.dylankilbride.com.retrofit_interfaces;
 
 import java.util.List;
 
-import grouppay.dylankilbride.com.models.Contact;
 import grouppay.dylankilbride.com.models.GroupAccount;
+import grouppay.dylankilbride.com.models.Transaction;
 import grouppay.dylankilbride.com.models.User;
 import retrofit2.Call;
 import retrofit2.http.Body;
@@ -28,4 +28,7 @@ public interface GroupAccountAPI {
 
   @POST("groupAccounts/getAllContactsWithGrouppayAccounts")
   Call<List<User>> getAllContactsWithGrouppayAccounts(@Body List<String> contactsPhoneNumbers);
+
+  @GET("groupAccounts/getGroupTransactions/{groupAccountId}")
+  Call<List<Transaction>> getAllAccountTransactions(@Path("groupAccountId") String groupAccountId);
 }

@@ -21,6 +21,14 @@ public class User {
     this.profileUrl = profileUrl;
   }
 
+  public User(long id, String firstName, String lastName, String emailAddress, String mobileNumber) {
+    this.id = id;
+    this.firstName = firstName;
+    this.lastName = lastName;
+    this.emailAddress = emailAddress;
+    this.mobileNumber = mobileNumber;
+  }
+
   public User(String firstName, String lastName, String mobileNumber) {
     this.firstName = firstName;
     this.lastName = lastName;

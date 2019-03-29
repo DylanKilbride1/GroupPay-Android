@@ -1,12 +1,8 @@
 package grouppay.dylankilbride.com.models;
 
-import android.media.Image;
-
 import java.io.Serializable;
 import java.math.BigDecimal;
-import java.text.DecimalFormat;
 import java.util.List;
-import java.util.Map;
 
 public class GroupAccount implements Serializable {
 
@@ -19,10 +15,10 @@ public class GroupAccount implements Serializable {
   private int numberOfMembers;
   private BigDecimal totalAmountOwed;
   private BigDecimal totalAmountPaid;
-  private List<Payments> paymentLog;
+  private List<Transaction> paymentLog;
   private BigDecimal paymentProgress = new BigDecimal(0);
 
-  public GroupAccount(long accountId, int testResourceId, String accountName, String accountDescription, int numberOfMembers, BigDecimal totalAmountPaid, BigDecimal totalAmountOwed, List<Payments> paymentLog) {
+  public GroupAccount(long accountId, int testResourceId, String accountName, String accountDescription, int numberOfMembers, BigDecimal totalAmountPaid, BigDecimal totalAmountOwed, List<Transaction> paymentLog) {
     this.groupAccountId = accountId;
     this.testResourceId = testResourceId;
     this.accountName = accountName;
@@ -51,11 +47,11 @@ public class GroupAccount implements Serializable {
     this.testResourceId = testResourceId;
   }
 
-  public List<Payments> getPaymentLog() {
+  public List<Transaction> getPaymentLog() {
     return paymentLog;
   }
 
-  public void setPaymentLog(List<Payments> paymentLog) {
+  public void setPaymentLog(List<Transaction> paymentLog) {
     this.paymentLog = paymentLog;
   }
 

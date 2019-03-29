@@ -14,17 +14,19 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collections;
 import java.util.List;
 
 import grouppay.dylankilbride.com.adapters.ActiveAccountPaymentLogRVAdapter;
 import grouppay.dylankilbride.com.grouppay.R;
 import grouppay.dylankilbride.com.models.GroupAccount;
-import grouppay.dylankilbride.com.models.Payments;
+import grouppay.dylankilbride.com.models.Transaction;
 import grouppay.dylankilbride.com.models.User;
 import grouppay.dylankilbride.com.retrofit_interfaces.GroupAccountAPI;
 import retrofit2.Call;
@@ -38,12 +40,13 @@ import static grouppay.dylankilbride.com.constants.Constants.LOCALHOST_SERVER_BA
 public class GroupAccountDetailed extends AppCompatActivity {
 
   ProgressBar paymentProgress;
-  ImageView groupImage;
-  TextView progressStartAmount, progressFinalAmount;
+  ImageView groupImage, noPreviousTransactionsImg;
+  TextView progressStartAmount, progressFinalAmount, noPreviousTransactionsTV;
   private RecyclerView paymentsLogRecyclerView;
   private RecyclerView.LayoutManager paymentsLogRecyclerViewLayoutManager;
   String groupAccountIdStr, userIdStr, groupAccountName;
   GroupAccountAPI apiInterface;
+  ArrayList<Transaction> transactionLog;
 
   GroupAccount intentReceivedGroupAccount = new GroupAccount();
 
@@ -55,26 +58,18 @@ public class GroupAccountDetailed extends AppCompatActivity {
     groupAccountIdStr = getIntent().getStringExtra("groupAccountId");
     userIdStr = getIntent().getStringExtra("userIdStr");
 
-    setUpActionBar("GroupName");
+    setUpActionBar("Group Name");
     getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
+    transactionLog = new ArrayList<>();
 
     paymentProgress = (ProgressBar) findViewById(R.id.detailedAccountPaymentProgress);
     groupImage = (ImageView) findViewById(R.id.activeAccountDetailedGroupImage);
     progressStartAmount = (TextView) findViewById(R.id.activeAccountProgressStartTV);
     progressFinalAmount = (TextView) findViewById(R.id.activeAccountProgressEndTV);
+//    noPreviousTransactionsImg = (ImageView) findViewById(R.id.noTransactionsIV);
+//    noPreviousTransactionsTV = (TextView) findViewById(R.id.noTransactionsTV);
 
-    User userTest = new User(4, "Dylan", "Kilbride", "blah", "blah", "blah", null);
-    Calendar calendar = Calendar.getInstance();
-
-    ArrayList<Payments> testpaymentLog = new ArrayList<>();
-    testpaymentLog.add(new Payments(userTest, new BigDecimal("30.45"), calendar));
-    testpaymentLog.add(new Payments(userTest, new BigDecimal("20"), calendar));
-    testpaymentLog.add(new Payments(userTest, new BigDecimal("40"), calendar));
-    testpaymentLog.add(new Payments(userTest, new BigDecimal("2"), calendar));
-    testpaymentLog.add(new Payments(userTest, new BigDecimal("40"), calendar));
-    testpaymentLog.add(new Payments(userTest, new BigDecimal("2"), calendar));
-
-    setUpAccountPreviewRecyclerView(testpaymentLog);
     setUpFAB();
   }
 
@@ -101,7 +96,16 @@ public class GroupAccountDetailed extends AppCompatActivity {
     getDetailedGroupInfo(groupAccountIdStr);
   }
 
-  public void setUpAccountPreviewRecyclerView(List<Payments> tempList) {
+  private void getGroupTransactionsRequestSetUp() {
+    Retrofit getAccountTransactions = new Retrofit.Builder()
+        .baseUrl(LOCALHOST_SERVER_BASEURL)
+        .addConverterFactory(GsonConverterFactory.create())
+        .build();
+    apiInterface = getAccountTransactions.create(GroupAccountAPI.class);
+    getAccountTransactions(groupAccountIdStr); //TODO Change!
+  }
+
+  public void setUpAccountPreviewRecyclerView(List<Transaction> tempList) {
     // set up the RecyclerView
     paymentsLogRecyclerView = (RecyclerView) findViewById(R.id.groupAccountsPaymentLogRV);
     paymentsLogRecyclerViewLayoutManager = new LinearLayoutManager(this);
@@ -169,6 +173,52 @@ public class GroupAccountDetailed extends AppCompatActivity {
     });
   }
 
+  public void getAccountTransactions(String groupAccountIdStr) {
+    Call<List<Transaction>> call = apiInterface.getAllAccountTransactions(groupAccountIdStr);
+    call.enqueue(new Callback<List<Transaction>>() {
+      @Override
+      public void onResponse(Call<List<Transaction>> call, Response<List<Transaction>> response) {
+        if(!response.isSuccessful()) {
+          //Handle
+        } else {
+          if(!response.body().isEmpty()) {
+            transactionLog.clear();
+            for (int i = 0; i < response.body().size(); i++) {
+              transactionLog.add(new Transaction(new User(response.body().get(i).getUser().getId(),
+                  response.body().get(i).getUser().getFirstName(),
+                  response.body().get(i).getUser().getLastName(),
+                  response.body().get(i).getUser().getEmailAddress(),
+                  response.body().get(i).getUser().getMobileNumber()),
+                  response.body().get(i).getAmountPaid(),
+                  response.body().get(i).getPaymentDateAndTime()
+                  ));
+            }
+            Collections.reverse(transactionLog);
+            setUpAccountPreviewRecyclerView(transactionLog);
+          } else {
+            //TODO Show text and image saying there has not been any transactions
+          }
+        }
+      }
+      @Override
+      public void onFailure(Call<List<Transaction>> call, Throwable t) {
+
+      }
+    });
+  }
+
+//  public void emptyRVTextViewSetUp(List<Transaction> transactions) {
+//    if (transactions.isEmpty()) {
+//      paymentsLogRecyclerView.setVisibility(View.GONE);
+//      noPreviousTransactionsImg.setVisibility(View.VISIBLE);
+//      noPreviousTransactionsTV.setVisibility(View.VISIBLE);
+//    } else {
+//      paymentsLogRecyclerView.setVisibility(View.VISIBLE);
+//      noPreviousTransactionsImg.setVisibility(View.GONE);
+//      noPreviousTransactionsTV.setVisibility(View.GONE);
+//    }
+//  }
+
   public int roundBigDecimalUp(BigDecimal amount){
     BigDecimal roundedBigDecimal = amount.setScale(0, RoundingMode.CEILING);
     return roundedBigDecimal.intValueExact();
@@ -178,5 +228,6 @@ public class GroupAccountDetailed extends AppCompatActivity {
   protected void onResume() {
     super.onResume();
     getInfoRequestSetUp();
+    getGroupTransactionsRequestSetUp();
   }
 }
