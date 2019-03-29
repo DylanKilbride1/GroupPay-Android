@@ -40,8 +40,8 @@ import static grouppay.dylankilbride.com.constants.Constants.LOCALHOST_SERVER_BA
 public class GroupAccountDetailed extends AppCompatActivity {
 
   ProgressBar paymentProgress;
-  ImageView groupImage;
-  TextView progressStartAmount, progressFinalAmount;
+  ImageView groupImage, noPreviousTransactionsImg;
+  TextView progressStartAmount, progressFinalAmount, noPreviousTransactionsTV;
   private RecyclerView paymentsLogRecyclerView;
   private RecyclerView.LayoutManager paymentsLogRecyclerViewLayoutManager;
   String groupAccountIdStr, userIdStr, groupAccountName;
@@ -58,7 +58,7 @@ public class GroupAccountDetailed extends AppCompatActivity {
     groupAccountIdStr = getIntent().getStringExtra("groupAccountId");
     userIdStr = getIntent().getStringExtra("userIdStr");
 
-    setUpActionBar("GroupName");
+    setUpActionBar("Group Name");
     getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
     transactionLog = new ArrayList<>();
@@ -67,16 +67,9 @@ public class GroupAccountDetailed extends AppCompatActivity {
     groupImage = (ImageView) findViewById(R.id.activeAccountDetailedGroupImage);
     progressStartAmount = (TextView) findViewById(R.id.activeAccountProgressStartTV);
     progressFinalAmount = (TextView) findViewById(R.id.activeAccountProgressEndTV);
+//    noPreviousTransactionsImg = (ImageView) findViewById(R.id.noTransactionsIV);
+//    noPreviousTransactionsTV = (TextView) findViewById(R.id.noTransactionsTV);
 
-    User userTest = new User(4, "Dylan", "Kilbride", "blah", "blah", "blah", null);
-    Calendar calendar = Calendar.getInstance();
-
-//    transactionLog.add(new Transaction(userTest, new BigDecimal("30.45"), calendar));
-//    transactionLog.add(new Transaction(userTest, new BigDecimal("20"), calendar));
-//    transactionLog.add(new Transaction(userTest, new BigDecimal("40"), calendar));
-//    transactionLog.add(new Transaction(userTest, new BigDecimal("2"), calendar));
-//    transactionLog.add(new Transaction(userTest, new BigDecimal("40"), calendar));
-//    transactionLog.add(new Transaction(userTest, new BigDecimal("2"), calendar));
     setUpFAB();
   }
 
@@ -213,6 +206,18 @@ public class GroupAccountDetailed extends AppCompatActivity {
       }
     });
   }
+
+//  public void emptyRVTextViewSetUp(List<Transaction> transactions) {
+//    if (transactions.isEmpty()) {
+//      paymentsLogRecyclerView.setVisibility(View.GONE);
+//      noPreviousTransactionsImg.setVisibility(View.VISIBLE);
+//      noPreviousTransactionsTV.setVisibility(View.VISIBLE);
+//    } else {
+//      paymentsLogRecyclerView.setVisibility(View.VISIBLE);
+//      noPreviousTransactionsImg.setVisibility(View.GONE);
+//      noPreviousTransactionsTV.setVisibility(View.GONE);
+//    }
+//  }
 
   public int roundBigDecimalUp(BigDecimal amount){
     BigDecimal roundedBigDecimal = amount.setScale(0, RoundingMode.CEILING);
