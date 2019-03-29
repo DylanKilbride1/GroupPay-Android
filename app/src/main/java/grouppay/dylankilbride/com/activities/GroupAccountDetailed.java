@@ -20,6 +20,7 @@ import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collections;
 import java.util.List;
 
 import grouppay.dylankilbride.com.adapters.ActiveAccountPaymentLogRVAdapter;
@@ -188,6 +189,7 @@ public class GroupAccountDetailed extends AppCompatActivity {
           //Handle
         } else {
           if(!response.body().isEmpty()) {
+            transactionLog.clear();
             for (int i = 0; i < response.body().size(); i++) {
               transactionLog.add(new Transaction(new User(response.body().get(i).getUser().getId(),
                   response.body().get(i).getUser().getFirstName(),
@@ -198,6 +200,7 @@ public class GroupAccountDetailed extends AppCompatActivity {
                   response.body().get(i).getPaymentDateAndTime()
                   ));
             }
+            Collections.reverse(transactionLog);
             setUpAccountPreviewRecyclerView(transactionLog);
           } else {
             //TODO Show text and image saying there has not been any transactions

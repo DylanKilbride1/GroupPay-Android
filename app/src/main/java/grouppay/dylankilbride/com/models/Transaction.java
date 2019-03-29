@@ -8,10 +8,10 @@ public class Transaction {
 
   private BigDecimal amountPaid;
   private String paymentType;
-  private Calendar paymentDateAndTime;
+  private String paymentDateAndTime;
   private User user;
 
-  public Transaction(User user, BigDecimal amountPaid, Calendar paymentDateAndTime) {
+  public Transaction(User user, BigDecimal amountPaid, String paymentDateAndTime) {
     this.user = user;
     this.amountPaid = amountPaid;
     this.paymentDateAndTime = paymentDateAndTime;
@@ -52,11 +52,15 @@ public class Transaction {
     return format.format(paymentDateTime.getTime());
   }
 
-  public Calendar getPaymentDateAndTime() {
+  public String getPaymentDateAndTime() {
     return paymentDateAndTime;
   }
 
-  public void setPaymentDateAndTime(Calendar paymentDateAndTime) {
+  public void setPaymentDateAndTime(String paymentDateAndTime) {
     this.paymentDateAndTime = paymentDateAndTime;
+  }
+
+  public void convertStringToCalendar(String paymentDateAndTime) {
+
   }
 }

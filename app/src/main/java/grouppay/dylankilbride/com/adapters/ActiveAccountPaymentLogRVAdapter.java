@@ -44,7 +44,7 @@ public class ActiveAccountPaymentLogRVAdapter extends RecyclerView.Adapter<Activ
     String paymentAmountEuro = "€" + transaction.getAmountPaidStr();
     viewHolder.userInitials.setText(transaction.getUser().getInitials());
     viewHolder.userFullName.setText(transaction.getUser().getFullName());
-    viewHolder.paymentTime.setText(transaction.getFormattedPaymentDateAndTime(transaction.getPaymentDateAndTime()));
+    viewHolder.paymentTime.setText(transaction.getPaymentDateAndTime());
     viewHolder.paymentType.setText(paymentTypeStr);
     viewHolder.paymentAmount.setText(paymentAmountEuro);
 
