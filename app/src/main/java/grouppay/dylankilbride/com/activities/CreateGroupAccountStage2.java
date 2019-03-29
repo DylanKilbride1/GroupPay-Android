@@ -111,9 +111,11 @@ public class CreateGroupAccountStage2 extends AppCompatActivity implements ItemC
     if (contact.getIsPressedValue()) {
       selectedContacts.add(contact);
       showHideContinueButton(selectedContacts);
+      //String numberOfContactsSelected = "Added - " + selectedContacts.size() + " Contacts";
     } else {
       showHideContinueButton(selectedContacts);
       selectedContacts.remove(contact);
+      //String numberOfContactsSelected = "Removed - " + selectedContacts.size() + " Contacts";
     }
   }
 
