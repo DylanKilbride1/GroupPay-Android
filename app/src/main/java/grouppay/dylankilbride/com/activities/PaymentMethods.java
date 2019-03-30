@@ -25,11 +25,14 @@ public class PaymentMethods extends AppCompatActivity {
   PaymentMethodsRVAdapter adapter;
   private RecyclerView paymentMethodsRecyclerView;
   private RecyclerView.LayoutManager paymentMethodsRecyclerViewLayoutManager;
+  private String userId;
 
   @Override
   protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
     setContentView(R.layout.activity_payment_methods);
+
+    userId = getIntent().getStringExtra("userIdStr");
 
     setUpActionBar();
     getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -49,8 +52,9 @@ public class PaymentMethods extends AppCompatActivity {
     fab.setOnClickListener(new View.OnClickListener() {
       @Override
       public void onClick(View view) {
-        Intent intent = new Intent(PaymentMethods.this, AddPaymentMethod.class);
-        startActivity(intent);
+        Intent addPaymentMethod = new Intent(PaymentMethods.this, AddPaymentMethod.class);
+        addPaymentMethod.putExtra("userIdStr", userId);
+        startActivity(addPaymentMethod);
       }
     });
   }

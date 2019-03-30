@@ -115,6 +115,7 @@ public class Home extends AppCompatActivity implements ItemClickListener {
             break;
           case R.id.nav_cards:
             Intent intentPaymentMethods = new Intent(Home.this, PaymentMethods.class);
+            intentPaymentMethods.putExtra("userIdStr", userId);
             startActivity(intentPaymentMethods);
             break;
           case R.id.nav_logout:

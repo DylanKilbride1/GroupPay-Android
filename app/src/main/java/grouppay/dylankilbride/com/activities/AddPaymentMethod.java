@@ -20,6 +20,8 @@ import com.stripe.android.model.Card;
 import com.stripe.android.model.Token;
 
 import grouppay.dylankilbride.com.grouppay.R;
+import grouppay.dylankilbride.com.models.StripeCharge;
+import grouppay.dylankilbride.com.models.StripeChargeReceipt;
 import grouppay.dylankilbride.com.retrofit_interfaces.CardManagerAPI;
 import io.card.payment.CardIOActivity;
 import io.card.payment.CreditCard;
@@ -36,13 +38,15 @@ public class AddPaymentMethod extends AppCompatActivity {
   public final int MY_SCAN_REQUEST_CODE = 1234;
   private EditText cardholderName, cardNumber, expiryDate, cvv;
   private Button addPaymentMethodContinueBTN;
-  private String expiryMonth, expiryYear;
+  private String expiryMonth, expiryYear, userId;
   private CardManagerAPI cardManagerApiInterface;
 
   @Override
   protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
     setContentView(R.layout.activity_add_payment_method);
+
+    userId = getIntent().getStringExtra("userIdStr");
 
     setUpActionBar();
     getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -67,6 +71,53 @@ public class AddPaymentMethod extends AppCompatActivity {
           Toast.makeText(getApplicationContext(), "Card Details Invalid!", Toast.LENGTH_LONG).show();
         }
         //stripeProcess(cardToAdd);
+      }
+    });
+  }
+
+  private void stripeProcess(Card cardToAdd){
+    Stripe stripe = new Stripe(this, "pk_test_kwfy65ynBeJFLDiklvYHV2tI00fUxcehhP");
+    stripe.createToken(
+        cardToAdd,
+        new TokenCallback() {
+          public void onSuccess(Token token) {
+            setUpTokenToServerCall(new StripeCharge(token.getId(), userId));
+          }
+          public void onError(Exception error) {
+            // Show localized error message
+            Log.e("Stripe Error on Token: ", error.getLocalizedMessage());
+          }
+        }
+    );
+  }
+
+  private void setUpTokenToServerCall(StripeCharge stripeCharge){
+    Retrofit sendToken = new Retrofit.Builder()
+        .baseUrl(LOCALHOST_SERVER_BASEURL)
+        .addConverterFactory(GsonConverterFactory.create())
+        .build();
+    cardManagerApiInterface = sendToken.create(CardManagerAPI.class);
+    sendTokenToServer(stripeCharge);
+  }
+
+  private void sendTokenToServer(StripeCharge stripeCharge) {
+    Call<StripeChargeReceipt> call = cardManagerApiInterface.sendStripeTokenToServer(stripeCharge);
+    call.enqueue(new Callback<StripeChargeReceipt>() {
+      @Override
+      public void onResponse(Call<StripeChargeReceipt> call, Response<StripeChargeReceipt> response) {
+        if(response.body().getAmountPaid() != 0L &&
+            response.body().getFailureCode() == null) {
+          Intent groupAccountDetailed = new Intent(EnterPaymentMethodDetails.this, GroupAccountDetailed.class);
+          groupAccountDetailed.putExtra("groupAccountId", groupAccountId);
+          startActivity(groupAccountDetailed);
+          finish();
+        } else {
+          Toast.makeText(getApplicationContext(), "Something went wrong!", Toast.LENGTH_LONG).show();
+        }
+      }
+      @Override
+      public void onFailure(Call<StripeChargeReceipt> call, Throwable t) {
+
       }
     });
   }
