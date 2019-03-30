@@ -10,11 +10,19 @@ public class Transaction {
   private String paymentType;
   private String paymentDateAndTime;
   private User user;
+  private GroupAccount groupAccount;
 
   public Transaction(User user, BigDecimal amountPaid, String paymentDateAndTime) {
     this.user = user;
     this.amountPaid = amountPaid;
     this.paymentDateAndTime = paymentDateAndTime;
+  }
+
+  public Transaction(User user, BigDecimal amountPaid, String paymentDateAndTime, GroupAccount groupAccount) {
+    this.user = user;
+    this.amountPaid = amountPaid;
+    this.paymentDateAndTime = paymentDateAndTime;
+    this.groupAccount = groupAccount;
   }
   
   public String getPaymentType() {
@@ -38,7 +46,7 @@ public class Transaction {
   }
 
   public String getAmountPaidStr() {
-    String amountPaidStr = String.valueOf(getAmountPaid());
+    String amountPaidStr = "€" + String.valueOf(getAmountPaid());
     return amountPaidStr;
   }
 
@@ -62,5 +70,25 @@ public class Transaction {
 
   public void convertStringToCalendar(String paymentDateAndTime) {
 
+  }
+
+  public String getServerPaymentType(String paymentType){
+    if(paymentType.equals("Incoming")) {
+      return "Paid In";
+    } else {
+      return "Paid Out";
+    }
+  }
+
+  public GroupAccount getGroupAccount() {
+    return groupAccount;
+  }
+
+  public void setGroupAccount(GroupAccount groupAccount) {
+    this.groupAccount = groupAccount;
+  }
+
+  public String returnFundsDepositedToGroup() {
+    return "Deposited to: " + getGroupAccount().getAccountName();
   }
 }

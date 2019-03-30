@@ -51,6 +51,7 @@ public class Home extends AppCompatActivity implements ItemClickListener {
   private NavigationView navigationView;
   private SwipeRefreshLayout pullToRefresh;
   private String userId, userName, userEmail, profileImgUrl;
+  private int numberOfActiveGroups;
   private GroupAccountAPI apiInterface;
   private ImageView navDrawerProfileImage;
 
@@ -65,7 +66,7 @@ public class Home extends AppCompatActivity implements ItemClickListener {
 
     setUpFAB();
     setUpAccountPreviewRecyclerView();
-    noAccountsTextView = (TextView) findViewById(R.id.noAccountPreviewsTextView);
+    //noAccountsTextView = (TextView) findViewById(R.id.noAccountPreviewsTextView);
 
     pullToRefresh = findViewById(R.id.homePullToRefresh);
     pullToRefresh.setColorSchemeResources(R.color.colorAccent);
@@ -116,7 +117,13 @@ public class Home extends AppCompatActivity implements ItemClickListener {
           case R.id.nav_cards:
             Intent intentPaymentMethods = new Intent(Home.this, PaymentMethods.class);
             intentPaymentMethods.putExtra("userIdStr", userId);
-            startActivity(intentPaymentMethods);
+            startActivityForResult(intentPaymentMethods, 120);
+            break;
+          case R.id.nav_transactions:
+            Intent intentTransactions = new Intent(Home.this, AllTransactions.class);
+            intentTransactions.putExtra("userIdStr", userId);
+            intentTransactions.putExtra("numberOfGroups", String.valueOf(groupAccounts.size()));
+            startActivity(intentTransactions);
             break;
           case R.id.nav_logout:
             Intent intentLogin = new Intent(Home.this, Login.class);
@@ -189,23 +196,23 @@ public class Home extends AppCompatActivity implements ItemClickListener {
     actionBarDrawerToggle.onConfigurationChanged(newConfig);
   }
 
-  public boolean checkIfListIsEmpty(List<GroupAccount> list) {
-    if (list.isEmpty()) {
-      return true;
-    } else {
-      return false;
-    }
-  }
-
-  public void emptyRVTextViewSetUp(boolean listEmpty) {
-    if (listEmpty == true) {
-      accountsRecyclerView.setVisibility(View.GONE);
-      noAccountsTextView.setVisibility(View.VISIBLE);
-    } else {
-      accountsRecyclerView.setVisibility(View.VISIBLE);
-      noAccountsTextView.setVisibility(View.GONE);
-    }
-  }
+//  public boolean checkIfListIsEmpty(List<GroupAccount> list) {
+//    if (list.isEmpty()) {
+//      return true;
+//    } else {
+//      return false;
+//    }
+//  }
+//
+//  public void emptyRVTextViewSetUp(boolean listEmpty) {
+//    if (listEmpty == true) {
+//      accountsRecyclerView.setVisibility(View.GONE);
+//      noAccountsTextView.setVisibility(View.VISIBLE);
+//    } else {
+//      accountsRecyclerView.setVisibility(View.VISIBLE);
+//      noAccountsTextView.setVisibility(View.GONE);
+//    }
+//  }
 
   public void setUpAssociatedAccountsCall(String userId) {
     Retrofit getAssociatedAccounts = new Retrofit.Builder()
@@ -244,7 +251,7 @@ public class Home extends AppCompatActivity implements ItemClickListener {
             pullToRefresh.setRefreshing(false);
           }
         }
-        emptyRVTextViewSetUp(checkIfListIsEmpty(groupAccounts));
+        //emptyRVTextViewSetUp(checkIfListIsEmpty(groupAccounts));
         adapter.notifyDataSetChanged();
       }
 

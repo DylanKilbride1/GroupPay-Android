@@ -80,7 +80,6 @@ public class EnterPaymentMethodDetails extends AppCompatActivity {
         if(!cardToAdd.validateCard()) {
           Toast.makeText(getApplicationContext(), "Card Details Invalid!", Toast.LENGTH_LONG).show();
         }
-        startSpinnerOverlay();
         stripeProcess(cardToAdd);
       }
     });
@@ -93,6 +92,7 @@ public class EnterPaymentMethodDetails extends AppCompatActivity {
         new TokenCallback() {
           public void onSuccess(Token token) {
             setUpTokenToServerCall(new StripeCharge(token.getId(), amountToDeposit, userId, groupAccountId));
+            startSpinnerOverlay();
           }
           public void onError(Exception error) {
             // Show localized error message
