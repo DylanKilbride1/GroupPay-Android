@@ -2,6 +2,7 @@ package grouppay.dylankilbride.com.models;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
+import java.security.acl.Group;
 import java.util.List;
 
 public class GroupAccount implements Serializable {
@@ -45,6 +46,10 @@ public class GroupAccount implements Serializable {
     this.totalAmountPaid = totalAmountPaid;
     this.totalAmountOwed = totalAmountOwed;
     this.testResourceId = testResourceId;
+  }
+
+  public GroupAccount(String accountName) {
+    this.accountName = accountName;
   }
 
   public List<Transaction> getPaymentLog() {

@@ -10,6 +10,10 @@
             android:icon="@drawable/nav_drawer_card_icon"
             android:title="@string/nav_drawer_cards" />
         <item
+            android:id="@+id/nav_transactions"
+            android:icon="@drawable/nav_drawer_transactions"
+            android:title="@string/all_transactions"/>
+        <item
             android:id="@+id/nav_logout"
             android:icon="@drawable/nav_drawer_logout_icon"
             android:title="@string/nav_drawer_log_out" />

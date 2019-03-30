@@ -21,6 +21,7 @@
     <string name="toolbar_edit_full_name_title">Edit Full Name</string>
     <string name="toolbar_create_group_stage1">Create New Group</string>
     <string name="toolbar_create_group_stage2">Add Group Members</string>
+    <string name="toolbar_all_transactions_title">All Transactions</string>
     <string name="add_card_secure_details">Card details are saved securely</string>
     <string name="profile_edit_email_title">Edit Email Address</string>
     <string name="profile_edit_email_hint">New Email Address</string>
@@ -33,4 +34,6 @@
     <string name="deposit_amount_to_group_currency">EURO</string>
     <string name="enter_payment_method_header">Payments are always made securely</string>
     <string name="euro_currency_symbol">€</string>
+    <string name="previous_transactions">Previous Transactions</string>
+    <string name="all_transactions">All Transactions</string>
 </resources>
