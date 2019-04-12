@@ -1,21 +1,40 @@
 package grouppay.dylankilbride.com.activities;
 
+import android.Manifest;
+import android.app.Activity;
 import android.content.Intent;
+
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+
+import android.content.pm.PackageManager;
+import android.database.Cursor;
+import android.media.Image;
+import android.net.Uri;
 import android.os.Bundle;
 import androidx.appcompat.widget.Toolbar;
+
+import android.provider.MediaStore;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import java.io.File;
 import java.math.BigDecimal;
 
+import androidx.core.content.ContextCompat;
 import grouppay.dylankilbride.com.grouppay.R;
 import grouppay.dylankilbride.com.models.GroupAccount;
 import grouppay.dylankilbride.com.retrofit_interfaces.GroupAccountAPI;
+import grouppay.dylankilbride.com.retrofit_interfaces.ProfileAPI;
+import okhttp3.MediaType;
+import okhttp3.MultipartBody;
+import okhttp3.RequestBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -29,8 +48,10 @@ public class CreateGroupAccountStage1 extends AppCompatActivity {
   Button createStage1AccountBTN;
   GroupAccountAPI apiInterface;
   EditText groupName, groupDescription, amountNeeded;
+  ImageView groupImage;
   String userIdStr;
   long userId;
+  private static final int GALLERY_REQUEST_CODE = 234;
 
   @Override
   protected void onCreate(Bundle savedInstanceState) {
@@ -47,6 +68,14 @@ public class CreateGroupAccountStage1 extends AppCompatActivity {
     groupName = (EditText) findViewById(R.id.createGroupAccountStage1NameET);
     groupDescription = (EditText) findViewById(R.id.createGroupAccountStage1DescriptionET);
     amountNeeded = (EditText) findViewById(R.id.createGroupAccountStage1AmtNeededET);
+    groupImage = (ImageView) findViewById(R.id.createGroupAccountStage1Image);
+
+    groupImage.setOnClickListener(new View.OnClickListener() {
+      @Override
+      public void onClick(View view) {
+        pickImage();
+      }
+    });
 
     createStage1AccountBTN.setOnClickListener(new View.OnClickListener() {
       @Override
@@ -61,6 +90,57 @@ public class CreateGroupAccountStage1 extends AppCompatActivity {
         createBasicAccount();
       }
     });
+  }
+
+  public void pickImage() {
+    String[] mimeTypes = {"image/jpeg", "image/png"};
+    if (ContextCompat.checkSelfPermission(CreateGroupAccountStage1.this, Manifest.permission.READ_EXTERNAL_STORAGE)
+        != PackageManager.PERMISSION_GRANTED) {
+      Toast.makeText(CreateGroupAccountStage1.this, "Permission Denied", Toast.LENGTH_LONG).show();
+    } else {
+      Intent imageSelection = new Intent(Intent.ACTION_PICK);
+      imageSelection.setType("image/*");
+      imageSelection.putExtra(Intent.EXTRA_MIME_TYPES, mimeTypes);
+      startActivityForResult(imageSelection, GALLERY_REQUEST_CODE);
+    }
+  }
+
+  @Override
+  protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+    super.onActivityResult(requestCode, resultCode, data);
+    if(resultCode == Activity.RESULT_OK){
+      switch (requestCode) {
+        case GALLERY_REQUEST_CODE:
+          Uri selectedImage = data.getData();
+          String filePath = getRealPathFromURIPath(selectedImage, CreateGroupAccountStage1.this);
+          File file = new File(filePath);
+          RequestBody mFile = RequestBody.create(MediaType.parse("image/*"), file);
+          MultipartBody.Part fileToUpload = MultipartBody.Part.createFormData("file", file.getName(), mFile);
+          RequestBody filename = RequestBody.create(MediaType.parse("text/plain"), file.getName());
+          setUpImageUploadRequest(fileToUpload, filename);
+      }
+    }
+  }
+
+  private String getRealPathFromURIPath(Uri contentURI, Activity activity) {
+    Cursor cursor = activity.getContentResolver().query(contentURI, null, null, null, null);
+    if (cursor == null) {
+      return contentURI.getPath();
+    } else {
+      cursor.moveToFirst();
+      int idx = cursor.getColumnIndex(MediaStore.Images.ImageColumns.DATA);
+      return cursor.getString(idx);
+    }
+  }
+
+  public void setUpImageUploadRequest(MultipartBody.Part file, RequestBody filename){
+    Retrofit profileImageUpload = new Retrofit.Builder()
+        .baseUrl(LOCALHOST_SERVER_BASEURL)
+        .addConverterFactory(GsonConverterFactory.create())
+        .build();
+
+//    profileAPI = profileImageUpload.create(ProfileAPI.class);
+//    handleImageUploadResponse(file, filename);
   }
 
   public void createBasicAccount() {

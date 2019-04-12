@@ -36,4 +36,6 @@
     <string name="euro_currency_symbol">€</string>
     <string name="previous_transactions">Previous Transactions</string>
     <string name="all_transactions">All Transactions</string>
+    <string name="save_card_details_dialog">"We can save these card details to make it quicker when paying next time. What would you like to do?</string>
+    <string name="hidden_card_details">\U25CF\U25CF\U25CF\U25CF \U25CF\U25CF\U25CF\U25CF \U25CF\U25CF\U25CF\U25CF</string>
 </resources>
