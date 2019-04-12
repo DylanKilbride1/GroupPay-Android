@@ -2,6 +2,7 @@ package grouppay.dylankilbride.com.activities;
 
 import android.content.Intent;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+
 import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
 import androidx.recyclerview.widget.DividerItemDecoration;
@@ -13,12 +14,26 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
 import grouppay.dylankilbride.com.adapters.PaymentMethodsRVAdapter;
 import grouppay.dylankilbride.com.grouppay.R;
 import grouppay.dylankilbride.com.models.Cards;
+import grouppay.dylankilbride.com.retrofit_interfaces.CardManagerAPI;
+import okhttp3.ResponseBody;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
+
+import static grouppay.dylankilbride.com.constants.Constants.LOCALHOST_SERVER_BASEURL;
 
 public class PaymentMethods extends AppCompatActivity {
 
@@ -26,6 +41,8 @@ public class PaymentMethods extends AppCompatActivity {
   private RecyclerView paymentMethodsRecyclerView;
   private RecyclerView.LayoutManager paymentMethodsRecyclerViewLayoutManager;
   private String userId;
+  private CardManagerAPI apiInterface;
+  private ArrayList<Cards> paymentMethodsList;
 
   @Override
   protected void onCreate(Bundle savedInstanceState) {
@@ -37,16 +54,7 @@ public class PaymentMethods extends AppCompatActivity {
     setUpActionBar();
     getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-    ArrayList<Cards> cardsTempList = new ArrayList<>();
-    cardsTempList.add(new Cards(1, "1234 2345 3456 4567", "02/21", "Dylan Kilbride", "MASTERCARD"));
-    cardsTempList.add(new Cards(2, "0987 6545 6789 3454", "02/21", "Dylan Kilbride", "VISA"));
-    cardsTempList.add(new Cards(3, "8888 6546 3456 8765", "02/21", "Dylan Kilbride", "AMERICAN EXPRESS"));
-    cardsTempList.add(new Cards(4, "1234 2345 3456 4567", "02/21", "Dylan Kilbride", "MAESTRO"));
-    cardsTempList.add(new Cards(2, "0987 6545 6789 3454", "02/21", "Dylan Kilbride", "VISA"));
-    cardsTempList.add(new Cards(3, "8888 6546 3456 8765", "02/21", "Dylan Kilbride", "DISCOVER"));
-    cardsTempList.add(new Cards(4, "1234 2345 3456 4567", "02/21", "Dylan Kilbride", "REVOLUT"));
-
-    setUpAccountPreviewRecyclerView(cardsTempList);
+    paymentMethodsList = new ArrayList<>();
 
     FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fabAddPaymentMethod);
     fab.setOnClickListener(new View.OnClickListener() {
@@ -87,6 +95,61 @@ public class PaymentMethods extends AppCompatActivity {
     }
   }
 
+  private void paymentMethodsRequestSetUp(String userId) {
+    Retrofit getPaymentMethods = new Retrofit.Builder()
+        .baseUrl(LOCALHOST_SERVER_BASEURL)
+        .addConverterFactory(GsonConverterFactory.create())
+        .build();
+    apiInterface = getPaymentMethods.create(CardManagerAPI.class);
+    getPaymentMethodsCall(userId); //TODO Change!
+  }
+
+  public void getPaymentMethodsCall(String userId) {
+    Call<ResponseBody> call = apiInterface.getUsersPaymentMethods(userId);
+    call.enqueue(new Callback<ResponseBody>() {
+      @Override
+      public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+        if(!response.isSuccessful()) {
+          //Handle
+        } else {
+          if(!response.body().toString().isEmpty()) {
+            paymentMethodsList.clear();
+            try {
+              parsePaymentDetails(response.body().string());
+              setUpAccountPreviewRecyclerView(paymentMethodsList);
+            } catch (IOException e) {
+              e.printStackTrace();
+            }
+          } else {
+            //TODO Show text and image saying there has not been any transactions
+          }
+        }
+      }
+      @Override
+      public void onFailure(Call<ResponseBody> call, Throwable t) {
+
+      }
+    });
+  }
+
+  private void parsePaymentDetails(String stripeCardList) {
+    String hiddenDigits = "\u2022\u2022\u2022\u2022 ";
+    try {
+      JSONObject scl = new JSONObject(stripeCardList);
+      JSONArray dataArray = scl.getJSONArray("data");
+      for(int i = 0; i < dataArray.length(); i++) {
+        JSONObject paymentObject = dataArray.getJSONObject(i);
+        String protectedCardNumber = hiddenDigits + paymentObject.getString("last4");
+        paymentMethodsList.add(new Cards(protectedCardNumber,
+            paymentObject.getInt("exp_month"),
+            paymentObject.getInt("exp_year"),
+            paymentObject.getString("brand")));
+      }
+    } catch (JSONException e) {
+      e.printStackTrace();
+    }
+  }
+
   @Override
   public boolean onOptionsItemSelected(MenuItem item) {
     switch (item.getItemId()) {
@@ -96,5 +159,11 @@ public class PaymentMethods extends AppCompatActivity {
       default:
         return super.onOptionsItemSelected(item);
     }
+  }
+
+  @Override
+  protected void onResume() {
+    super.onResume();
+    paymentMethodsRequestSetUp(userId);
   }
 }

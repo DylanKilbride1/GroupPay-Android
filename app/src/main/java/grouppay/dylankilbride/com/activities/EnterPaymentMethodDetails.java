@@ -1,5 +1,6 @@
 package grouppay.dylankilbride.com.activities;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import grouppay.dylankilbride.com.grouppay.R;
@@ -14,6 +15,7 @@ import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
@@ -72,26 +74,18 @@ public class EnterPaymentMethodDetails extends AppCompatActivity {
     usePaymentDetailsBTN.setOnClickListener(new View.OnClickListener() {
       @Override
       public void onClick(View view) {
-        parseCardExpiryDate();
-        Card cardToAdd = new Card(cardNumber.getText().toString(),
-            Integer.valueOf(expiryMonth),
-            Integer.valueOf(expiryYear),
-            cvv.getText().toString());
-        if(!cardToAdd.validateCard()) {
-          Toast.makeText(getApplicationContext(), "Card Details Invalid!", Toast.LENGTH_LONG).show();
-        }
-        stripeProcess(cardToAdd);
+        optionalCardSavingDialog();
       }
     });
   }
 
-  private void stripeProcess(Card cardToAdd){
+  private void stripeProcess(Card cardToAdd, final boolean optionalCardSave){
     Stripe stripe = new Stripe(this, "pk_test_kwfy65ynBeJFLDiklvYHV2tI00fUxcehhP");
     stripe.createToken(
         cardToAdd,
         new TokenCallback() {
           public void onSuccess(Token token) {
-            setUpTokenToServerCall(new StripeCharge(token.getId(), amountToDeposit, userId, groupAccountId));
+            setUpTokenToServerCall(new StripeCharge(token.getId(), amountToDeposit, userId, groupAccountId), optionalCardSave);
             startSpinnerOverlay();
           }
           public void onError(Exception error) {
@@ -114,17 +108,22 @@ public class EnterPaymentMethodDetails extends AppCompatActivity {
     paymentProgressSpinner.stopSpinning();
   }
 
-  private void setUpTokenToServerCall(StripeCharge stripeCharge){
+  private void setUpTokenToServerCall(StripeCharge stripeCharge, boolean optionalCardSave){
     Retrofit sendToken = new Retrofit.Builder()
         .baseUrl(LOCALHOST_SERVER_BASEURL)
         .addConverterFactory(GsonConverterFactory.create())
         .build();
-    cardManagerApiInterface = sendToken.create(CardManagerAPI.class);
-    sendTokenToServer(stripeCharge);
+      cardManagerApiInterface = sendToken.create(CardManagerAPI.class);
+    sendTokenToServer(stripeCharge, optionalCardSave);
   }
 
-  private void sendTokenToServer(StripeCharge stripeCharge) {
-    Call<StripeChargeReceipt> call = cardManagerApiInterface.sendStripeTokenToServer(stripeCharge);
+  private void sendTokenToServer(StripeCharge stripeCharge, boolean optionalCardSave) {
+    Call<StripeChargeReceipt> call;
+    if(!optionalCardSave) {
+      call = cardManagerApiInterface.sendStripeTokenToServer(stripeCharge);
+    } else {
+      call = cardManagerApiInterface.sendStripeTokenToServerAndSave(stripeCharge);
+    }
     call.enqueue(new Callback<StripeChargeReceipt>() {
       @Override
       public void onResponse(Call<StripeChargeReceipt> call, Response<StripeChargeReceipt> response) {
@@ -231,6 +230,45 @@ public class EnterPaymentMethodDetails extends AppCompatActivity {
 
       this.getSupportActionBar().setCustomView(v);
     }
+  }
+
+  private void optionalCardSavingDialog() {
+    AlertDialog.Builder adb = new AlertDialog.Builder(this);
+    adb.setTitle("Pay and save card details?");
+    adb.setMessage(R.string.save_card_details_dialog);
+    //adb.setIcon(android.R.drawable.);
+    adb.setPositiveButton("Pay and Save", new DialogInterface.OnClickListener() {
+      public void onClick(DialogInterface dialog, int which) {
+        parseCardExpiryDate();
+        Card cardToAdd = new Card(cardNumber.getText().toString(),
+            Integer.valueOf(expiryMonth),
+            Integer.valueOf(expiryYear),
+            cvv.getText().toString());
+        if(!cardToAdd.validateCard()) {
+          Toast.makeText(getApplicationContext(), "Card Details Invalid!", Toast.LENGTH_LONG).show();
+        }
+        stripeProcess(cardToAdd, true);
+      }
+    });
+    adb.setNegativeButton("Just Pay", new DialogInterface.OnClickListener() {
+      public void onClick(DialogInterface dialog, int which) {
+        parseCardExpiryDate();
+        Card cardToAdd = new Card(cardNumber.getText().toString(),
+            Integer.valueOf(expiryMonth),
+            Integer.valueOf(expiryYear),
+            cvv.getText().toString());
+        if(!cardToAdd.validateCard()) {
+          Toast.makeText(getApplicationContext(), "Card Details Invalid!", Toast.LENGTH_LONG).show();
+        }
+        stripeProcess(cardToAdd, false);
+      }
+    });
+    AlertDialog alert = adb.create();
+    alert.show();
+    Button nbutton = alert.getButton(DialogInterface.BUTTON_NEGATIVE);
+    nbutton.setTextColor(getResources().getColor(R.color.colorAccent));
+    Button pbutton = alert.getButton(DialogInterface.BUTTON_POSITIVE);
+    pbutton.setTextColor(getResources().getColor(R.color.colorAccent));
   }
 
   @Override

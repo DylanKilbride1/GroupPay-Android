@@ -3,6 +3,8 @@ package grouppay.dylankilbride.com.adapters;
 import android.content.Context;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
+
+import android.content.res.Resources;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,6 +15,8 @@ import java.util.List;
 
 import grouppay.dylankilbride.com.grouppay.R;
 import grouppay.dylankilbride.com.models.Cards;
+
+import static androidx.core.content.res.TypedArrayUtils.getString;
 
 public class PaymentMethodsRVAdapter extends RecyclerView.Adapter<PaymentMethodsRVAdapter.ViewHolder>{
 
@@ -40,43 +44,22 @@ public class PaymentMethodsRVAdapter extends RecyclerView.Adapter<PaymentMethods
 
   @Override
   public void onBindViewHolder(@NonNull final ViewHolder viewHolder, final int position) {
-    final Cards Cards = cardsList.get(position);
-    viewHolder.cardType.setText(Cards.getCardType());
-    viewHolder.cardNumberPreview.setText(Cards.getCardNumber());
-    if(Cards.getCardType().equals("VISA")) {
+    final Cards cards = cardsList.get(position);
+    viewHolder.cardType.setText(cards.getCardType());
+    viewHolder.cardNumberPreview.setText(cards.getLastFour());
+    if(cards.getCardType().equals("Visa")) {
       viewHolder.cardTypeIcon.setBackgroundResource(R.drawable.visa_icon);
-    } else if(Cards.getCardType().equals("MASTERCARD")) {
+    } else if(cards.getCardType().equals("Mastercard")) {
       viewHolder.cardTypeIcon.setBackgroundResource(R.drawable.mastercard_icon);
-    } else if(Cards.getCardType().equals("MAESTRO")) {
+    } else if(cards.getCardType().equals("Maestro")) {
       viewHolder.cardTypeIcon.setBackgroundResource(R.drawable.maestro_icon);
-    } else if(Cards.getCardType().equals("DISCOVER")) {
+    } else if(cards.getCardType().equals("Discover")) {
       viewHolder.cardTypeIcon.setBackgroundResource(R.drawable.discover_icon);
-    } else if(Cards.getCardType().equals("AMERICAN EXPRESS")) {
+    } else if(cards.getCardType().equals("American Express")) {
       viewHolder.cardTypeIcon.setBackgroundResource(R.drawable.amex_icon);
     } else {
       viewHolder.cardTypeIcon.setBackgroundResource(R.drawable.nav_drawer_card_icon);
     }
-
-    viewHolder.cardType.setOnClickListener(new View.OnClickListener() {
-      @Override
-      public void onClick(View view) {
-        cardsList.remove(position);
-        notifyItemRemoved(position);
-        notifyItemRangeChanged(position, cardsList.size());
-      }
-    });
-
-//    viewHolder.contactName.setOnClickListener(new View.OnClickListener() {
-//
-//      @Override
-//      public void onClick(View view) {
-//        Intent intent = new Intent(view.getContext(), ViewContact.class);
-//        intent.putExtra("fullName", contactsList.get(position).getFullName());
-//        intent.putExtra("email", contactsList.get(position).getEmailAddress());
-//        intent.putExtra("phone", contactsList.get(position).getPhoneNumber());
-//        view.getContext().startActivity(intent);
-//      }
-//    });
   }
 
   @Override

@@ -40,10 +40,11 @@
 
             <de.hdodenhof.circleimageview.CircleImageView
                 xmlns:app="http://schemas.android.com/apk/res-auto"
-                android:id="@+id/accountPreviewImage"
+                android:id="@+id/createGroupAccountStage1Image"
                 android:layout_width="80dp"
                 android:layout_height="80dp"
                 android:src="@drawable/human_photo"
+                android:clickable="true"
                 app:civ_border_width="1dp"
                 app:civ_border_color="@color/profileImageBorder"/>
 

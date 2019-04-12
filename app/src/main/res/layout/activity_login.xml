@@ -33,6 +33,7 @@
             android:fontFamily="@font/cairo"
             android:backgroundTint="@color/editTextBgTintStandard"
             android:hint="Email"
+            android:text="test@gmail.com"
             android:id="@+id/emailBox"/>
 
         <EditText
@@ -43,6 +44,7 @@
             android:fontFamily="@font/cairo"
             android:backgroundTint="@color/editTextBgTintStandard"
             android:hint="Password"
+            android:text="1234"
             android:id="@+id/passwordBox"
             android:layout_marginTop="10dp"/>
 

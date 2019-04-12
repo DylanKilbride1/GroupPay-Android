@@ -67,8 +67,6 @@ public class GroupAccountDetailed extends AppCompatActivity {
     groupImage = (ImageView) findViewById(R.id.activeAccountDetailedGroupImage);
     progressStartAmount = (TextView) findViewById(R.id.activeAccountProgressStartTV);
     progressFinalAmount = (TextView) findViewById(R.id.activeAccountProgressEndTV);
-//    noPreviousTransactionsImg = (ImageView) findViewById(R.id.noTransactionsIV);
-//    noPreviousTransactionsTV = (TextView) findViewById(R.id.noTransactionsTV);
 
     setUpFAB();
   }
