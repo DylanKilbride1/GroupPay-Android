@@ -9,7 +9,7 @@ public class GroupAccount implements Serializable {
 
   private long groupAccountId;
   private long adminId;
-  private String groupAccountPhoto;
+  private GroupImage groupImage;
   private String accountName;
   private String accountDescription;
   private int numberOfMembers;
@@ -18,9 +18,9 @@ public class GroupAccount implements Serializable {
   private List<Transaction> paymentLog;
   private BigDecimal paymentProgress = new BigDecimal(0);
 
-  public GroupAccount(long accountId, String groupAccountPhoto, String accountName, String accountDescription, int numberOfMembers, BigDecimal totalAmountPaid, BigDecimal totalAmountOwed, List<Transaction> paymentLog) {
+  public GroupAccount(long accountId, GroupImage groupImage, String accountName, String accountDescription, int numberOfMembers, BigDecimal totalAmountPaid, BigDecimal totalAmountOwed, List<Transaction> paymentLog) {
     this.groupAccountId = accountId;
-    this.groupAccountPhoto = groupAccountPhoto;
+    this.groupImage = groupImage;
     this.accountName = accountName;
     this.accountDescription = accountDescription;
     this.numberOfMembers = numberOfMembers;
@@ -37,14 +37,14 @@ public class GroupAccount implements Serializable {
     this.totalAmountOwed = totalAmountOwed;
   }
 
-  public GroupAccount(long groupAccountId, String accountName, String accountDescription, int numberOfMembers, BigDecimal totalAmountOwed, BigDecimal totalAmountPaid, String groupAccountPhoto) {
+  public GroupAccount(long groupAccountId, String accountName, String accountDescription, int numberOfMembers, BigDecimal totalAmountOwed, BigDecimal totalAmountPaid, GroupImage groupImage) {
     this.groupAccountId = groupAccountId;
     this.accountName = accountName;
     this.accountDescription = accountDescription;
     this.numberOfMembers = numberOfMembers;
     this.totalAmountPaid = totalAmountPaid;
     this.totalAmountOwed = totalAmountOwed;
-    this.groupAccountPhoto = groupAccountPhoto;
+    this.groupImage = groupImage;
   }
 
   public GroupAccount(String accountName) {
@@ -59,12 +59,12 @@ public class GroupAccount implements Serializable {
     this.paymentLog = paymentLog;
   }
 
-  public String getGroupAccountPhoto() {
-    return groupAccountPhoto;
+  public GroupImage getGroupImage() {
+    return groupImage;
   }
 
-  public void setgroupAccountPhoto(String groupAccountPhoto) {
-    this.groupAccountPhoto = groupAccountPhoto;
+  public void setGroupImage(GroupImage groupImage) {
+    this.groupImage = groupImage;
   }
 
   public GroupAccount() {}

@@ -1,6 +1,9 @@
 package grouppay.dylankilbride.com.activities;
 
 import android.content.Intent;
+
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestOptions;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
@@ -47,6 +50,7 @@ public class GroupAccountDetailed extends AppCompatActivity {
   String groupAccountIdStr, userIdStr, groupAccountName;
   GroupAccountAPI apiInterface;
   ArrayList<Transaction> transactionLog;
+  private RequestOptions noGroupImageDefault = new RequestOptions().error(R.drawable.no_group_icon);
 
   GroupAccount intentReceivedGroupAccount = new GroupAccount();
 
@@ -162,6 +166,10 @@ public class GroupAccountDetailed extends AppCompatActivity {
           String totalAmountOwed = "€" + response.body().getTotalAmountOwed().stripTrailingZeros().toPlainString();
           progressFinalAmount.setText(totalAmountOwed);
           groupAccountName = response.body().getAccountName();
+          Glide.with(getApplicationContext())
+              .load(response.body().getGroupImage().getGroupImageLocation())
+              .apply(noGroupImageDefault)
+              .into(groupImage);
         }
       }
       @Override
