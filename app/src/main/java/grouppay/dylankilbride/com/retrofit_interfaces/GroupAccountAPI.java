@@ -3,18 +3,23 @@ package grouppay.dylankilbride.com.retrofit_interfaces;
 import java.util.List;
 
 import grouppay.dylankilbride.com.models.GroupAccount;
+import grouppay.dylankilbride.com.models.ImageUploadResponse;
 import grouppay.dylankilbride.com.models.Transaction;
 import grouppay.dylankilbride.com.models.User;
+import okhttp3.MultipartBody;
+import okhttp3.RequestBody;
 import retrofit2.Call;
 import retrofit2.http.Body;
 import retrofit2.http.GET;
+import retrofit2.http.Multipart;
 import retrofit2.http.POST;
 import retrofit2.http.PUT;
+import retrofit2.http.Part;
 import retrofit2.http.Path;
 
 public interface GroupAccountAPI {
 
-  @PUT("groupAccounts/createBasicAccount")
+  @POST("groupAccounts/createBasicAccount")
   Call<GroupAccount> createBasicAccount(@Body GroupAccount groupAccount);
 
   @PUT("groupAccounts/addParticipants/{groupAccountId}")
@@ -31,4 +36,10 @@ public interface GroupAccountAPI {
 
   @GET("groupAccounts/getGroupTransactions/{groupAccountId}")
   Call<List<Transaction>> getAllAccountTransactions(@Path("groupAccountId") String groupAccountId);
+
+  @Multipart
+  @POST("groupAccounts/uploadGroupProfileImage/{groupAccountId}")
+  Call<ImageUploadResponse> uploadGroupProfileImage(@Path("groupAccountId") String groupAccountId,
+                                                   @Part MultipartBody.Part file,
+                                                   @Part("name") RequestBody name);
 }

@@ -243,7 +243,7 @@ public class Home extends AppCompatActivity implements ItemClickListener {
                   response.body().get(i).getNumberOfMembers(),
                   response.body().get(i).getTotalAmountOwed(),
                   response.body().get(i).getTotalAmountPaid(),
-                  R.drawable.human_photo);
+                  response.body().get(i).getGroupImage());
               groupAccounts.add(groupAccount);
             }
           }

@@ -15,6 +15,7 @@ import android.os.Bundle;
 import androidx.appcompat.widget.Toolbar;
 
 import android.provider.MediaStore;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -24,12 +25,17 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestOptions;
+import com.squareup.picasso.Picasso;
+
 import java.io.File;
 import java.math.BigDecimal;
 
 import androidx.core.content.ContextCompat;
 import grouppay.dylankilbride.com.grouppay.R;
 import grouppay.dylankilbride.com.models.GroupAccount;
+import grouppay.dylankilbride.com.models.ImageUploadResponse;
 import grouppay.dylankilbride.com.retrofit_interfaces.GroupAccountAPI;
 import grouppay.dylankilbride.com.retrofit_interfaces.ProfileAPI;
 import okhttp3.MediaType;
@@ -49,9 +55,13 @@ public class CreateGroupAccountStage1 extends AppCompatActivity {
   GroupAccountAPI apiInterface;
   EditText groupName, groupDescription, amountNeeded;
   ImageView groupImage;
-  String userIdStr;
+  String userIdStr, groupAccountIdStr;
+  String groupAccountPhotoUrl;
+  MultipartBody.Part fileToUpload;
+  RequestBody filename;
   long userId;
   private static final int GALLERY_REQUEST_CODE = 234;
+  RequestOptions noProfileImageDefault = new RequestOptions().error(R.drawable.no_profile_photo);
 
   @Override
   protected void onCreate(Bundle savedInstanceState) {
@@ -86,7 +96,6 @@ public class CreateGroupAccountStage1 extends AppCompatActivity {
             .build();
 
         apiInterface = createBasicAccount.create(GroupAccountAPI.class);
-
         createBasicAccount();
       }
     });
@@ -115,9 +124,9 @@ public class CreateGroupAccountStage1 extends AppCompatActivity {
           String filePath = getRealPathFromURIPath(selectedImage, CreateGroupAccountStage1.this);
           File file = new File(filePath);
           RequestBody mFile = RequestBody.create(MediaType.parse("image/*"), file);
-          MultipartBody.Part fileToUpload = MultipartBody.Part.createFormData("file", file.getName(), mFile);
-          RequestBody filename = RequestBody.create(MediaType.parse("text/plain"), file.getName());
-          setUpImageUploadRequest(fileToUpload, filename);
+          fileToUpload = MultipartBody.Part.createFormData("file", file.getName(), mFile);
+          filename = RequestBody.create(MediaType.parse("text/plain"), file.getName());
+          Picasso.get().load(selectedImage).into(groupImage);
       }
     }
   }
@@ -134,13 +143,31 @@ public class CreateGroupAccountStage1 extends AppCompatActivity {
   }
 
   public void setUpImageUploadRequest(MultipartBody.Part file, RequestBody filename){
-    Retrofit profileImageUpload = new Retrofit.Builder()
+    Retrofit groupImageUpload = new Retrofit.Builder()
         .baseUrl(LOCALHOST_SERVER_BASEURL)
         .addConverterFactory(GsonConverterFactory.create())
         .build();
+    apiInterface = groupImageUpload.create(GroupAccountAPI.class);
+    handleImageUploadResponse(file, filename);
+  }
 
-//    profileAPI = profileImageUpload.create(ProfileAPI.class);
-//    handleImageUploadResponse(file, filename);
+  public void handleImageUploadResponse(MultipartBody.Part file, RequestBody filename){
+    Call<ImageUploadResponse> fileUpload = apiInterface.uploadGroupProfileImage(groupAccountIdStr, file, filename);
+    fileUpload.enqueue(new Callback<ImageUploadResponse>() {
+      @Override
+      public void onResponse(Call<ImageUploadResponse> call, Response<ImageUploadResponse> response) {
+        if(!response.isSuccessful()){
+          //Handle
+        } else {
+
+        }
+      }
+
+      @Override
+      public void onFailure(Call<ImageUploadResponse> call, Throwable t) {
+        Log.d("Upload Error", "Error " + t.getMessage());
+      }
+    });
   }
 
   public void createBasicAccount() {
@@ -157,6 +184,8 @@ public class CreateGroupAccountStage1 extends AppCompatActivity {
         if(!response.isSuccessful()) {
           //Handle
         } else {
+          groupAccountIdStr = String.valueOf(response.body().getGroupAccountId());
+          setUpImageUploadRequest(fileToUpload, filename);
           Intent intent = new Intent(CreateGroupAccountStage1.this, CreateGroupAccountStage2.class);
           String groupId = String.valueOf(response.body().getGroupAccountId());
           intent.putExtra("groupAccountId", groupId);

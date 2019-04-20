@@ -9,8 +9,7 @@ public class GroupAccount implements Serializable {
 
   private long groupAccountId;
   private long adminId;
-  //TODO Remove testResource in place for users profile image - retrieve from s3 bucket
-  private int testResourceId;
+  private GroupImage groupImage;
   private String accountName;
   private String accountDescription;
   private int numberOfMembers;
@@ -19,9 +18,9 @@ public class GroupAccount implements Serializable {
   private List<Transaction> paymentLog;
   private BigDecimal paymentProgress = new BigDecimal(0);
 
-  public GroupAccount(long accountId, int testResourceId, String accountName, String accountDescription, int numberOfMembers, BigDecimal totalAmountPaid, BigDecimal totalAmountOwed, List<Transaction> paymentLog) {
+  public GroupAccount(long accountId, GroupImage groupImage, String accountName, String accountDescription, int numberOfMembers, BigDecimal totalAmountPaid, BigDecimal totalAmountOwed, List<Transaction> paymentLog) {
     this.groupAccountId = accountId;
-    this.testResourceId = testResourceId;
+    this.groupImage = groupImage;
     this.accountName = accountName;
     this.accountDescription = accountDescription;
     this.numberOfMembers = numberOfMembers;
@@ -38,14 +37,14 @@ public class GroupAccount implements Serializable {
     this.totalAmountOwed = totalAmountOwed;
   }
 
-  public GroupAccount(long groupAccountId, String accountName, String accountDescription, int numberOfMembers, BigDecimal totalAmountOwed, BigDecimal totalAmountPaid, int testResourceId) {
+  public GroupAccount(long groupAccountId, String accountName, String accountDescription, int numberOfMembers, BigDecimal totalAmountOwed, BigDecimal totalAmountPaid, GroupImage groupImage) {
     this.groupAccountId = groupAccountId;
     this.accountName = accountName;
     this.accountDescription = accountDescription;
     this.numberOfMembers = numberOfMembers;
     this.totalAmountPaid = totalAmountPaid;
     this.totalAmountOwed = totalAmountOwed;
-    this.testResourceId = testResourceId;
+    this.groupImage = groupImage;
   }
 
   public GroupAccount(String accountName) {
@@ -60,12 +59,12 @@ public class GroupAccount implements Serializable {
     this.paymentLog = paymentLog;
   }
 
-  public int getTestResourceId() {
-    return testResourceId;
+  public GroupImage getGroupImage() {
+    return groupImage;
   }
 
-  public void setTestResourceId(int testResourceId) {
-    this.testResourceId = testResourceId;
+  public void setGroupImage(GroupImage groupImage) {
+    this.groupImage = groupImage;
   }
 
   public GroupAccount() {}
