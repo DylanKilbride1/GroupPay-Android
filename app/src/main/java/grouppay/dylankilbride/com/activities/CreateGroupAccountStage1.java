@@ -8,6 +8,7 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.pm.PackageManager;
+import android.content.res.ColorStateList;
 import android.database.Cursor;
 import android.media.Image;
 import android.net.Uri;
@@ -99,6 +100,11 @@ public class CreateGroupAccountStage1 extends AppCompatActivity {
         createBasicAccount();
       }
     });
+  }
+
+  private void validateGroupFieldEntries() {
+    if (groupName.getText().toString().equals("")) {
+    }
   }
 
   public void pickImage() {

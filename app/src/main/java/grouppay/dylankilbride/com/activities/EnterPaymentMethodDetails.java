@@ -130,9 +130,6 @@ public class EnterPaymentMethodDetails extends AppCompatActivity {
         stopSpinnerOverlay();
         if(response.body().getAmountPaid() != 0L &&
             response.body().getFailureCode() == null) {
-          Intent groupAccountDetailed = new Intent(EnterPaymentMethodDetails.this, GroupAccountDetailed.class);
-          groupAccountDetailed.putExtra("groupAccountId", groupAccountId);
-          startActivity(groupAccountDetailed);
           finish();
         } else {
           Toast.makeText(getApplicationContext(), "Something went wrong!", Toast.LENGTH_LONG).show();

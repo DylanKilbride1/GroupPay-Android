@@ -41,12 +41,11 @@ public class ActiveAccountPaymentLogRVAdapter extends RecyclerView.Adapter<Activ
   public void onBindViewHolder(@NonNull final ViewHolder viewHolder, final int position) {
     final Transaction transaction = transactionsList.get(position);
     String paymentTypeStr = "Paid";
-    String paymentAmountEuro = "€" + transaction.getAmountPaidStr();
     viewHolder.userInitials.setText(transaction.getUser().getInitials());
     viewHolder.userFullName.setText(transaction.getUser().getFullName());
     viewHolder.paymentTime.setText(transaction.getPaymentDateAndTime());
     viewHolder.paymentType.setText(paymentTypeStr);
-    viewHolder.paymentAmount.setText(paymentAmountEuro);
+    viewHolder.paymentAmount.setText(transaction.getAmountPaidStr());
 
     viewHolder.userFullName.setOnClickListener(new View.OnClickListener() {
       @Override

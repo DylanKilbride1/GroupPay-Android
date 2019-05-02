@@ -102,7 +102,7 @@ public class User {
     isPressed = true;
   }
 
-  public void setPressedFalse() {
+  public void setPressedFalse() { //what happens if this is called and isPressed already false?
     isPressed = false;
   }
 
@@ -112,10 +112,6 @@ public class User {
 
   public boolean isPressed() {
     return isPressed;
-  }
-
-  public void setIsPressed(boolean value) {
-    isPressed = value;
   }
 
   public String getProfileUrl() {

@@ -113,15 +113,10 @@ public class CreateGroupAccountStage2 extends AppCompatActivity implements ItemC
       showHideContinueButton(selectedContacts);
       //String numberOfContactsSelected = "Added - " + selectedContacts.size() + " Contacts";
     } else {
-      showHideContinueButton(selectedContacts);
       selectedContacts.remove(contact);
+      showHideContinueButton(selectedContacts);
       //String numberOfContactsSelected = "Removed - " + selectedContacts.size() + " Contacts";
     }
-  }
-
-  @Override
-  public void onItemClick(GroupAccount groupAccount) {
-
   }
 
   public void showHideContinueButton(List<User> selectedContacts) {
@@ -132,6 +127,11 @@ public class CreateGroupAccountStage2 extends AppCompatActivity implements ItemC
       addContactsButton.setVisibility(View.VISIBLE);
       addContactsButton.setText(numberOfContactsSelected);
     }
+  }
+
+  @Override
+  public void onItemClick(GroupAccount groupAccount) {
+
   }
 
   public void setUpActionBar() {

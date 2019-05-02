@@ -11,7 +11,6 @@ public class Cards {
   private String cardType;
 
   public Cards(){
-
   }
 
   public Cards(long id, String lastFour, String expiryDate, String cardholderName, String cardType) {

@@ -61,8 +61,9 @@ public class GroupAccountDetailed extends AppCompatActivity {
 
     groupAccountIdStr = getIntent().getStringExtra("groupAccountId");
     userIdStr = getIntent().getStringExtra("userIdStr");
+    groupAccountName = getIntent().getStringExtra("groupName");
 
-    setUpActionBar("Group Name");
+    setUpActionBar(groupAccountName);
     getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
     transactionLog = new ArrayList<>();

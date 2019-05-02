@@ -43,9 +43,10 @@
                 android:id="@+id/createGroupAccountStage1Image"
                 android:layout_width="80dp"
                 android:layout_height="80dp"
-                android:src="@drawable/human_photo"
+                android:src="@drawable/no_group_icon"
                 android:clickable="true"
                 app:civ_border_width="1dp"
+                app:civ_circle_background_color="@color/whiteText"
                 app:civ_border_color="@color/profileImageBorder"/>
 
             <EditText
