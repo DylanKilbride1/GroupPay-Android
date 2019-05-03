@@ -42,4 +42,7 @@ public interface GroupAccountAPI {
   Call<ImageUploadResponse> uploadGroupProfileImage(@Path("groupAccountId") String groupAccountId,
                                                    @Part MultipartBody.Part file,
                                                    @Part("name") RequestBody name);
+
+  @GET("groupAccounts/getAllUsersInGroup/{groupAccountId}")
+  Call<List<User>> getAllGroupParticipants(@Path("groupAccountId") String groupAccountId);
 }

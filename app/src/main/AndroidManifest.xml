@@ -45,7 +45,8 @@
         <activity android:name="grouppay.dylankilbride.com.activities.CreateGroupAccountStage1" />
         <activity android:name="grouppay.dylankilbride.com.activities.DepositMoneyToGroup" />
         <activity android:name="grouppay.dylankilbride.com.activities.EnterPaymentMethodDetails" />
-        <activity android:name="grouppay.dylankilbride.com.activities.AllTransactions"></activity>
+        <activity android:name="grouppay.dylankilbride.com.activities.AllTransactions" />
+        <activity android:name="grouppay.dylankilbride.com.activities.GroupInformation"></activity>
     </application>
 
 </manifest>

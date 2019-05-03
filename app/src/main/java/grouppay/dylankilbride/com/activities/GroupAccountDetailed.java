@@ -12,6 +12,8 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.appcompat.widget.Toolbar;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
@@ -47,7 +49,7 @@ public class GroupAccountDetailed extends AppCompatActivity {
   TextView progressStartAmount, progressFinalAmount, noPreviousTransactionsTV;
   private RecyclerView paymentsLogRecyclerView;
   private RecyclerView.LayoutManager paymentsLogRecyclerViewLayoutManager;
-  String groupAccountIdStr, userIdStr, groupAccountName;
+  private String groupAccountIdStr, userIdStr, groupAccountName, groupImageUrl;
   GroupAccountAPI apiInterface;
   ArrayList<Transaction> transactionLog;
   private RequestOptions noGroupImageDefault = new RequestOptions().error(R.drawable.no_group_icon);
@@ -136,10 +138,24 @@ public class GroupAccountDetailed extends AppCompatActivity {
   }
 
   @Override
+  public boolean onCreateOptionsMenu(Menu menu) {
+    MenuInflater inflater = getMenuInflater();
+    inflater.inflate(R.menu.group_options_menu, menu);
+    return true;
+  }
+
+  @Override
   public boolean onOptionsItemSelected(MenuItem item) {
     switch (item.getItemId()) {
       case android.R.id.home:
         onBackPressed();
+        return true;
+      case R.id.groupInfo:
+        Intent groupInfo = new Intent(GroupAccountDetailed.this, GroupInformation.class);
+        groupInfo.putExtra("groupName", groupAccountName);
+        groupInfo.putExtra("groupAccountId", groupAccountIdStr);
+        groupInfo.putExtra("groupImageUrl", groupImageUrl);
+        startActivity(groupInfo);
         return true;
       default:
         return super.onOptionsItemSelected(item);
@@ -155,6 +171,7 @@ public class GroupAccountDetailed extends AppCompatActivity {
         if(!response.isSuccessful()) {
           //Handle
         } else {
+          groupImageUrl = response.body().getGroupImage().getGroupImageLocation();
           paymentProgress.setMax(roundBigDecimalUp(response.body().getTotalAmountOwed()));
           paymentProgress.setProgress(roundBigDecimalUp(response.body().getTotalAmountPaid()));
           if(response.body().getTotalAmountPaid().compareTo(BigDecimal.ZERO) == 0) {
@@ -168,7 +185,7 @@ public class GroupAccountDetailed extends AppCompatActivity {
           progressFinalAmount.setText(totalAmountOwed);
           groupAccountName = response.body().getAccountName();
           Glide.with(getApplicationContext())
-              .load(response.body().getGroupImage().getGroupImageLocation())
+              .load(groupImageUrl)
               .apply(noGroupImageDefault)
               .into(groupImage);
         }

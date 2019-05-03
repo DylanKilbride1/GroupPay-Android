@@ -38,4 +38,7 @@
     <string name="all_transactions">All Transactions</string>
     <string name="save_card_details_dialog">"We can save these card details to make it quicker when paying next time. What would you like to do?</string>
     <string name="hidden_card_details">\U25CF\U25CF\U25CF\U25CF \U25CF\U25CF\U25CF\U25CF \U25CF\U25CF\U25CF\U25CF</string>
+    <string name="detailed_group_group_info">Group Info</string>
+    <string name="detailed_group_group_messages">Messages</string>
+    <string name="group_info_leave_group">Leave Group</string>
 </resources>

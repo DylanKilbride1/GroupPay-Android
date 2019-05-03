@@ -33,7 +33,7 @@
             android:fontFamily="@font/cairo"
             android:backgroundTint="@color/editTextBgTintStandard"
             android:hint="Email"
-            android:text="test@gmail.com"
+            android:text="test@t.com"
             android:id="@+id/emailBox"/>
 
         <EditText

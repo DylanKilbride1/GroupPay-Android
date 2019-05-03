@@ -10,6 +10,7 @@ public class User {
   private String password;
   private String mobileNumber;
   private boolean isPressed = false;
+  private ProfileImage profileImage;
 
   public User(long id, String firstName, String lastName, String emailAddress, String password, String mobileNumber, String profileUrl) {
     this.id = id;
@@ -33,6 +34,14 @@ public class User {
     this.firstName = firstName;
     this.lastName = lastName;
     this.mobileNumber = mobileNumber;
+  }
+
+  public User(String firstName, String lastName, String emailAddress, String mobileNumber, ProfileImage profileImage) {
+    this.firstName = firstName;
+    this.lastName = lastName;
+    this.emailAddress = emailAddress;
+    this.mobileNumber = mobileNumber;
+    this.profileImage = profileImage;
   }
 
   public User() {
@@ -120,5 +129,13 @@ public class User {
 
   public void setProfileUrl(String profileUrl) {
     this.profileUrl = profileUrl;
+  }
+
+  public ProfileImage getProfileImage() {
+    return profileImage;
+  }
+
+  public void setProfileImage(ProfileImage profileImage) {
+    this.profileImage = profileImage;
   }
 }
