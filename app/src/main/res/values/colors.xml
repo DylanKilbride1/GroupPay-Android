@@ -6,8 +6,8 @@
     <color name="editTextBgTintStandard">#195fc9</color>
     <color name="loginRegisterButtonColor">#195fc6</color>
     <color name="colorLandingScreenFAB">#195fc6</color>
-    <color name="navBgStart">#1652ca</color>
-    <color name="navBgEnd">#1175e9</color>
+    <color name="navBgStart">#0036a2</color>
+    <color name="navBgEnd">#1698d7</color>
     <color name="colorActionBarText">#252525</color>
     <color name="colorDeleteButton">#ffffff</color>
     <color name="incorrectField">#e11313</color>
@@ -31,6 +31,7 @@
     <color name="groupAccountDetailedProgressBarStart">#1652ca</color>
     <color name="groupAccountDetailedInitialsBg">#68bff9</color>
     <color name="toolbarBackButton">#636363</color>
+    <color name="groupAccountDetailedImageBorder">#545454</color>
     <color name="homeFAB">#195fc9</color>
     <color name="createGroupAccountContactItemPressed">#9fd4f1</color>
 

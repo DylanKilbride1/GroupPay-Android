@@ -3,7 +3,7 @@
     <corners
         android:radius="8dp" />
     <gradient
-        android:angle="0"
+        android:angle="315"
         android:startColor="@color/navBgStart"
         android:endColor="@color/navBgEnd"
         android:type="linear" />

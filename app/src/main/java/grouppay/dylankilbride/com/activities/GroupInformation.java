@@ -1,32 +1,46 @@
 package grouppay.dylankilbride.com.activities;
 
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import grouppay.dylankilbride.com.adapters.GroupInfoParticipantsRVAdapter;
 import grouppay.dylankilbride.com.grouppay.R;
+import grouppay.dylankilbride.com.models.ImageUploadResponse;
 import grouppay.dylankilbride.com.models.User;
 import grouppay.dylankilbride.com.retrofit_interfaces.GroupAccountAPI;
+import okhttp3.MediaType;
+import okhttp3.MultipartBody;
+import okhttp3.RequestBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
+import android.Manifest;
+import android.app.Activity;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.database.Cursor;
+import android.net.Uri;
 import android.os.Bundle;
+import android.provider.MediaStore;
+import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
+import com.squareup.picasso.Picasso;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -42,6 +56,10 @@ public class GroupInformation extends AppCompatActivity {
   private GroupInfoParticipantsRVAdapter adapter;
   private LinearLayoutManager groupParticipantsRvLayoutManager;
   private GroupAccountAPI apiInterface;
+  private RequestBody filename;
+  private MultipartBody.Part fileToUpload;
+  private static final int GALLERY_REQUEST_CODE = 290;
+
   @Override
   protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
@@ -53,6 +71,14 @@ public class GroupInformation extends AppCompatActivity {
     groupImage = findViewById(R.id.groupInfoGroupImage);
     changeGroupImage = findViewById(R.id.groupInfoChangeImage);
     numberOfParticipants = findViewById(R.id.groupInfoNumberOfParticipants);
+    changeGroupImage = findViewById(R.id.groupInfoChangeImage);
+
+    changeGroupImage.setOnClickListener(new View.OnClickListener() {
+      @Override
+      public void onClick(View view) {
+        pickImage();
+      }
+    });
 
     setUpActionBar(groupName);
     getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -131,6 +157,78 @@ public class GroupInformation extends AppCompatActivity {
       @Override
       public void onFailure(Call<List<User>> call, Throwable t) {
 
+      }
+    });
+  }
+
+  public void pickImage() {
+    String[] mimeTypes = {"image/jpeg", "image/png"};
+    if (ContextCompat.checkSelfPermission(GroupInformation.this, Manifest.permission.READ_EXTERNAL_STORAGE)
+        != PackageManager.PERMISSION_GRANTED) {
+      Toast.makeText(GroupInformation.this, "Permission Denied", Toast.LENGTH_LONG).show();
+    } else {
+      Intent imageSelection = new Intent(Intent.ACTION_PICK);
+      imageSelection.setType("image/*");
+      imageSelection.putExtra(Intent.EXTRA_MIME_TYPES, mimeTypes);
+      startActivityForResult(imageSelection, GALLERY_REQUEST_CODE);
+    }
+  }
+
+  @Override
+  protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+    super.onActivityResult(requestCode, resultCode, data);
+    if(resultCode == Activity.RESULT_OK){
+      switch (requestCode) {
+        case GALLERY_REQUEST_CODE:
+          Uri selectedImage = data.getData();
+          String filePath = getRealPathFromURIPath(selectedImage, GroupInformation.this);
+          File file = new File(filePath);
+          RequestBody mFile = RequestBody.create(MediaType.parse("image/*"), file);
+          fileToUpload = MultipartBody.Part.createFormData("file", file.getName(), mFile);
+          filename = RequestBody.create(MediaType.parse("text/plain"), file.getName());
+          Picasso.get().load(selectedImage).into(groupImage);
+          setUpImageUploadRequest(fileToUpload, filename);
+      }
+    }
+  }
+
+  private String getRealPathFromURIPath(Uri contentURI, Activity activity) {
+    Cursor cursor = activity.getContentResolver().query(contentURI, null, null, null, null);
+    if (cursor == null) {
+      return contentURI.getPath();
+    } else {
+      cursor.moveToFirst();
+      int idx = cursor.getColumnIndex(MediaStore.Images.ImageColumns.DATA);
+      return cursor.getString(idx);
+    }
+  }
+
+  public void setUpImageUploadRequest(MultipartBody.Part file, RequestBody filename){
+    Retrofit groupImageUpload = new Retrofit.Builder()
+        .baseUrl(LOCALHOST_SERVER_BASEURL)
+        .addConverterFactory(GsonConverterFactory.create())
+        .build();
+    apiInterface = groupImageUpload.create(GroupAccountAPI.class);
+    handleImageUploadResponse(file, filename);
+  }
+
+  public void handleImageUploadResponse(MultipartBody.Part file, RequestBody filename){
+    Call<ImageUploadResponse> fileUpload = apiInterface.uploadGroupProfileImage(groupAccountId, file, filename);
+    fileUpload.enqueue(new Callback<ImageUploadResponse>() {
+      @Override
+      public void onResponse(Call<ImageUploadResponse> call, Response<ImageUploadResponse> response) {
+        if(!response.isSuccessful()){
+          //Handle
+        } else {
+          Glide.with(getApplicationContext())
+              .load(response.body().getFileUrl())
+              .into(groupImage);
+        }
+      }
+
+      @Override
+      public void onFailure(Call<ImageUploadResponse> call, Throwable t) {
+        Log.d("Upload Error", "Error " + t.getMessage());
       }
     });
   }
