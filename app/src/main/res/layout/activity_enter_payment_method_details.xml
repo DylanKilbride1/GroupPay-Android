@@ -73,12 +73,13 @@
             android:layout_marginLeft="@dimen/add_card_standard_margin"
             android:layout_marginBottom="15dp"
             android:maxLines="1"
+            android:digits="01234 56789"
             android:inputType="number"
+            android:maxLength="19"
             android:backgroundTint="@color/editTextBgTintStandard"
             android:drawableStart="@drawable/add_card_cardtype_generic_icon"
             android:drawablePadding="10dp"
-            android:hint="Card Number"
-            android:text="4242424242424242"/>
+            android:hint="Card Number"/>
 
         <ImageView
             android:id="@+id/scanCardImgIcon"
@@ -107,6 +108,8 @@
             android:layout_weight="0.5"
             android:layout_marginRight="15dp"
             android:maxLines="1"
+            android:maxLength="5"
+            android:inputType="phone"
             android:backgroundTint="@color/editTextBgTintStandard"
             android:hint="Expiry Date"
             android:text="05/20"/>
@@ -118,6 +121,7 @@
             android:layout_weight="0.5"
             android:layout_marginLeft="15dp"
             android:maxLines="1"
+            android:maxLength="3"
             android:inputType="number"
             android:backgroundTint="@color/editTextBgTintStandard"
             android:hint="CVV"

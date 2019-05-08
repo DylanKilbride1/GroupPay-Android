@@ -12,6 +12,7 @@ import androidx.appcompat.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import org.json.JSONArray;
@@ -40,6 +41,8 @@ public class PaymentMethods extends AppCompatActivity {
   PaymentMethodsRVAdapter adapter;
   private RecyclerView paymentMethodsRecyclerView;
   private RecyclerView.LayoutManager paymentMethodsRecyclerViewLayoutManager;
+  private ImageView noPaymentMethodsImage;
+  private TextView noPaymentMethodsText;
   private String userId;
   private CardManagerAPI apiInterface;
   private ArrayList<Cards> paymentMethodsList;
@@ -50,6 +53,9 @@ public class PaymentMethods extends AppCompatActivity {
     setContentView(R.layout.activity_payment_methods);
 
     userId = getIntent().getStringExtra("userIdStr");
+
+    noPaymentMethodsImage = findViewById(R.id.noPaymentMethodsImageView);
+    noPaymentMethodsText = findViewById(R.id.noPaymentMethodsTextView);
 
     setUpActionBar();
     getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -117,11 +123,14 @@ public class PaymentMethods extends AppCompatActivity {
             try {
               parsePaymentDetails(response.body().string());
               setUpAccountPreviewRecyclerView(paymentMethodsList);
+              checkForEmptyPaymentMethodList();
             } catch (IOException e) {
               e.printStackTrace();
             }
           } else {
-            //TODO Show text and image saying there has not been any transactions
+            paymentMethodsList.clear();
+            setUpAccountPreviewRecyclerView(paymentMethodsList);
+            checkForEmptyPaymentMethodList();
           }
         }
       }
@@ -158,6 +167,18 @@ public class PaymentMethods extends AppCompatActivity {
         return true;
       default:
         return super.onOptionsItemSelected(item);
+    }
+  }
+
+  public void checkForEmptyPaymentMethodList() {
+    if (paymentMethodsList.isEmpty()) {
+      paymentMethodsRecyclerView.setVisibility(View.GONE);
+      noPaymentMethodsText.setVisibility(View.VISIBLE);
+      noPaymentMethodsImage.setVisibility(View.VISIBLE);
+    } else {
+      paymentMethodsRecyclerView.setVisibility(View.VISIBLE);
+      noPaymentMethodsText.setVisibility(View.GONE);
+      noPaymentMethodsImage.setVisibility(View.GONE);
     }
   }
 

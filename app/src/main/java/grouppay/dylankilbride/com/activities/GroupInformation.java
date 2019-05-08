@@ -1,6 +1,7 @@
 package grouppay.dylankilbride.com.activities;
 
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.content.ContextCompat;
@@ -23,6 +24,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 import android.Manifest;
 import android.app.Activity;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
@@ -33,12 +35,14 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.squareup.picasso.Picasso;
+import com.stripe.android.model.Card;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -59,6 +63,7 @@ public class GroupInformation extends AppCompatActivity {
   private RequestBody filename;
   private MultipartBody.Part fileToUpload;
   private static final int GALLERY_REQUEST_CODE = 290;
+  private TextView leaveGroup;
 
   @Override
   protected void onCreate(Bundle savedInstanceState) {
@@ -72,6 +77,14 @@ public class GroupInformation extends AppCompatActivity {
     changeGroupImage = findViewById(R.id.groupInfoChangeImage);
     numberOfParticipants = findViewById(R.id.groupInfoNumberOfParticipants);
     changeGroupImage = findViewById(R.id.groupInfoChangeImage);
+    leaveGroup = findViewById(R.id.groupInfoLeaveGroupButton);
+
+    leaveGroup.setOnClickListener(new View.OnClickListener() {
+      @Override
+      public void onClick(View view) {
+        optionalCardSavingDialog();
+      }
+    });
 
     changeGroupImage.setOnClickListener(new View.OnClickListener() {
       @Override
@@ -243,6 +256,29 @@ public class GroupInformation extends AppCompatActivity {
       default:
         return super.onOptionsItemSelected(item);
     }
+  }
+
+  private void optionalCardSavingDialog() {
+    AlertDialog.Builder adb = new AlertDialog.Builder(this);
+    adb.setTitle("Are you sure?");
+    adb.setMessage("You will not be refunded any money you have deposited to " + groupName);
+    //adb.setIcon(android.R.drawable.);
+    adb.setPositiveButton("Leave", new DialogInterface.OnClickListener() {
+      public void onClick(DialogInterface dialog, int which) {
+
+      }
+    });
+    adb.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+      public void onClick(DialogInterface dialog, int which) {
+
+      }
+    });
+    AlertDialog alert = adb.create();
+    alert.show();
+    Button nbutton = alert.getButton(DialogInterface.BUTTON_NEGATIVE);
+    nbutton.setTextColor(getResources().getColor(R.color.colorAccent));
+    Button pbutton = alert.getButton(DialogInterface.BUTTON_POSITIVE);
+    pbutton.setTextColor(getResources().getColor(R.color.incorrectField));
   }
 
   @Override

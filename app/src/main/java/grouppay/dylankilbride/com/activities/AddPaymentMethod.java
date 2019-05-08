@@ -23,6 +23,8 @@ import grouppay.dylankilbride.com.grouppay.R;
 import grouppay.dylankilbride.com.models.StripeCharge;
 import grouppay.dylankilbride.com.models.StripeChargeReceipt;
 import grouppay.dylankilbride.com.retrofit_interfaces.CardManagerAPI;
+import grouppay.dylankilbride.com.text_watchers.CardExpiryDateTextWatcher;
+import grouppay.dylankilbride.com.text_watchers.CardNumberTextWatcher;
 import io.card.payment.CardIOActivity;
 import io.card.payment.CreditCard;
 import retrofit2.Call;
@@ -57,7 +59,8 @@ public class AddPaymentMethod extends AppCompatActivity {
     cvv = (EditText) findViewById(R.id.addCardCvvET);
     addPaymentMethodContinueBTN = (Button) findViewById(R.id.addPaymentMethodContinueBTN);
 
-   // addTextWatchers(cardNumber, expiryDate, cvv);
+   cardNumber.addTextChangedListener(new CardNumberTextWatcher());
+   expiryDate.addTextChangedListener(new CardExpiryDateTextWatcher());
 
     addPaymentMethodContinueBTN.setOnClickListener(new View.OnClickListener() {
       @Override

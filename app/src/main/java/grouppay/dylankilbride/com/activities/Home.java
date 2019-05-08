@@ -53,7 +53,7 @@ public class Home extends AppCompatActivity implements ItemClickListener {
   private String userId, userName, userEmail, profileImgUrl;
   private int numberOfActiveGroups;
   private GroupAccountAPI apiInterface;
-  private ImageView navDrawerProfileImage;
+  private ImageView navDrawerProfileImage, noAccountsImgView;
 
   @Override
   protected void onCreate(Bundle savedInstanceState) {
@@ -196,24 +196,6 @@ public class Home extends AppCompatActivity implements ItemClickListener {
     actionBarDrawerToggle.onConfigurationChanged(newConfig);
   }
 
-//  public boolean checkIfListIsEmpty(List<GroupAccount> list) {
-//    if (list.isEmpty()) {
-//      return true;
-//    } else {
-//      return false;
-//    }
-//  }
-//
-//  public void emptyRVTextViewSetUp(boolean listEmpty) {
-//    if (listEmpty == true) {
-//      accountsRecyclerView.setVisibility(View.GONE);
-//      noAccountsTextView.setVisibility(View.VISIBLE);
-//    } else {
-//      accountsRecyclerView.setVisibility(View.VISIBLE);
-//      noAccountsTextView.setVisibility(View.GONE);
-//    }
-//  }
-
   public void setUpAssociatedAccountsCall(String userId) {
     Retrofit getAssociatedAccounts = new Retrofit.Builder()
         .baseUrl(LOCALHOST_SERVER_BASEURL)
@@ -231,8 +213,9 @@ public class Home extends AppCompatActivity implements ItemClickListener {
         if(!response.isSuccessful()) {
           setUpFAB();
           setUpNavDrawer();
+          groupAccounts.clear();
           setUpAccountPreviewRecyclerView();
-          //emptyRVTextViewSetUp(checkIfListIsEmpty(groupAccounts));
+          checkForEmptyAccountsList();
         } else {
           if(response.body().size() > 0 && !response.body().equals("null")){
             groupAccounts.clear();
@@ -292,6 +275,18 @@ public class Home extends AppCompatActivity implements ItemClickListener {
     if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
       requestPermissions(new String[]{Manifest.permission.WRITE_CONTACTS,
           Manifest.permission.READ_CONTACTS}, 1);
+    }
+  }
+
+  public void checkForEmptyAccountsList() {
+    if (groupAccounts.isEmpty()) {
+      accountsRecyclerView.setVisibility(View.GONE);
+      noAccountsImgView.setVisibility(View.VISIBLE);
+      noAccountsTextView.setVisibility(View.VISIBLE);
+    } else {
+      accountsRecyclerView.setVisibility(View.VISIBLE);
+      noAccountsTextView.setVisibility(View.GONE);
+      noAccountsImgView.setVisibility(View.GONE);
     }
   }
 

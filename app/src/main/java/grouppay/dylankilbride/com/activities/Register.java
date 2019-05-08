@@ -44,8 +44,6 @@ public class Register extends AppCompatActivity {
     registerButton = (Button)findViewById(R.id.registerButton);
     loginLink = (TextView)findViewById(R.id.loginLink);
 
-    final String firstName = firstNameBox.getText().toString();
-
     requestQueue = Volley.newRequestQueue(this);
 
 

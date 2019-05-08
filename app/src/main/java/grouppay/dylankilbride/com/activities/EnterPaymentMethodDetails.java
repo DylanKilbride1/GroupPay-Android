@@ -7,6 +7,8 @@ import grouppay.dylankilbride.com.grouppay.R;
 import grouppay.dylankilbride.com.models.StripeCharge;
 import grouppay.dylankilbride.com.models.StripeChargeReceipt;
 import grouppay.dylankilbride.com.retrofit_interfaces.CardManagerAPI;
+import grouppay.dylankilbride.com.text_watchers.CardExpiryDateTextWatcher;
+import grouppay.dylankilbride.com.text_watchers.CardNumberTextWatcher;
 import io.card.payment.CardIOActivity;
 import io.card.payment.CreditCard;
 import retrofit2.Call;
@@ -20,6 +22,9 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextUtils;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
@@ -77,6 +82,9 @@ public class EnterPaymentMethodDetails extends AppCompatActivity {
         optionalCardSavingDialog();
       }
     });
+
+    cardNumber.addTextChangedListener(new CardNumberTextWatcher());
+    expiryDate.addTextChangedListener(new CardExpiryDateTextWatcher());
   }
 
   private void stripeProcess(Card cardToAdd, final boolean optionalCardSave){

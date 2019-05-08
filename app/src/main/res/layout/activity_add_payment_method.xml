@@ -69,7 +69,9 @@
                 android:layout_marginLeft="@dimen/add_card_standard_margin"
                 android:layout_marginBottom="15dp"
                 android:maxLines="1"
-                android:inputType="number"
+                android:maxLength="19"
+                android:inputType="phone"
+                android:digits="1234567890 "
                 android:backgroundTint="@color/editTextBgTintStandard"
                 android:drawableStart="@drawable/add_card_cardtype_generic_icon"
                 android:drawablePadding="10dp"
@@ -102,6 +104,8 @@
             android:layout_weight="0.5"
             android:layout_marginRight="15dp"
             android:maxLines="1"
+            android:maxLength="5"
+            android:inputType="phone"
             android:backgroundTint="@color/editTextBgTintStandard"
             android:hint="Expiry Date"/>
 
@@ -112,6 +116,7 @@
             android:layout_weight="0.5"
             android:layout_marginLeft="15dp"
             android:maxLines="1"
+            android:maxLength="3"
             android:inputType="number"
             android:backgroundTint="@color/editTextBgTintStandard"
             android:hint="CVV"/>

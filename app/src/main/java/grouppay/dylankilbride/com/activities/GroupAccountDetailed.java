@@ -74,6 +74,8 @@ public class GroupAccountDetailed extends AppCompatActivity {
     groupImage = (ImageView) findViewById(R.id.activeAccountDetailedGroupImage);
     progressStartAmount = (TextView) findViewById(R.id.activeAccountProgressStartTV);
     progressFinalAmount = (TextView) findViewById(R.id.activeAccountProgressEndTV);
+    noPreviousTransactionsTV = findViewById(R.id.noTransactionsTextView);
+    noPreviousTransactionsImg = findViewById(R.id.noTransactionsImageView);
 
     setUpFAB();
   }
@@ -220,7 +222,9 @@ public class GroupAccountDetailed extends AppCompatActivity {
             Collections.reverse(transactionLog);
             setUpAccountPreviewRecyclerView(transactionLog);
           } else {
-            //TODO Show text and image saying there has not been any transactions
+            transactionLog.clear();
+            setUpAccountPreviewRecyclerView(transactionLog);
+            checkForEmptyTransactionList();
           }
         }
       }
@@ -231,21 +235,21 @@ public class GroupAccountDetailed extends AppCompatActivity {
     });
   }
 
-//  public void emptyRVTextViewSetUp(List<Transaction> transactions) {
-//    if (transactions.isEmpty()) {
-//      paymentsLogRecyclerView.setVisibility(View.GONE);
-//      noPreviousTransactionsImg.setVisibility(View.VISIBLE);
-//      noPreviousTransactionsTV.setVisibility(View.VISIBLE);
-//    } else {
-//      paymentsLogRecyclerView.setVisibility(View.VISIBLE);
-//      noPreviousTransactionsImg.setVisibility(View.GONE);
-//      noPreviousTransactionsTV.setVisibility(View.GONE);
-//    }
-//  }
-
   public int roundBigDecimalUp(BigDecimal amount){
     BigDecimal roundedBigDecimal = amount.setScale(0, RoundingMode.CEILING);
     return roundedBigDecimal.intValueExact();
+  }
+
+  public void checkForEmptyTransactionList() {
+    if (transactionLog.isEmpty()) {
+      paymentsLogRecyclerView.setVisibility(View.GONE);
+      noPreviousTransactionsTV.setVisibility(View.VISIBLE);
+      noPreviousTransactionsImg.setVisibility(View.VISIBLE);
+    } else {
+      paymentsLogRecyclerView.setVisibility(View.VISIBLE);
+      noPreviousTransactionsTV.setVisibility(View.GONE);
+      noPreviousTransactionsImg.setVisibility(View.GONE);
+    }
   }
 
   @Override

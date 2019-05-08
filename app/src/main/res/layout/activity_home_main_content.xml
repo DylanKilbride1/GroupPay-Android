@@ -15,31 +15,32 @@
         android:layout_height="match_parent"
         android:orientation="vertical"/>
 
-    <!--<LinearLayout-->
-        <!--android:layout_width="match_parent"-->
-        <!--android:layout_height="wrap_content"-->
-        <!--android:layout_gravity="center"-->
-        <!--android:orientation="vertical">-->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:orientation="vertical">
 
-        <!--<ImageView-->
-            <!--android:layout_width="wrap_content"-->
-            <!--android:layout_height="wrap_content"-->
-            <!--android:layout_gravity="center_horizontal"-->
-            <!--android:src="@drawable/no_accounts_icon"/>-->
+        <ImageView
+            android:id="@+id/noAccountPreviewsImgView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:src="@drawable/no_accounts_icon"/>
 
-        <!--<TextView-->
-            <!--android:id="@+id/noAccountPreviewsTextView"-->
-            <!--android:layout_width="match_parent"-->
-            <!--android:layout_height="70dp"-->
-            <!--android:gravity="center"-->
-            <!--android:layout_gravity="center_vertical"-->
-            <!--android:fontFamily="@font/cairo"-->
-            <!--android:textSize="30dp"-->
-            <!--android:text="No Active Accounts"-->
-            <!--android:layout_marginRight="10dp"-->
-            <!--android:layout_marginLeft="10dp"/>-->
+        <TextView
+            android:id="@+id/noAccountPreviewsTextView"
+            android:layout_width="match_parent"
+            android:layout_height="70dp"
+            android:gravity="center"
+            android:layout_gravity="center_vertical"
+            android:fontFamily="@font/cairo"
+            android:textSize="30dp"
+            android:text="No Active Accounts"
+            android:layout_marginRight="10dp"
+            android:layout_marginLeft="10dp"/>
 
-    <!--</LinearLayout>-->
+    </LinearLayout>
 
 </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 
