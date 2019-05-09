@@ -10,6 +10,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import grouppay.dylankilbride.com.adapters.GroupInfoParticipantsRVAdapter;
 import grouppay.dylankilbride.com.grouppay.R;
+import grouppay.dylankilbride.com.models.DeletionSuccess;
 import grouppay.dylankilbride.com.models.ImageUploadResponse;
 import grouppay.dylankilbride.com.models.User;
 import grouppay.dylankilbride.com.retrofit_interfaces.GroupAccountAPI;
@@ -52,7 +53,7 @@ import static grouppay.dylankilbride.com.constants.Constants.LOCALHOST_SERVER_BA
 
 public class GroupInformation extends AppCompatActivity {
 
-  private String groupName, groupAccountId, groupImageUrl;
+  private String groupName, groupAccountId, groupImageUrl, userId;
   private List<User> participantsList = new ArrayList<>();
   private ImageView groupImage;
   private TextView changeGroupImage, numberOfParticipants;
@@ -73,6 +74,8 @@ public class GroupInformation extends AppCompatActivity {
     groupName = getIntent().getStringExtra("groupName");
     groupAccountId = getIntent().getStringExtra("groupAccountId");
     groupImageUrl = getIntent().getStringExtra("groupImageUrl");
+    userId = getIntent().getStringExtra("userId");
+
     groupImage = findViewById(R.id.groupInfoGroupImage);
     changeGroupImage = findViewById(R.id.groupInfoChangeImage);
     numberOfParticipants = findViewById(R.id.groupInfoNumberOfParticipants);
@@ -82,7 +85,7 @@ public class GroupInformation extends AppCompatActivity {
     leaveGroup.setOnClickListener(new View.OnClickListener() {
       @Override
       public void onClick(View view) {
-        optionalCardSavingDialog();
+        confirmLeaveDialog();
       }
     });
 
@@ -258,14 +261,14 @@ public class GroupInformation extends AppCompatActivity {
     }
   }
 
-  private void optionalCardSavingDialog() {
+  private void confirmLeaveDialog() {
     AlertDialog.Builder adb = new AlertDialog.Builder(this);
     adb.setTitle("Are you sure?");
     adb.setMessage("You will not be refunded any money you have deposited to " + groupName);
     //adb.setIcon(android.R.drawable.);
     adb.setPositiveButton("Leave", new DialogInterface.OnClickListener() {
       public void onClick(DialogInterface dialog, int which) {
-
+        setUpDeleteParticipantRequest(groupAccountId, userId);
       }
     });
     adb.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
@@ -285,5 +288,36 @@ public class GroupInformation extends AppCompatActivity {
   protected void onResume() {
     super.onResume();
     setUpGroupParticipantsCall(groupAccountId);
+  }
+
+  public void setUpDeleteParticipantRequest(String groupAccountId, String userId){
+    Retrofit deleteParticipant = new Retrofit.Builder()
+        .baseUrl(LOCALHOST_SERVER_BASEURL)
+        .addConverterFactory(GsonConverterFactory.create())
+        .build();
+    apiInterface = deleteParticipant.create(GroupAccountAPI.class);
+    deleteParticipantResponse(groupAccountId, userId);
+  }
+
+  public void deleteParticipantResponse(String groupAccountId, String userId){
+    Call<DeletionSuccess> participantDelete = apiInterface.deleteUserFromGroup(groupAccountId, userId);
+    participantDelete.enqueue(new Callback<DeletionSuccess>() {
+      @Override
+      public void onResponse(Call<DeletionSuccess> call, Response<DeletionSuccess> response) {
+        if(!response.isSuccessful()){
+          Toast.makeText(getApplicationContext(), "Oops! Something went wrong..", Toast.LENGTH_SHORT).show();
+        } else {
+          Intent backToHome = new Intent(getApplicationContext(), Home.class);
+          backToHome.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+          startActivity(backToHome);
+        }
+      }
+
+      @Override
+      public void onFailure(Call<DeletionSuccess> call, Throwable t) {
+        Toast.makeText(getApplicationContext(), "Oops! Something went wrong..", Toast.LENGTH_SHORT).show();
+        Log.d("Upload Error", "Error " + t.getMessage());
+      }
+    });
   }
 }

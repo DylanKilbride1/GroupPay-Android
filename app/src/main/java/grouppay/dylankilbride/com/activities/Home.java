@@ -15,6 +15,8 @@ import android.os.Bundle;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.appcompat.widget.Toolbar;
+
+import android.os.Handler;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -74,6 +76,12 @@ public class Home extends AppCompatActivity implements ItemClickListener {
       @Override
       public void onRefresh() {
         setUpAssociatedAccountsCall(userId);
+        new Handler().postDelayed(new Runnable() {
+          @Override
+          public void run() {
+           pullToRefresh.setRefreshing(false);
+          }
+        },4000);
       }
     });
 

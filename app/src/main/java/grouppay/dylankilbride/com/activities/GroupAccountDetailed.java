@@ -157,6 +157,7 @@ public class GroupAccountDetailed extends AppCompatActivity {
         groupInfo.putExtra("groupName", groupAccountName);
         groupInfo.putExtra("groupAccountId", groupAccountIdStr);
         groupInfo.putExtra("groupImageUrl", groupImageUrl);
+        groupInfo.putExtra("userId", userIdStr);
         startActivity(groupInfo);
         return true;
       default:
