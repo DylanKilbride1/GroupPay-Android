@@ -59,7 +59,7 @@ public class AddPaymentMethod extends AppCompatActivity {
     cvv = (EditText) findViewById(R.id.addCardCvvET);
     addPaymentMethodContinueBTN = (Button) findViewById(R.id.addPaymentMethodContinueBTN);
 
-   cardNumber.addTextChangedListener(new CardNumberTextWatcher());
+   cardNumber.addTextChangedListener(new CardNumberTextWatcher(cardNumber));
    expiryDate.addTextChangedListener(new CardExpiryDateTextWatcher());
 
     addPaymentMethodContinueBTN.setOnClickListener(new View.OnClickListener() {

@@ -83,7 +83,7 @@ public class EnterPaymentMethodDetails extends AppCompatActivity {
       }
     });
 
-    cardNumber.addTextChangedListener(new CardNumberTextWatcher());
+    cardNumber.addTextChangedListener(new CardNumberTextWatcher(cardNumber));
     expiryDate.addTextChangedListener(new CardExpiryDateTextWatcher());
   }
 
