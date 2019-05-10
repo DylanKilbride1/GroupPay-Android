@@ -82,38 +82,47 @@
                 android:maxLength="150"
                 android:padding="5dp" />
 
-            <LinearLayout
-                android:layout_marginTop="15dp"
+            <RelativeLayout
+                android:id="@+id/stage1AmountSection"
+                android:layout_marginTop="30dp"
                 android:layout_below="@+id/createGroupAccountStage1DescriptionET"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal">
+                android:layout_height="70dp">
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textSize="30sp"
-                    android:text="Amount Needed:"
-                    android:fontFamily="@font/cairo"
-                    android:layout_marginRight="40dp"/>
+                    <TextView
+                        android:id="@+id/createGroupAccountStage1AmtTV"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:textSize="30sp"
+                        android:text="EUR"
+                        android:fontFamily="@font/cairo"
+                        android:layout_marginRight="20dp"
+                        android:gravity="center_vertical"/>
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textSize="30sp"
-                    android:fontFamily="@font/cairo"
-                    android:text="€"/>
+                    <EditText
+                        android:id="@+id/createGroupAccountStage1AmtNeededET"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:layout_alignParentEnd="true"
+                        android:fontFamily="@font/cairo"
+                        android:textSize="27sp"
+                        android:digits="0123456789.,€"
+                        android:inputType="number"
+                        android:maxLength="19"
+                        android:hint="@string/deposit_money_amount_hint"
+                        android:background="@android:color/transparent"
+                        />
 
-                <EditText
-                    android:id="@+id/createGroupAccountStage1AmtNeededET"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:fontFamily="@font/cairo"
-                    android:textSize="27sp"
-                    android:backgroundTint="@color/editTextBgTintStandard"
-                    tools:text="100"/>
+            </RelativeLayout>
 
-            </LinearLayout>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="25dp"
+                android:layout_below="@+id/stage1AmountSection"
+                android:layout_marginTop="-20dp"
+                android:text="Amount Needed"
+                android:fontFamily="@font/cairo"
+                android:gravity="center_vertical"/>
 
             <Button
                 android:id="@+id/createGroupAccountStage1ContinueBTN"

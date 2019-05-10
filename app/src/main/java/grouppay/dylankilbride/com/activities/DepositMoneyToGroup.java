@@ -5,6 +5,10 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
 import android.os.Bundle;
 import androidx.appcompat.widget.Toolbar;
+
+import android.text.Editable;
+import android.text.InputFilter;
+import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -12,7 +16,11 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import java.text.NumberFormat;
+
 import grouppay.dylankilbride.com.grouppay.R;
+import grouppay.dylankilbride.com.text_watchers.CurrencyTextWatcher;
+import grouppay.dylankilbride.com.text_watchers.DecimalDigitsInputFilter;
 
 public class DepositMoneyToGroup extends AppCompatActivity {
 
@@ -20,6 +28,7 @@ public class DepositMoneyToGroup extends AppCompatActivity {
   EditText amountToPay;
   Button continueBtn;
   TextView depositMoneyToGroupHeader;
+  private String current = "";
 
   @Override
   protected void onCreate(Bundle savedInstanceState) {
@@ -50,6 +59,16 @@ public class DepositMoneyToGroup extends AppCompatActivity {
         finish();
       }
     });
+
+    amountToPay.addTextChangedListener(new CurrencyTextWatcher(amountToPay));
+    amountToPay.setFilters(new InputFilter[] {new DecimalDigitsInputFilter(2)});
+    setAmountMaxLength(18);
+  }
+
+  public void setAmountMaxLength(int length) {
+    InputFilter[] filterArray = new InputFilter[1];
+    filterArray[0] = new InputFilter.LengthFilter(length);
+    amountToPay.setFilters(filterArray);
   }
 
   public void setUpActionBar() {
