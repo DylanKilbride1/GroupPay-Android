@@ -47,8 +47,8 @@
         android:layout_marginTop="40dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="15dp"
-        android:layout_marginStart="15dp"
+        android:layout_marginEnd="20dp"
+        android:layout_marginStart="20dp"
         android:orientation="horizontal">
 
         <TextView
@@ -59,24 +59,19 @@
             android:fontFamily="@font/cairo"
             android:layout_marginEnd="40dp"/>
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textSize="30sp"
-            android:fontFamily="@font/cairo"
-            android:text="@string/euro_currency_symbol"/>
-
         <EditText
             android:id="@+id/depositMoneyToGroupAmountET"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:hint="@string/deposit_money_amount_hint"
             android:fontFamily="@font/cairo"
             android:textSize="27sp"
-            android:inputType="numberDecimal"
-            android:backgroundTint="@color/editTextBgTintStandard"
-            tools:text="100"/>
-
-
+            android:digits="0123456789.,€"
+            android:inputType="number"
+            android:maxLength="19"
+            android:background="@android:color/transparent"
+            tools:text=""/>
 
     </LinearLayout>
 

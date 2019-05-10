@@ -16,6 +16,7 @@ import android.os.Bundle;
 import androidx.appcompat.widget.Toolbar;
 
 import android.provider.MediaStore;
+import android.text.InputFilter;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
@@ -39,6 +40,8 @@ import grouppay.dylankilbride.com.models.GroupAccount;
 import grouppay.dylankilbride.com.models.ImageUploadResponse;
 import grouppay.dylankilbride.com.retrofit_interfaces.GroupAccountAPI;
 import grouppay.dylankilbride.com.retrofit_interfaces.ProfileAPI;
+import grouppay.dylankilbride.com.text_watchers.CurrencyTextWatcher;
+import grouppay.dylankilbride.com.text_watchers.DecimalDigitsInputFilter;
 import okhttp3.MediaType;
 import okhttp3.MultipartBody;
 import okhttp3.RequestBody;
@@ -100,6 +103,16 @@ public class CreateGroupAccountStage1 extends AppCompatActivity {
         createBasicAccount();
       }
     });
+
+    amountNeeded.addTextChangedListener(new CurrencyTextWatcher(amountNeeded));
+    amountNeeded.setFilters(new InputFilter[] {new DecimalDigitsInputFilter(2)});
+    setAmountMaxLength(18);
+  }
+
+  public void setAmountMaxLength(int length) {
+    InputFilter[] filterArray = new InputFilter[1];
+    filterArray[0] = new InputFilter.LengthFilter(length);
+    amountNeeded.setFilters(filterArray);
   }
 
   private void validateGroupFieldEntries() {
