@@ -16,6 +16,7 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -47,12 +48,15 @@ public class GroupAccountDetailed extends AppCompatActivity {
   ProgressBar paymentProgress;
   ImageView groupImage, noPreviousTransactionsImg;
   TextView progressStartAmount, progressFinalAmount, noPreviousTransactionsTV;
+  Button viewVirtualDetails;
   private RecyclerView paymentsLogRecyclerView;
   private RecyclerView.LayoutManager paymentsLogRecyclerViewLayoutManager;
-  private String groupAccountIdStr, userIdStr, groupAccountName, groupImageUrl;
-  GroupAccountAPI apiInterface;
-  ArrayList<Transaction> transactionLog;
+  private String groupAccountIdStr, userIdStr, groupAccountName, groupImageUrl, numberOfParticipants;
+  private GroupAccountAPI apiInterface;
+  private ArrayList<Transaction> transactionLog;
   private RequestOptions noGroupImageDefault = new RequestOptions().error(R.drawable.no_group_icon);
+  private FloatingActionButton fab;
+  private double amountOwed;
 
   GroupAccount intentReceivedGroupAccount = new GroupAccount();
 
@@ -76,12 +80,24 @@ public class GroupAccountDetailed extends AppCompatActivity {
     progressFinalAmount = (TextView) findViewById(R.id.activeAccountProgressEndTV);
     noPreviousTransactionsTV = findViewById(R.id.noTransactionsTextView);
     noPreviousTransactionsImg = findViewById(R.id.noTransactionsImageView);
+    viewVirtualDetails = findViewById(R.id.detailedAccountsViewVirtualDetailsBTN);
+
+    viewVirtualDetails.setOnClickListener(new View.OnClickListener() {
+      @Override
+      public void onClick(View view) {
+        Intent viewVirtualCardDetails = new Intent(GroupAccountDetailed.this, VirtualCardDetails.class);
+        viewVirtualCardDetails.putExtra("groupId", groupAccountIdStr);
+        startActivity(viewVirtualCardDetails);
+      }
+    });
+    viewVirtualDetails.setAlpha(0.5f);
+    viewVirtualDetails.setClickable(false);
 
     setUpFAB();
   }
 
   private void setUpFAB() {
-    FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fabDepositMoney);
+    fab = (FloatingActionButton) findViewById(R.id.fabDepositMoney);
     fab.setOnClickListener(new View.OnClickListener() {
       @Override
       public void onClick(View view) {
@@ -89,6 +105,8 @@ public class GroupAccountDetailed extends AppCompatActivity {
         intent.putExtra("userIdStr", userIdStr);
         intent.putExtra("groupAccountIdStr", groupAccountIdStr);
         intent.putExtra("groupAccountName", groupAccountName);
+        intent.putExtra("numberOfParticipants", numberOfParticipants);
+        intent.putExtra("totalOwed", Double.toString(amountOwed));
         startActivity(intent);
       }
     });
@@ -177,6 +195,7 @@ public class GroupAccountDetailed extends AppCompatActivity {
           groupImageUrl = response.body().getGroupImage().getGroupImageLocation();
           paymentProgress.setMax(roundBigDecimalUp(response.body().getTotalAmountOwed()));
           paymentProgress.setProgress(roundBigDecimalUp(response.body().getTotalAmountPaid()));
+
           if(response.body().getTotalAmountPaid().compareTo(BigDecimal.ZERO) == 0) {
             String totalAmountPaid = "€" + Integer.toString(roundBigDecimalUp(response.body().getTotalAmountPaid()));
             progressStartAmount.setText(totalAmountPaid);
@@ -184,9 +203,15 @@ public class GroupAccountDetailed extends AppCompatActivity {
             String totalAmountPaid = "€" + response.body().getTotalAmountPaid().stripTrailingZeros().toPlainString();
             progressStartAmount.setText(totalAmountPaid);
           }
+
           String totalAmountOwed = "€" + response.body().getTotalAmountOwed().stripTrailingZeros().toPlainString();
           progressFinalAmount.setText(totalAmountOwed);
           groupAccountName = response.body().getAccountName();
+          if (checkIfPaymentAmountsEqual(response.body().getTotalAmountOwed(), response.body().getTotalAmountPaid())) {
+            viewVirtualDetails.setAlpha(1);
+            viewVirtualDetails.setClickable(true);
+            fab.setVisibility(View.GONE);
+          }
           Glide.with(getApplicationContext())
               .load(groupImageUrl)
               .apply(noGroupImageDefault)
@@ -198,6 +223,14 @@ public class GroupAccountDetailed extends AppCompatActivity {
 
       }
     });
+  }
+
+  private boolean checkIfPaymentAmountsEqual(BigDecimal amountOwed, BigDecimal amountPaid) {
+    if(amountOwed.doubleValue() == amountPaid.doubleValue()) {
+      return true;
+    } else {
+      return false;
+    }
   }
 
   public void getAccountTransactions(String groupAccountIdStr) {

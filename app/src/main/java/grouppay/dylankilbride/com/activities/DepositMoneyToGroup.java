@@ -16,6 +16,9 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import java.math.BigDecimal;
+import java.math.RoundingMode;
+import java.text.DecimalFormat;
 import java.text.NumberFormat;
 
 import grouppay.dylankilbride.com.grouppay.R;
@@ -28,7 +31,7 @@ public class DepositMoneyToGroup extends AppCompatActivity {
   EditText amountToPay;
   Button continueBtn;
   TextView depositMoneyToGroupHeader;
-  private String current = "";
+  private String numberOfParticipants, totalAmountOwed;
 
   @Override
   protected void onCreate(Bundle savedInstanceState) {
@@ -38,6 +41,8 @@ public class DepositMoneyToGroup extends AppCompatActivity {
     groupAccountId = getIntent().getStringExtra("groupAccountIdStr");
     groupAccountName = getIntent().getStringExtra("groupAccountName");
     userId = getIntent().getStringExtra("userIdStr");
+    numberOfParticipants = getIntent().getStringExtra("numberOfParticipants");
+    totalAmountOwed = getIntent().getStringExtra("totalOwed");
 
     setUpActionBar();
     getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -63,6 +68,14 @@ public class DepositMoneyToGroup extends AppCompatActivity {
     amountToPay.addTextChangedListener(new CurrencyTextWatcher(amountToPay));
     amountToPay.setFilters(new InputFilter[] {new DecimalDigitsInputFilter(2)});
     setAmountMaxLength(18);
+  }
+
+  private String calculateAmountToPay(String noOfParticipants, String owed) {
+    double amountOwed = Double.parseDouble(owed);
+    int noOfMembers = Integer.parseInt(noOfParticipants);
+    DecimalFormat amountFormat = new DecimalFormat("#.##");
+    amountFormat.setRoundingMode(RoundingMode.CEILING);
+    return amountFormat.format((amountOwed/(double)noOfMembers) / 100);
   }
 
   public void setAmountMaxLength(int length) {
@@ -100,4 +113,9 @@ public class DepositMoneyToGroup extends AppCompatActivity {
     }
   }
 
+  @Override
+  protected void onResume() {
+    super.onResume();
+    amountToPay.setText(calculateAmountToPay(numberOfParticipants, totalAmountOwed));
+  }
 }

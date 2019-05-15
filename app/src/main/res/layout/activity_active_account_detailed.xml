@@ -37,16 +37,15 @@
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="150dp"
-            android:layout_marginLeft="30dp"
-            android:layout_marginRight="30dp"
+            android:layout_height="190dp"
+            android:layout_marginLeft="25dp"
+            android:layout_marginRight="25dp"
             android:orientation="vertical"
             android:gravity="center|bottom">
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                >
+                android:layout_height="wrap_content">
 
                 <TextView
                     android:id="@+id/activeAccountProgressStartTV"
@@ -72,11 +71,21 @@
                 <ProgressBar
                     android:id="@+id/detailedAccountPaymentProgress"
                     android:layout_width="match_parent"
-                    android:layout_height="30dp"
-                    android:paddingBottom="20dp"
+                    android:layout_height="25dp"
+                    android:paddingBottom="15dp"
                     style="@style/Widget.AppCompat.ProgressBar.Horizontal"
                     android:progressDrawable="@drawable/active_account_detailed_progress_bar"/>
             </LinearLayout>
+
+            <Button
+                android:id="@+id/detailedAccountsViewVirtualDetailsBTN"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="10dp"
+                android:textColor="@color/whiteText"
+                android:text="View Virtual Payment Details"
+                android:background="@drawable/generic_rounded_continue_button_bg"
+                android:layout_marginBottom="15dp"/>
 
         </LinearLayout>
 

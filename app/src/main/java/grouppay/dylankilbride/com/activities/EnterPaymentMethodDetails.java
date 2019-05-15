@@ -141,6 +141,7 @@ public class EnterPaymentMethodDetails extends AppCompatActivity {
           finish();
         } else {
           Toast.makeText(getApplicationContext(), "Something went wrong!", Toast.LENGTH_LONG).show();
+          finish();
         }
       }
       @Override
@@ -182,20 +183,6 @@ public class EnterPaymentMethodDetails extends AppCompatActivity {
 
 
         cardNumber.setText(cardNumberResultStr);
-        if(scanResult.getCardType().toString().equals("American Express")) {
-          cardNumber.setCompoundDrawablesWithIntrinsicBounds(R.drawable.add_card_cardtype_amex_icon, 0, 0, 0);
-        } else if(scanResult.getCardType().toString().equals("Discover")) {
-          cardNumber.setCompoundDrawablesWithIntrinsicBounds(R.drawable.add_card_cardtype_discover_icon, 0, 0, 0);
-        } else if(scanResult.getCardType().toString().equals("Visa")) {
-          cardNumber.setCompoundDrawablesWithIntrinsicBounds(R.drawable.add_card_cardtype_visa_icon, 0, 0, 0);
-        } else if(scanResult.getCardType().toString().equals("MasterCard")) {
-          cardNumber.setCompoundDrawablesWithIntrinsicBounds(R.drawable.add_card_cardtype_mastercard_icon, 0, 0, 0);
-        } else if(scanResult.getCardType().toString().equals("Maestro")) {
-          cardNumber.setCompoundDrawablesWithIntrinsicBounds(R.drawable.add_card_cardtype_maestro_icon, 0, 0, 0);
-        } else {
-          cardNumber.setCompoundDrawablesWithIntrinsicBounds(R.drawable.add_card_cardtype_generic_icon, 0, 0, 0);
-        }
-
         if (scanResult.isExpiryValid()) {
           cardExpiryResultStr = scanResult.expiryMonth + "/" + scanResult.expiryYear;
           expiryDate.setText(cardExpiryResultStr);

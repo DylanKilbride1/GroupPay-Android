@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context="grouppay.dylankilbride.com.activities.VirtualCardDetails">
+
+    <com.google.android.material.appbar.AppBarLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:theme="@style/ToolbarTheme"/>
+
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/detailedAccountsToolbar"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:background="@color/whiteText"
+        app:popupTheme="@style/ToolbarTheme" />
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:padding="20dp"
+        android:gravity="center_vertical"
+        android:orientation="vertical">
+
+        <com.vinaygaba.creditcardview.CreditCardView
+            android:id="@+id/card1"
+            android:layout_width="match_parent"
+            android:layout_height="225dp"
+            app:cardFrontBackground="@drawable/cardbackground_world"
+            android:layout_marginBottom="16dp"
+            android:layout_marginTop="16dp"
+            app:cardNumber="4319463018263432"
+            app:cardName="Dylan Kilbride"
+            app:cardNumberTextColor="#cccccc"
+            app:cardNumberFormat="masked_all_but_last_four"
+            app:cardNameTextColor="#cccccc"
+            app:type="visa"
+            app:brandLogo="@drawable/gp_isolated"
+            app:putChip="false"
+            app:expiryDate = "05/23"
+            app:expiryDateTextColor="#cccccc"
+            app:isEditable="false"
+            app:validTillTextColor="#cccccc"
+            app:hintTextColor = "#cccccc"
+            />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="To debit from the group account, input these card details into any POS terminal or payment card form"
+            android:fontFamily="@font/cairo"/>
+
+    </LinearLayout>
+
+</LinearLayout>
