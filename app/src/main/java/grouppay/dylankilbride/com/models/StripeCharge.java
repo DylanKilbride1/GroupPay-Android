@@ -3,13 +3,15 @@ package grouppay.dylankilbride.com.models;
 public class StripeCharge {
 
   private String tokenId;
-  private double amount;
+  private double amountForGroup;
+  private double amountInclFees;
   private String userId;
   private String groupAccountId;
 
-  public StripeCharge(String tokenId, double amount, String userId, String groupAccountId) {
+  public StripeCharge(String tokenId, double amountForGroup, double amountInclFees, String userId, String groupAccountId) {
     this.tokenId = tokenId;
-    this.amount = amount;
+    this.amountForGroup = amountForGroup;
+    this.amountInclFees = amountInclFees;
     this.userId = userId;
     this.groupAccountId = groupAccountId;
   }
@@ -27,12 +29,20 @@ public class StripeCharge {
     this.tokenId = tokenId;
   }
 
-  public double getAmount() {
-    return amount;
+  public double getAmountForGroup() {
+    return amountForGroup;
   }
 
-  public void setAmount(double amount) {
-    this.amount = amount;
+  public void setAmountForGroup(double amountForGroup) {
+    this.amountForGroup = amountForGroup;
+  }
+
+  public double getAmountInclFees() {
+    return amountInclFees;
+  }
+
+  public void setAmountInclFees(double amountInclFees) {
+    this.amountInclFees = amountInclFees;
   }
 
   public String getUserId() {

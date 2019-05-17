@@ -55,18 +55,6 @@ public class ActiveAccountPaymentLogRVAdapter extends RecyclerView.Adapter<Activ
         notifyItemRangeChanged(position, transactionsList.size());
       }
     });
-
-//    viewHolder.contactName.setOnClickListener(new View.OnClickListener() {
-//
-//      @Override
-//      public void onClick(View view) {
-//        Intent intent = new Intent(view.getContext(), ViewContact.class);
-//        intent.putExtra("fullName", contactsList.get(position).getFullName());
-//        intent.putExtra("email", contactsList.get(position).getEmailAddress());
-//        intent.putExtra("phone", contactsList.get(position).getPhoneNumber());
-//        view.getContext().startActivity(intent);
-//      }
-//    });
   }
 
   @Override

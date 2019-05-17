@@ -48,8 +48,8 @@ public class EnterPaymentMethodDetails extends AppCompatActivity {
   public final int MY_SCAN_REQUEST_CODE = 1234;
   private EditText cardholderName, cardNumber, expiryDate, cvv;
   private Button usePaymentDetailsBTN;
-  private String expiryMonth, expiryYear, amountToDepositStr, userId, groupAccountId;
-  private double amountToDeposit;
+  private String expiryMonth, expiryYear, amountToDebitStr, amountForGroupStr, userId, groupAccountId;
+  private double amountToDebit, amountForGroup;
   private ProgressWheel paymentProgressSpinner;
   private FrameLayout progressOverlay;
   private CardManagerAPI cardManagerApiInterface;
@@ -61,9 +61,10 @@ public class EnterPaymentMethodDetails extends AppCompatActivity {
 
     userId = getIntent().getStringExtra("userIdStr");
     groupAccountId = getIntent().getStringExtra("groupAccountIdStr");
-
-    amountToDepositStr = getIntent().getStringExtra("amountToDepositStr");
-    amountToDeposit = Double.parseDouble(amountToDepositStr);
+    amountToDebitStr = getIntent().getStringExtra("amountToDebitStr");
+    amountForGroupStr = getIntent().getStringExtra("amountForGroupStr");
+    amountToDebit = Double.parseDouble(amountToDebitStr);
+    amountForGroup = Double.parseDouble(amountForGroupStr);
 
     setUpActionBar();
     getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -93,7 +94,7 @@ public class EnterPaymentMethodDetails extends AppCompatActivity {
         cardToAdd,
         new TokenCallback() {
           public void onSuccess(Token token) {
-            setUpTokenToServerCall(new StripeCharge(token.getId(), amountToDeposit, userId, groupAccountId), optionalCardSave);
+            setUpTokenToServerCall(new StripeCharge(token.getId(), amountForGroup, amountToDebit, userId, groupAccountId), optionalCardSave);
             startSpinnerOverlay();
           }
           public void onError(Exception error) {

@@ -17,9 +17,7 @@ public class CardNumberTextWatcher implements TextWatcher{
   String ptVisa = "^4[0-9]{6,}$";
   String ptMasterCard = "^5[1-5][0-9]{5,}$";
   String ptAmeExp = "^3[47][0-9]{5,}$";
-  String ptDinClb = "^3(?:0[0-5]|[68][0-9])[0-9]{4,}$";
   String ptDiscover = "^6(?:011|5[0-9]{2})[0-9]{3,}$";
-  String ptJcb = "^(?:2131|1800|35[0-9]{3})[0-9]{3,}$";
 
   public CardNumberTextWatcher(EditText numberField) {
     patterns.add(ptVisa);

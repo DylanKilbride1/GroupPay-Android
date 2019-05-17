@@ -75,6 +75,15 @@
 
     </LinearLayout>
 
+    <TextView
+        android:id="@+id/depositMoneyToGroupFeeTV"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20sp"
+        android:fontFamily="@font/cairo"
+        android:padding="20sp"
+        tools:text="We charge 3.9% + .25c per transaction. To cover our fees, we will debit €10.65 from your account"/>
+
     <RelativeLayout
         android:layout_width="wrap_content"
         android:layout_height="match_parent">
