@@ -7,6 +7,7 @@ import grouppay.dylankilbride.com.models.GroupAccount;
 import grouppay.dylankilbride.com.models.ImageUploadResponse;
 import grouppay.dylankilbride.com.models.Transaction;
 import grouppay.dylankilbride.com.models.User;
+import grouppay.dylankilbride.com.models.VirtualCard;
 import okhttp3.MultipartBody;
 import okhttp3.RequestBody;
 import retrofit2.Call;
@@ -52,4 +53,7 @@ public interface GroupAccountAPI {
   @DELETE("groupAccounts/deleteUserFromGroup/{groupAccountId}/{userId}")
   Call<DeletionSuccess> deleteUserFromGroup(@Path("groupAccountId") String groupAccountId,
                                             @Path("userId") String userId);
+
+  @GET("groupAccounts/getVirtualCardDetails/{groupAccountId}")
+  Call<VirtualCard> getGroupPaymentDetails(@Path("groupAccountId") String groupAccountId);
 }

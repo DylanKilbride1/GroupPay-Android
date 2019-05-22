@@ -16,19 +16,25 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import java.math.BigDecimal;
+import java.math.RoundingMode;
+import java.text.DecimalFormat;
 import java.text.NumberFormat;
 
 import grouppay.dylankilbride.com.grouppay.R;
 import grouppay.dylankilbride.com.text_watchers.CurrencyTextWatcher;
 import grouppay.dylankilbride.com.text_watchers.DecimalDigitsInputFilter;
+import grouppay.dylankilbride.com.text_watchers.DepositAmountTextWatcher;
 
 public class DepositMoneyToGroup extends AppCompatActivity {
 
-  String groupAccountId, groupAccountName, userId, activityHeader;
+  String groupAccountId, groupAccountName, userId, activityHeader, amountToDebit;
   EditText amountToPay;
   Button continueBtn;
-  TextView depositMoneyToGroupHeader;
-  private String current = "";
+  TextView depositMoneyToGroupHeader, feeWarning;
+  private String numberOfParticipants, totalAmountOwed;
+  private String feeWarningStringPart1 = "We charge 3.9% + .25c per transaction. To cover our fees, we will debit €";
+  private String feeWarningStringPart2 = " from your account.";
 
   @Override
   protected void onCreate(Bundle savedInstanceState) {
@@ -38,6 +44,8 @@ public class DepositMoneyToGroup extends AppCompatActivity {
     groupAccountId = getIntent().getStringExtra("groupAccountIdStr");
     groupAccountName = getIntent().getStringExtra("groupAccountName");
     userId = getIntent().getStringExtra("userIdStr");
+    numberOfParticipants = getIntent().getStringExtra("numberOfParticipants");
+    totalAmountOwed = getIntent().getStringExtra("totalOwed");
 
     setUpActionBar();
     getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -47,12 +55,14 @@ public class DepositMoneyToGroup extends AppCompatActivity {
     activityHeader = getResources().getString(R.string.deposit_amount_to_group_header) + " " + groupAccountName;
     depositMoneyToGroupHeader.setText(activityHeader);
     amountToPay = (EditText) findViewById(R.id.depositMoneyToGroupAmountET);
+    feeWarning = findViewById(R.id.depositMoneyToGroupFeeTV);
 
     continueBtn.setOnClickListener(new View.OnClickListener() {
       @Override
       public void onClick(View view) {
         Intent enterPaymentDetails = new Intent(DepositMoneyToGroup.this, EnterPaymentMethodDetails.class);
-        enterPaymentDetails.putExtra("amountToDepositStr", amountToPay.getText().toString());
+        enterPaymentDetails.putExtra("amountToDebitStr", calculateFee(new BigDecimal(amountToPay.getText().toString())));
+        enterPaymentDetails.putExtra("amountForGroupStr", amountToPay.getText().toString());
         enterPaymentDetails.putExtra("userIdStr", userId);
         enterPaymentDetails.putExtra("groupAccountIdStr", groupAccountId);
         startActivity(enterPaymentDetails);
@@ -60,8 +70,8 @@ public class DepositMoneyToGroup extends AppCompatActivity {
       }
     });
 
-    amountToPay.addTextChangedListener(new CurrencyTextWatcher(amountToPay));
-    amountToPay.setFilters(new InputFilter[] {new DecimalDigitsInputFilter(2)});
+    feeWarning.setText(feeWarningStringPart1 + "0" + feeWarningStringPart2);
+    amountToPay.addTextChangedListener(new DepositAmountTextWatcher(amountToPay, this));
     setAmountMaxLength(18);
   }
 
@@ -100,4 +110,17 @@ public class DepositMoneyToGroup extends AppCompatActivity {
     }
   }
 
+  @Override
+  protected void onResume() {
+    super.onResume();
+    //amountToPay.setText(calculateAmountToPay(numberOfParticipants, totalAmountOwed));
+  }
+
+  public String calculateFee(BigDecimal amountForGroup) {
+    BigDecimal amountToBeDebited;
+    BigDecimal adder = new BigDecimal(0.24375);
+    BigDecimal divisor = new BigDecimal(0.96135);
+    amountToBeDebited = (amountForGroup.add(adder)).divide(divisor, RoundingMode.HALF_UP);
+    return amountToBeDebited.setScale(2, RoundingMode.HALF_UP).toString();
+  }
 }

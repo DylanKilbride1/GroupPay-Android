@@ -48,8 +48,8 @@ public class EnterPaymentMethodDetails extends AppCompatActivity {
   public final int MY_SCAN_REQUEST_CODE = 1234;
   private EditText cardholderName, cardNumber, expiryDate, cvv;
   private Button usePaymentDetailsBTN;
-  private String expiryMonth, expiryYear, amountToDepositStr, userId, groupAccountId;
-  private double amountToDeposit;
+  private String expiryMonth, expiryYear, amountToDebitStr, amountForGroupStr, userId, groupAccountId;
+  private double amountToDebit, amountForGroup;
   private ProgressWheel paymentProgressSpinner;
   private FrameLayout progressOverlay;
   private CardManagerAPI cardManagerApiInterface;
@@ -61,9 +61,10 @@ public class EnterPaymentMethodDetails extends AppCompatActivity {
 
     userId = getIntent().getStringExtra("userIdStr");
     groupAccountId = getIntent().getStringExtra("groupAccountIdStr");
-
-    amountToDepositStr = getIntent().getStringExtra("amountToDepositStr");
-    amountToDeposit = Double.parseDouble(amountToDepositStr);
+    amountToDebitStr = getIntent().getStringExtra("amountToDebitStr");
+    amountForGroupStr = getIntent().getStringExtra("amountForGroupStr");
+    amountToDebit = Double.parseDouble(amountToDebitStr);
+    amountForGroup = Double.parseDouble(amountForGroupStr);
 
     setUpActionBar();
     getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -83,7 +84,7 @@ public class EnterPaymentMethodDetails extends AppCompatActivity {
       }
     });
 
-    cardNumber.addTextChangedListener(new CardNumberTextWatcher());
+    cardNumber.addTextChangedListener(new CardNumberTextWatcher(cardNumber));
     expiryDate.addTextChangedListener(new CardExpiryDateTextWatcher());
   }
 
@@ -93,7 +94,7 @@ public class EnterPaymentMethodDetails extends AppCompatActivity {
         cardToAdd,
         new TokenCallback() {
           public void onSuccess(Token token) {
-            setUpTokenToServerCall(new StripeCharge(token.getId(), amountToDeposit, userId, groupAccountId), optionalCardSave);
+            setUpTokenToServerCall(new StripeCharge(token.getId(), amountForGroup, amountToDebit, userId, groupAccountId), optionalCardSave);
             startSpinnerOverlay();
           }
           public void onError(Exception error) {
@@ -141,6 +142,7 @@ public class EnterPaymentMethodDetails extends AppCompatActivity {
           finish();
         } else {
           Toast.makeText(getApplicationContext(), "Something went wrong!", Toast.LENGTH_LONG).show();
+          finish();
         }
       }
       @Override
@@ -182,20 +184,6 @@ public class EnterPaymentMethodDetails extends AppCompatActivity {
 
 
         cardNumber.setText(cardNumberResultStr);
-        if(scanResult.getCardType().toString().equals("American Express")) {
-          cardNumber.setCompoundDrawablesWithIntrinsicBounds(R.drawable.add_card_cardtype_amex_icon, 0, 0, 0);
-        } else if(scanResult.getCardType().toString().equals("Discover")) {
-          cardNumber.setCompoundDrawablesWithIntrinsicBounds(R.drawable.add_card_cardtype_discover_icon, 0, 0, 0);
-        } else if(scanResult.getCardType().toString().equals("Visa")) {
-          cardNumber.setCompoundDrawablesWithIntrinsicBounds(R.drawable.add_card_cardtype_visa_icon, 0, 0, 0);
-        } else if(scanResult.getCardType().toString().equals("MasterCard")) {
-          cardNumber.setCompoundDrawablesWithIntrinsicBounds(R.drawable.add_card_cardtype_mastercard_icon, 0, 0, 0);
-        } else if(scanResult.getCardType().toString().equals("Maestro")) {
-          cardNumber.setCompoundDrawablesWithIntrinsicBounds(R.drawable.add_card_cardtype_maestro_icon, 0, 0, 0);
-        } else {
-          cardNumber.setCompoundDrawablesWithIntrinsicBounds(R.drawable.add_card_cardtype_generic_icon, 0, 0, 0);
-        }
-
         if (scanResult.isExpiryValid()) {
           cardExpiryResultStr = scanResult.expiryMonth + "/" + scanResult.expiryYear;
           expiryDate.setText(cardExpiryResultStr);

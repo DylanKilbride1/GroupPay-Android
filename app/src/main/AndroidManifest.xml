@@ -9,7 +9,7 @@
     <uses-permission android:name="android.permission.WRITE_CONTACTS" />
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
-    <uses-permission android:name="android.permission.CAMERA"></uses-permission>
+    <uses-permission android:name="android.permission.CAMERA" />
 
     <application
         android:allowBackup="true"
@@ -49,7 +49,8 @@
         <activity android:name="grouppay.dylankilbride.com.activities.DepositMoneyToGroup" />
         <activity android:name="grouppay.dylankilbride.com.activities.EnterPaymentMethodDetails" />
         <activity android:name="grouppay.dylankilbride.com.activities.AllTransactions" />
-        <activity android:name="grouppay.dylankilbride.com.activities.GroupInformation"></activity>
+        <activity android:name="grouppay.dylankilbride.com.activities.GroupInformation" />
+        <activity android:name="grouppay.dylankilbride.com.activities.VirtualCardDetails"></activity>
     </application>
 
 </manifest>

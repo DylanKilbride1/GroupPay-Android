@@ -59,7 +59,7 @@ public class AddPaymentMethod extends AppCompatActivity {
     cvv = (EditText) findViewById(R.id.addCardCvvET);
     addPaymentMethodContinueBTN = (Button) findViewById(R.id.addPaymentMethodContinueBTN);
 
-   cardNumber.addTextChangedListener(new CardNumberTextWatcher());
+   cardNumber.addTextChangedListener(new CardNumberTextWatcher(cardNumber));
    expiryDate.addTextChangedListener(new CardExpiryDateTextWatcher());
 
     addPaymentMethodContinueBTN.setOnClickListener(new View.OnClickListener() {
@@ -110,17 +110,14 @@ public class AddPaymentMethod extends AppCompatActivity {
       public void onResponse(Call<StripeChargeReceipt> call, Response<StripeChargeReceipt> response) {
         if(response.body().getAmountPaid() != 0L &&
             response.body().getFailureCode() == null) {
-//          Intent groupAccountDetailed = new Intent(EnterPaymentMethodDetails.this, GroupAccountDetailed.class);
-//          groupAccountDetailed.putExtra("groupAccountId", groupAccountId);
-//          startActivity(groupAccountDetailed);
-//          finish();
+            finish();
         } else {
           Toast.makeText(getApplicationContext(), "Something went wrong!", Toast.LENGTH_LONG).show();
         }
       }
       @Override
       public void onFailure(Call<StripeChargeReceipt> call, Throwable t) {
-
+        Toast.makeText(getApplicationContext(), "Something went wrong!", Toast.LENGTH_LONG).show();
       }
     });
   }
