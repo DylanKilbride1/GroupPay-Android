@@ -105,7 +105,7 @@ public class CreateGroupAccountStage1 extends AppCompatActivity {
     });
 
     amountNeeded.addTextChangedListener(new CurrencyTextWatcher(amountNeeded));
-    //amountNeeded.setFilters(new InputFilter[] {new DecimalDigitsInputFilter(2)});
+    amountNeeded.setFilters(new InputFilter[] {new DecimalDigitsInputFilter(2)});
     setAmountMaxLength(18);
   }
 
