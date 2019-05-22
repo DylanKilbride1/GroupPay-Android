@@ -44,4 +44,5 @@
     <string name="no_deposits_made">No Deposits Yet!</string>
     <string name="no_cards_added">No Cards Added</string>
     <string name="deposit_money_amount_hint">€0</string>
+    <string name="virtualPaymentDetailsHoldToReveal">Hold card for 3 seconds to reveal CVC code</string>
 </resources>

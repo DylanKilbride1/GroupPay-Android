@@ -51,11 +51,12 @@ public class GroupAccountDetailed extends AppCompatActivity {
   Button viewVirtualDetails;
   private RecyclerView paymentsLogRecyclerView;
   private RecyclerView.LayoutManager paymentsLogRecyclerViewLayoutManager;
-  private String groupAccountIdStr, userIdStr, groupAccountName, groupImageUrl, numberOfParticipants;
+  private String groupAccountIdStr, userIdStr, groupAccountName, groupImageUrl, cardValue;
   private GroupAccountAPI apiInterface;
   private ArrayList<Transaction> transactionLog;
   private RequestOptions noGroupImageDefault = new RequestOptions().error(R.drawable.no_group_icon);
   private FloatingActionButton fab;
+  private long amountOwedL, amountPaidL;
   private double amountOwed;
 
   GroupAccount intentReceivedGroupAccount = new GroupAccount();
@@ -87,13 +88,16 @@ public class GroupAccountDetailed extends AppCompatActivity {
       public void onClick(View view) {
         Intent viewVirtualCardDetails = new Intent(GroupAccountDetailed.this, VirtualCardDetails.class);
         viewVirtualCardDetails.putExtra("groupId", groupAccountIdStr);
+        viewVirtualCardDetails.putExtra("groupName", groupAccountName);
         startActivity(viewVirtualCardDetails);
       }
     });
     viewVirtualDetails.setAlpha(0.5f);
     viewVirtualDetails.setClickable(false);
 
-    setUpFAB();
+    if(amountPaidL == amountOwedL) {
+      setUpFAB();
+    }
   }
 
   private void setUpFAB() {
@@ -105,7 +109,6 @@ public class GroupAccountDetailed extends AppCompatActivity {
         intent.putExtra("userIdStr", userIdStr);
         intent.putExtra("groupAccountIdStr", groupAccountIdStr);
         intent.putExtra("groupAccountName", groupAccountName);
-        intent.putExtra("numberOfParticipants", numberOfParticipants);
         intent.putExtra("totalOwed", Double.toString(amountOwed));
         startActivity(intent);
       }
@@ -193,6 +196,9 @@ public class GroupAccountDetailed extends AppCompatActivity {
           //Handle
         } else {
           groupImageUrl = response.body().getGroupImage().getGroupImageLocation();
+          amountOwedL = response.body().getTotalAmountOwed().longValue();
+          amountPaidL = response.body().getTotalAmountPaid().longValue();
+          cardValue = response.body().getTotalAmountOwed().toString();
           paymentProgress.setMax(roundBigDecimalUp(response.body().getTotalAmountOwed()));
           paymentProgress.setProgress(roundBigDecimalUp(response.body().getTotalAmountPaid()));
 

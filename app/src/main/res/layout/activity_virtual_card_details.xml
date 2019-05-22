@@ -10,14 +10,15 @@
     <com.google.android.material.appbar.AppBarLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:theme="@style/ToolbarTheme"/>
+        android:theme="@style/ToolbarTheme">
 
     <androidx.appcompat.widget.Toolbar
-        android:id="@+id/detailedAccountsToolbar"
+        android:id="@+id/virtualPaymentMethodToolbar"
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
         android:background="@color/whiteText"
         app:popupTheme="@style/ToolbarTheme" />
+    </com.google.android.material.appbar.AppBarLayout>
 
 
     <LinearLayout
@@ -27,8 +28,25 @@
         android:gravity="center_vertical"
         android:orientation="vertical">
 
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:textSize="20sp"
+            android:text="@string/virtualPaymentDetailsHoldToReveal"/>
+
+        <TextView
+            android:id="@+id/virtualPaymentMethodCVC"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:layout_gravity="center"
+            android:textSize="40dp"
+            android:gravity="center"
+            android:text="X X X"/>
+
         <com.vinaygaba.creditcardview.CreditCardView
-            android:id="@+id/card1"
+            android:id="@+id/groupPaymentCard"
             android:layout_width="match_parent"
             android:layout_height="225dp"
             app:cardFrontBackground="@drawable/cardbackground_world"
@@ -39,7 +57,7 @@
             app:cardNumberTextColor="#cccccc"
             app:cardNumberFormat="masked_all_but_last_four"
             app:cardNameTextColor="#cccccc"
-            app:type="visa"
+            app:type="mastercard"
             app:brandLogo="@drawable/gp_isolated"
             app:putChip="false"
             app:expiryDate = "05/23"
@@ -54,6 +72,14 @@
             android:layout_height="wrap_content"
             android:text="To debit from the group account, input these card details into any POS terminal or payment card form"
             android:fontFamily="@font/cairo"/>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="50dp"
+            android:gravity="center"
+            android:textSize="30sp"
+            android:text="Card Value: €200"/>
 
     </LinearLayout>
 
