@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/verify_details_bg"
+    android:gravity="center_horizontal"
+    tools:context="grouppay.dylankilbride.com.activities.VerifyPhoneEmail">
+
+    <ImageView
+        android:id="@+id/verifyDetailsGroupPayImage"
+        android:layout_width="wrap_content"
+        android:layout_height="200dp"
+        android:layout_marginBottom="60dp"
+        android:layout_marginLeft="40dp"
+        android:layout_marginRight="40dp"
+        android:layout_marginTop="20dp"
+        android:src="@drawable/gp_isolated" />
+
+    <TextView
+        android:id="@+id/verificationPurposeText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/verifyDetailsGroupPayImage"
+        android:layout_marginLeft="40dp"
+        android:layout_marginRight="40dp"
+        android:gravity="center_horizontal"
+        android:textColor="@color/whiteText"
+        android:textSize="14sp"
+        android:text="@string/verification_purpose_text"/>
+
+    <Button
+        android:id="@+id/verifyAccountEmail"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_above="@id/verifyOptionText"
+        android:layout_marginLeft="40dp"
+        android:layout_marginRight="40dp"
+        android:background="@drawable/verify_by_phone_bg"
+        android:text="@string/verify_email_button"
+        android:textColor="@color/whiteText"
+        android:textSize="15sp"/>
+
+    <TextView
+        android:id="@+id/verifyOptionText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_horizontal"
+        android:layout_above="@id/verifyAccountPhone"
+        android:layout_margin="10dp"
+        android:text="OR"
+        android:textSize="20sp"
+        android:textColor="@color/whiteText"/>
+
+    <Button
+        android:id="@+id/verifyAccountPhoneBackToLogin"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_marginLeft="40dp"
+        android:layout_marginRight="40dp"
+        android:layout_marginBottom="40dp"
+        android:background="@drawable/verify_by_email_bg"
+        android:text="I've Verified, Let Me Login!"
+        android:textColor="@color/verify_by_phone_text"/>
+
+    <Button
+        android:id="@+id/verifyAccountPhone"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_marginLeft="40dp"
+        android:layout_marginRight="40dp"
+        android:layout_marginBottom="40dp"
+        android:background="@drawable/verify_by_email_bg"
+        android:text="@string/verify_phone_number_button"
+        android:textColor="@color/verify_by_phone_text"/>
+
+</RelativeLayout>

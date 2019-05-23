@@ -2,7 +2,12 @@ package grouppay.dylankilbride.com.activities;
 
 import android.content.Context;
 import android.content.Intent;
+
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.android.material.snackbar.Snackbar;
+
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -10,6 +15,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -17,6 +23,9 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
+import com.google.firebase.auth.AuthResult;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseAuthException;
 import com.google.firebase.iid.FirebaseInstanceId;
 
 import org.json.JSONException;
@@ -35,6 +44,7 @@ public class Register extends AppCompatActivity {
   RequestQueue requestQueue;
   private String token;
   private String tokenFromSharedPrefs;
+  private FirebaseAuth firebaseAuth;
 
   @Override
   protected void onCreate(Bundle savedInstanceState) {
@@ -80,10 +90,23 @@ public class Register extends AppCompatActivity {
               public void onResponse(JSONObject response) {
                 try {
                   if (response.get("result").equals("registered")) {
-                    Intent intent = new Intent(Register.this, Login.class);
-                    intent.putExtra("registrationEmail", emailBox.getText().toString());
-                    intent.putExtra("registrationPassword", passwordBox.getText().toString());
-                    startActivity(intent);
+                    firebaseAuth = FirebaseAuth.getInstance();
+                    firebaseAuth.createUserWithEmailAndPassword(emailBox.getText().toString(),
+                        passwordBox.getText().toString()).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+                      @Override
+                      public void onComplete(@NonNull Task<AuthResult> task) {
+                        if(task.isSuccessful()) {
+                          Intent intent = new Intent(Register.this, VerifyPhoneEmail.class);
+                          intent.putExtra("registrationEmail", emailBox.getText().toString());
+                          intent.putExtra("registrationPhone", mobileNumberBox.getText().toString());
+                          intent.putExtra("registrationPassword", passwordBox.getText().toString());
+                          startActivity(intent);
+                        } else {
+                          FirebaseAuthException e = (FirebaseAuthException) task.getException();
+                          Toast.makeText(getBaseContext(), e.getMessage(), Toast.LENGTH_SHORT).show();
+                        }
+                      }
+                    });
                   } else {
                     Snackbar.make(findViewById(R.id.registerLinearLayout), "There's already an account with that email",
                         Snackbar.LENGTH_LONG)
