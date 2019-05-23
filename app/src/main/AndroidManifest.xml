@@ -50,7 +50,8 @@
         <activity android:name="grouppay.dylankilbride.com.activities.EnterPaymentMethodDetails" />
         <activity android:name="grouppay.dylankilbride.com.activities.AllTransactions" />
         <activity android:name="grouppay.dylankilbride.com.activities.GroupInformation" />
-        <activity android:name="grouppay.dylankilbride.com.activities.VirtualCardDetails"></activity>
+        <activity android:name="grouppay.dylankilbride.com.activities.VirtualCardDetails" />
+
         <service
             android:name="grouppay.dylankilbride.com.service.GroupPayMessagingService"
             android:stopWithTask="false">
@@ -58,6 +59,8 @@
                 <action android:name="com.google.firebase.MESSAGING_EVENT" />
             </intent-filter>
         </service>
+
+        <activity android:name="grouppay.dylankilbride.com.activities.VerifyPhoneEmail"></activity>
     </application>
 
 </manifest>

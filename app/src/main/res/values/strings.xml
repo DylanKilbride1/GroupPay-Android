@@ -45,4 +45,7 @@
     <string name="no_cards_added">No Cards Added</string>
     <string name="deposit_money_amount_hint">€0</string>
     <string name="virtualPaymentDetailsHoldToReveal">Hold card for 3 seconds to reveal CVC code</string>
+    <string name="verify_email_button">VERIFY EMAIL</string>
+    <string name="verify_phone_number_button">VERIFY PHONE NUMBER</string>
+    <string name="verification_purpose_text">We just need to verify that the details you have entered belong to you. Please choose a method of verification below.</string>
 </resources>

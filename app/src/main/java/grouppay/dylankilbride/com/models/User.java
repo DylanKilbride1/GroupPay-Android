@@ -12,6 +12,7 @@ public class User {
   private boolean isPressed = false;
   private ProfileImage profileImage;
   private String deviceToken;
+  private String isUserVerified = "false";
 
   public User(long id, String firstName, String lastName, String emailAddress, String password, String mobileNumber, String profileUrl) {
     this.id = id;
@@ -146,5 +147,13 @@ public class User {
 
   public void setDeviceToken(String deviceToken) {
     this.deviceToken = deviceToken;
+  }
+
+  public String getIsUserVerified() {
+    return isUserVerified;
+  }
+
+  public void setIsUserVerified(String isUserVerified) {
+    this.isUserVerified = isUserVerified;
   }
 }
