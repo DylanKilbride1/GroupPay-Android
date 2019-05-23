@@ -11,6 +11,7 @@ public class User {
   private String mobileNumber;
   private boolean isPressed = false;
   private ProfileImage profileImage;
+  private String deviceToken;
 
   public User(long id, String firstName, String lastName, String emailAddress, String password, String mobileNumber, String profileUrl) {
     this.id = id;
@@ -137,5 +138,13 @@ public class User {
 
   public void setProfileImage(ProfileImage profileImage) {
     this.profileImage = profileImage;
+  }
+
+  public String getDeviceToken() {
+    return deviceToken;
+  }
+
+  public void setDeviceToken(String deviceToken) {
+    this.deviceToken = deviceToken;
   }
 }

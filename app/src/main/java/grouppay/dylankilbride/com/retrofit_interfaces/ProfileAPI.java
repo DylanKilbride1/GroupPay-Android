@@ -1,5 +1,7 @@
 package grouppay.dylankilbride.com.retrofit_interfaces;
 
+import java.util.Map;
+
 import grouppay.dylankilbride.com.models.ImageUploadResponse;
 import grouppay.dylankilbride.com.models.User;
 import okhttp3.MultipartBody;
@@ -34,6 +36,10 @@ public interface ProfileAPI {
   Call<ImageUploadResponse> uploadUserProfileImage(@Path("userId") String userId,
                                                    @Part MultipartBody.Part file,
                                                    @Part("name")RequestBody name);
+
+  @PATCH("users/user/updateDeviceToken/{oldToken}")
+  Call<Void> updateUsersDeviceToken(@Path("oldToken") String oldToken,
+                                    @Body Map<String, String> newToken);
 
 }
 

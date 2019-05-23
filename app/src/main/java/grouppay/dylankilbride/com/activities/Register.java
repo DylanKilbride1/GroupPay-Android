@@ -1,5 +1,6 @@
 package grouppay.dylankilbride.com.activities;
 
+import android.content.Context;
 import android.content.Intent;
 import com.google.android.material.snackbar.Snackbar;
 import androidx.appcompat.app.AppCompatActivity;
@@ -16,11 +17,13 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
+import com.google.firebase.iid.FirebaseInstanceId;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import grouppay.dylankilbride.com.grouppay.R;
+import grouppay.dylankilbride.com.service.GroupPayMessagingService;
 
 import static grouppay.dylankilbride.com.constants.Constants.LOCALHOST_SERVER_BASEURL;
 
@@ -30,11 +33,19 @@ public class Register extends AppCompatActivity {
   TextView loginLink;
   String URL = LOCALHOST_SERVER_BASEURL + "/users/register";
   RequestQueue requestQueue;
+  private String token;
+  private String tokenFromSharedPrefs;
 
   @Override
   protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
     setContentView(R.layout.activity_register);
+
+    if(GroupPayMessagingService.getToken(getApplicationContext()) == null) {
+      generateFirstFirebaseToken();
+    } else {
+      tokenFromSharedPrefs = getApplicationContext().getSharedPreferences("_", MODE_PRIVATE).getString("FirebaseDeviceToken", null);
+    }
 
     firstNameBox = (EditText)findViewById(R.id.firstNameBox);
     lastNameBox = (EditText)findViewById(R.id.lastNameBox);
@@ -45,7 +56,6 @@ public class Register extends AppCompatActivity {
     loginLink = (TextView)findViewById(R.id.loginLink);
 
     requestQueue = Volley.newRequestQueue(this);
-
 
     registerButton.setOnClickListener(new View.OnClickListener() {
       @Override
@@ -58,6 +68,7 @@ public class Register extends AppCompatActivity {
           registrationRequestDetails.put("last_name", lastNameBox.getText().toString());
           registrationRequestDetails.put("password", passwordBox.getText().toString());
           registrationRequestDetails.put("mobile_number", mobileNumberBox.getText().toString());
+          registrationRequestDetails.put("device_token", tokenFromSharedPrefs);
         } catch (JSONException e) {
           Log.e("Couldn't create JSON: ", e.toString());
         }
@@ -100,6 +111,17 @@ public class Register extends AppCompatActivity {
         startActivity(new Intent(Register.this, Login.class));
       }
     });
+  }
+
+  private void generateFirstFirebaseToken() {
+    FirebaseInstanceId.getInstance().getInstanceId().addOnSuccessListener(instanceIdResult -> {
+      token = instanceIdResult.getToken();
+      putTokenInSharedPrefs(token);
+    });
+  }
+
+  private void putTokenInSharedPrefs(String token) {
+    getSharedPreferences("_", MODE_PRIVATE).edit().putString("FirebaseDeviceToken", token).apply();
   }
 }
 
