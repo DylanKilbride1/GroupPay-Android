@@ -22,7 +22,15 @@ import com.android.volley.toolbox.Volley;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import grouppay.dylankilbride.com.grouppay.R;
+import grouppay.dylankilbride.com.retrofit_interfaces.ProfileAPI;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
 
 import static grouppay.dylankilbride.com.constants.Constants.LOCALHOST_SERVER_BASEURL;
 
@@ -32,6 +40,8 @@ public class Login extends AppCompatActivity {
   Button loginButton;
   TextView registerLink;
   String URL = LOCALHOST_SERVER_BASEURL + "/users/login";
+  private String token;
+  private ProfileAPI apiInterface;
 
   @Override
   protected void onCreate(Bundle savedInstanceState) {
@@ -81,6 +91,8 @@ public class Login extends AppCompatActivity {
                     intent.putExtra("email", emailBox.getText().toString());
                     intent.putExtra("name", response.get("name").toString());
                     intent.putExtra("profileImgUrl", response.get("profileImageUrl").toString());
+                    token = response.get("deviceToken").toString();
+                    compareDeviceTokens(token);
                     startActivity(intent);
                   } else {
                     ColorStateList colorStateList = ColorStateList.valueOf(getResources().getColor(R.color.incorrectField));
@@ -106,6 +118,44 @@ public class Login extends AppCompatActivity {
       @Override
       public void onClick(View v) {
         startActivity(new Intent(Login.this, Register.class));
+      }
+    });
+  }
+
+  private void compareDeviceTokens(String token)  {
+    String tokenFromSharedPrefs = getApplicationContext().getSharedPreferences("_", MODE_PRIVATE).getString("FirebaseDeviceToken", null);
+    if (!token.equals(tokenFromSharedPrefs)) {
+      Map<String, String> tokenMap = new HashMap<>();
+      tokenMap.put("newToken", tokenFromSharedPrefs);
+      setUpNewTokenCall(token, tokenMap);
+    }
+  }
+
+  private void setUpNewTokenCall(String oldToken, Map<String, String> newToken) {
+    Retrofit updateTokenRequest = new Retrofit.Builder()
+        .baseUrl(LOCALHOST_SERVER_BASEURL)
+        .addConverterFactory(GsonConverterFactory.create())
+        .build();
+
+    apiInterface = updateTokenRequest.create(ProfileAPI.class);
+    updateDeviceToken(oldToken, newToken);
+  }
+
+  private void updateDeviceToken(String oldToken, Map<String, String> newToken) {
+    Call<Void> call = apiInterface.updateUsersDeviceToken(oldToken, newToken);
+    call.enqueue(new Callback<Void>() {
+      @Override
+      public void onResponse(Call<Void> call, retrofit2.Response<Void> response) {
+        if(!response.isSuccessful()) {
+          //Handle
+        } else {
+          Log.e("TOKEN UPDATED", newToken.get("newToken"));
+        }
+      }
+
+      @Override
+      public void onFailure(Call<Void> call, Throwable t) {
+        Log.e("TOKEN UPDATED", newToken.get("newToken"));
       }
     });
   }
