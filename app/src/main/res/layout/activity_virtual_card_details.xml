@@ -74,12 +74,12 @@
             android:fontFamily="@font/cairo"/>
 
         <TextView
+            android:id="@+id/cardValue"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="50dp"
             android:gravity="center"
-            android:textSize="30sp"
-            android:text="Card Value: €200"/>
+            android:textSize="30sp" />
 
     </LinearLayout>
 

@@ -57,7 +57,7 @@ public class VerifyPhoneEmail extends AppCompatActivity {
             Snackbar.make(parentLayout, emailSent, Snackbar.LENGTH_LONG).show();
           }
       });
-      fade(view);
+      fadeForEmailVerification(view);
     });
 
     backToLogin.setOnClickListener(view -> {
@@ -67,7 +67,7 @@ public class VerifyPhoneEmail extends AppCompatActivity {
     });
   }
 
-  public void fade(View view) {
+  public void fadeForEmailVerification(View view) {
     YoYo.with(Techniques.SlideOutLeft)
         .duration(1000)
         .repeat(0)

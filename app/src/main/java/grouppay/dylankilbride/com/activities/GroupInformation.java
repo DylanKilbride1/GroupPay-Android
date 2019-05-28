@@ -308,6 +308,7 @@ public class GroupInformation extends AppCompatActivity {
           Toast.makeText(getApplicationContext(), "Oops! Something went wrong..", Toast.LENGTH_SHORT).show();
         } else {
           Intent backToHome = new Intent(getApplicationContext(), Home.class);
+          backToHome.putExtra("userId", userId);
           backToHome.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
           startActivity(backToHome);
         }

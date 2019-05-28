@@ -33,6 +33,7 @@ import grouppay.dylankilbride.com.grouppay.R;
 import grouppay.dylankilbride.com.models.GroupAccount;
 import grouppay.dylankilbride.com.models.User;
 import grouppay.dylankilbride.com.retrofit_interfaces.GroupAccountAPI;
+import grouppay.dylankilbride.com.retrofit_interfaces.ProfileAPI;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -62,9 +63,6 @@ public class Home extends AppCompatActivity implements ItemClickListener {
     super.onCreate(savedInstanceState);
     setContentView(R.layout.activity_home);
     userId = getIntent().getStringExtra("userId");
-    userName = getIntent().getStringExtra("name");
-    userEmail = getIntent().getStringExtra("email");
-    profileImgUrl = getIntent().getStringExtra("profileImgUrl");
 
     setUpFAB();
     setUpAccountPreviewRecyclerView();
@@ -93,8 +91,6 @@ public class Home extends AppCompatActivity implements ItemClickListener {
 
     setUpActionBar();
     getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-
-    setUpNavDrawer();
   }
 
   private void setUpNavDrawer() {
@@ -263,6 +259,34 @@ public class Home extends AppCompatActivity implements ItemClickListener {
 
   }
 
+  public void getProifleDetails() {
+    Retrofit retrofit = new Retrofit.Builder()
+        .baseUrl(LOCALHOST_SERVER_BASEURL)
+        .addConverterFactory(GsonConverterFactory.create())
+        .build();
+
+    final ProfileAPI profileAPI = retrofit.create(ProfileAPI.class); //Creates model for JSON
+    Call<User> call = profileAPI.getUserDetails(userId);
+    call.enqueue(new Callback<User>() { //Don't use execute as it will execute on main thread
+      @Override
+      public void onResponse(Call<User> call, Response<User> response) {
+        if (!response.isSuccessful()) {
+          //TODO Add error display message for user
+        } else {
+          userEmail = response.body().getEmailAddress();
+          userName = response.body().getFirstName();
+          profileImgUrl = response.body().getProfileUrl();
+          setUpNavDrawer();
+        }
+      }
+
+      @Override
+      public void onFailure(Call<User> call, Throwable t) {
+        //TODO Do something here
+      }
+    });
+  }
+
   @Override
   public void onItemClick(GroupAccount groupAccount) {
     Intent viewDetailedInfo = new Intent(Home.this, GroupAccountDetailed.class);
@@ -276,6 +300,7 @@ public class Home extends AppCompatActivity implements ItemClickListener {
   protected void onResume() {
     super.onResume();
     setUpAssociatedAccountsCall(userId);
+    getProifleDetails();
     groupAccounts.clear();
   }
 

@@ -89,6 +89,7 @@ public class GroupAccountDetailed extends AppCompatActivity {
         Intent viewVirtualCardDetails = new Intent(GroupAccountDetailed.this, VirtualCardDetails.class);
         viewVirtualCardDetails.putExtra("groupId", groupAccountIdStr);
         viewVirtualCardDetails.putExtra("groupName", groupAccountName);
+        viewVirtualCardDetails.putExtra("cardValue", cardValue);
         startActivity(viewVirtualCardDetails);
       }
     });
@@ -250,11 +251,7 @@ public class GroupAccountDetailed extends AppCompatActivity {
           if(!response.body().isEmpty()) {
             transactionLog.clear();
             for (int i = 0; i < response.body().size(); i++) {
-              transactionLog.add(new Transaction(new User(response.body().get(i).getUser().getId(),
-                  response.body().get(i).getUser().getFirstName(),
-                  response.body().get(i).getUser().getLastName(),
-                  response.body().get(i).getUser().getEmailAddress(),
-                  response.body().get(i).getUser().getMobileNumber()),
+              transactionLog.add(new Transaction(response.body().get(i).getTransactionOwner(),
                   response.body().get(i).getAmountPaid(),
                   response.body().get(i).getPaymentDateAndTime()
                   ));
