@@ -24,6 +24,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.google.firebase.auth.FirebaseAuth;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -130,6 +132,7 @@ public class Home extends AppCompatActivity implements ItemClickListener {
             startActivity(intentTransactions);
             break;
           case R.id.nav_logout:
+            FirebaseAuth.getInstance().signOut();
             Intent intentLogin = new Intent(Home.this, Login.class);
             startActivity(intentLogin);
             break;

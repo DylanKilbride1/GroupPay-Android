@@ -141,6 +141,7 @@ public class Register extends AppCompatActivity {
                           intent.putExtra("registrationEmail", emailBox.getText().toString());
                           intent.putExtra("registrationPhone", mobileNumberBox.getText().toString());
                           intent.putExtra("registrationPassword", phoneNumber);
+                          intent.putExtra("countryCode", countryCodeDigits);
                           startActivity(intent);
                         } else {
                           FirebaseAuthException e = (FirebaseAuthException) task.getException();

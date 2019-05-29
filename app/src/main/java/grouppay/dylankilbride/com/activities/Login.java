@@ -80,7 +80,7 @@ public class Login extends AppCompatActivity {
 
           JSONObject loginRequestDetails = new JSONObject();
           try {
-            if (firebaseAuth.getCurrentUser().isEmailVerified()) {
+            if (firebaseAuth.getCurrentUser().isEmailVerified() || firebaseAuth.getCurrentUser().getPhoneNumber() != null) {
               loginRequestDetails.put("email", emailBox.getText().toString());
               loginRequestDetails.put("password", passwordBox.getText().toString());
               loginRequestDetails.put("isVerified", "TRUE");

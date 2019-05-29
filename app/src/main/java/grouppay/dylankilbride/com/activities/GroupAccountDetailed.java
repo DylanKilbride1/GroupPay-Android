@@ -4,6 +4,8 @@ import android.content.Intent;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
+import com.daimajia.androidanimations.library.Techniques;
+import com.daimajia.androidanimations.library.YoYo;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
@@ -16,8 +18,12 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.LinearInterpolator;
+import android.view.animation.RotateAnimation;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -46,9 +52,10 @@ import static grouppay.dylankilbride.com.constants.Constants.LOCALHOST_SERVER_BA
 public class GroupAccountDetailed extends AppCompatActivity {
 
   ProgressBar paymentProgress;
-  ImageView groupImage, noPreviousTransactionsImg;
+  ImageView groupImage, noPreviousTransactionsImg, buttonHideArrow;
   TextView progressStartAmount, progressFinalAmount, noPreviousTransactionsTV;
   Button viewVirtualDetails;
+  LinearLayout groupDetailsContainer;
   private RecyclerView paymentsLogRecyclerView;
   private RecyclerView.LayoutManager paymentsLogRecyclerViewLayoutManager;
   private String groupAccountIdStr, userIdStr, groupAccountName, groupImageUrl, cardValue;
@@ -82,6 +89,8 @@ public class GroupAccountDetailed extends AppCompatActivity {
     noPreviousTransactionsTV = findViewById(R.id.noTransactionsTextView);
     noPreviousTransactionsImg = findViewById(R.id.noTransactionsImageView);
     viewVirtualDetails = findViewById(R.id.detailedAccountsViewVirtualDetailsBTN);
+    //buttonHideArrow = findViewById(R.id.groupAccountButtonHideArrow);
+    groupDetailsContainer = findViewById(R.id.groupAccountDetailsContainer);
 
     viewVirtualDetails.setOnClickListener(new View.OnClickListener() {
       @Override
@@ -99,6 +108,15 @@ public class GroupAccountDetailed extends AppCompatActivity {
     if(amountPaidL == amountOwedL) {
       setUpFAB();
     }
+
+//    buttonHideArrow.setOnClickListener(view -> {
+//      RotateAnimation rotate = new RotateAnimation(0, 180, Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF, 0.5f);
+//      rotate.setDuration(300);
+//      rotate.setFillAfter(true);
+//      rotate.setInterpolator(new LinearInterpolator());
+//      buttonHideArrow.startAnimation(rotate);
+//      buttonHideArrow.setRotation(+180);
+//    });
   }
 
   private void setUpFAB() {

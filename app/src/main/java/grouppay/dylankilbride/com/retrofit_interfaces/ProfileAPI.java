@@ -41,5 +41,8 @@ public interface ProfileAPI {
   Call<Void> updateUsersDeviceToken(@Path("oldToken") String oldToken,
                                     @Body Map<String, String> newToken);
 
+  @PATCH("users/user/updateVerificationStatus")
+  Call<Void> updateUsersVerificationStatus(@Body Map<String, String> verificationStatus);
+
 }
 
