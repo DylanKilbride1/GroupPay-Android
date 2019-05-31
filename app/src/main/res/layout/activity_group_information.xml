@@ -85,12 +85,12 @@
             android:id="@+id/groupInfoLeaveGroupButton"
             android:layout_width="match_parent"
             android:layout_height="55dp"
-            android:background="@color/whiteText"
+            android:background="@drawable/leave_group_rounded_button_bg"
             android:gravity="center"
             android:textSize="25sp"
             android:fontFamily="@font/cairo"
             android:text="@string/group_info_leave_group"
-            android:textColor="@color/incorrectField"
+            android:textColor="@color/whiteText"
             />
 
     </LinearLayout>

@@ -52,7 +52,7 @@
         android:textSize="24sp"
         android:textColor="@color/whiteText"
         android:backgroundTint="@color/whiteText"
-        android:textColorHint="@color/whiteText"
+        android:textColorHint="@color/verify_phone_enter_code_hint"
         android:layout_below="@id/verifyPhoneCodePrompt"
         android:layout_centerInParent="true"
         android:gravity="center_horizontal"

@@ -89,15 +89,19 @@ public class VirtualCardDetails extends AppCompatActivity {
           //Handle
         } else {
           try {
-            if(response.body().getIssuer().equals("Master Card")) {
-              groupPaymentDetails.setBrandLogo(CardType.MASTERCARD);
-            } else if (response.body().getIssuer().equals("American Express")) {
-              groupPaymentDetails.setBrandLogo(CardType.AMERICAN_EXPRESS);
-            } else {
-              groupPaymentDetails.setBrandLogo(CardType.VISA);
-            }
+//            switch (response.body().getIssuer()) {
+//              case "Master Card":
+//                groupPaymentDetails.setBrandLogo(CardType.MASTERCARD);
+//                break;
+//              case "American Express":
+//                groupPaymentDetails.setBrandLogo(CardType.AMERICAN_EXPRESS);
+//                break;
+//              default:
+//                groupPaymentDetails.setBrandLogo(CardType.VISA);
+//                break;
+//            }
             groupPaymentDetails.setCardName(groupAccountName);
-            groupPaymentDetails.setCardNumber(response.body().getPan());
+            groupPaymentDetails.setCardNumber("3413 2984 6977 9908");
             groupPaymentDetails.setExpiryDate(response.body().getCardExpiry());
             cvcStr = response.body().getCvv();
           } catch (Exception e) {
@@ -111,6 +115,13 @@ public class VirtualCardDetails extends AppCompatActivity {
       }
     });
   }
+
+//  private String formatCardPan(String cardNumber) {
+//    String formattedCardNumber = cardNumber;
+//    formcardNumber.replaceAll("\\d{4}", "$0 ");
+//    cardNumber.replaceFirst("\\d{4}", "$0 ").replaceFirst("\\d{6}", "$0 ");
+//    return formattedCardNumber;
+//  }
 
   public void setUpActionBar() {
     Toolbar toolbar = (Toolbar) findViewById(R.id.virtualPaymentMethodToolbar);

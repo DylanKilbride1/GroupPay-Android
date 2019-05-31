@@ -176,6 +176,7 @@ public class VerifyPhoneEmail extends AppCompatActivity {
           @Override
           public void onComplete(@NonNull Task<AuthResult> task) {
             if (task.isSuccessful()) {
+              Toast.makeText(VerifyPhoneEmail.this, "Verification Complete!", Toast.LENGTH_SHORT);
               Intent loginActivity = new Intent(VerifyPhoneEmail.this, Login.class);
               loginActivity.putExtra("registrationEmail", emailAddress);
               startActivity(loginActivity);

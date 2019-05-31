@@ -144,8 +144,10 @@ public class Register extends AppCompatActivity {
                           intent.putExtra("countryCode", countryCodeDigits);
                           startActivity(intent);
                         } else {
-                          FirebaseAuthException e = (FirebaseAuthException) task.getException();
-                          Toast.makeText(getBaseContext(), e.getMessage(), Toast.LENGTH_SHORT).show();
+                          Intent backToLoin = new Intent(Register.this, Login.class);
+                          backToLoin.putExtra("registrationEmail", emailBox.getText().toString());
+                          backToLoin.putExtra("registrationPassword", passwordBox.getText().toString());
+                          startActivity(backToLoin);
                         }
                       }
                     });

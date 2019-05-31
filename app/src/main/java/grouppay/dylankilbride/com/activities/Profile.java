@@ -8,6 +8,7 @@ import android.database.Cursor;
 import android.net.Uri;
 import android.provider.MediaStore;
 import androidx.annotation.Nullable;
+import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
@@ -47,6 +48,7 @@ public class Profile extends AppCompatActivity {
   ImageView profileImage;
   RelativeLayout fullNameRL, emailAddressRL, phoneNumberRL;
   private static final int GALLERY_REQUEST_CODE = 1234;
+  private static final int CAMERA_PERMISSIONS_REQUEST_CODE = 150;
   ProfileAPI profileAPI;
   RequestOptions noProfileImageDefault = new RequestOptions().error(R.drawable.no_profile_photo);
 
@@ -70,6 +72,7 @@ public class Profile extends AppCompatActivity {
     profileImage.setOnClickListener(new View.OnClickListener() {
       @Override
       public void onClick(View view) {
+        checkCameraPermissions();
         pickImage();
       }
     });
@@ -103,6 +106,8 @@ public class Profile extends AppCompatActivity {
         finish();
       }
     });
+
+    checkCameraPermissions();
   }
 
   public void setUpActionBar() {
@@ -258,5 +263,26 @@ public class Profile extends AppCompatActivity {
   protected void onResume() {
     super.onResume();
     getProifleDetails();
+  }
+
+  private void checkCameraPermissions() {
+    if (ContextCompat.checkSelfPermission(Profile.this,
+        Manifest.permission.CAMERA)
+        != PackageManager.PERMISSION_GRANTED) {
+
+      if (ActivityCompat.shouldShowRequestPermissionRationale(Profile.this,
+          Manifest.permission.CAMERA)) {
+      } else {
+        ActivityCompat.requestPermissions(Profile.this,
+            new String[]{Manifest.permission.CAMERA},
+            CAMERA_PERMISSIONS_REQUEST_CODE);
+
+        // MY_PERMISSIONS_REQUEST_READ_CONTACTS is an
+        // app-defined int constant. The callback method gets the
+        // result of the request.
+      }
+    } else {
+      // Permission has already been granted
+    }
   }
 }

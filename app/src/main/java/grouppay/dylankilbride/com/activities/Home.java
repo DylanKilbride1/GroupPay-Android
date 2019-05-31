@@ -2,11 +2,15 @@ package grouppay.dylankilbride.com.activities;
 
 import android.Manifest;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.content.res.Configuration;
 import android.os.Build;
 import androidx.annotation.NonNull;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.navigation.NavigationView;
+
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import androidx.appcompat.app.ActionBarDrawerToggle;
@@ -59,6 +63,7 @@ public class Home extends AppCompatActivity implements ItemClickListener {
   private int numberOfActiveGroups;
   private GroupAccountAPI apiInterface;
   private ImageView navDrawerProfileImage, noAccountsImgView;
+  private static final int STORAGE_PERMISSIONS_REQUEST_CODE = 152;
 
   @Override
   protected void onCreate(Bundle savedInstanceState) {
@@ -84,6 +89,8 @@ public class Home extends AppCompatActivity implements ItemClickListener {
         },4000);
       }
     });
+
+    checkStoragePermissions();
 
     drawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
     actionBarDrawerToggle = new ActionBarDrawerToggle(this, drawerLayout, R.string.nav_drawer_open, R.string.nav_drawer_close);
@@ -333,6 +340,27 @@ public class Home extends AppCompatActivity implements ItemClickListener {
         profileImgUrl = data.getStringExtra("profileUrl");
         setUpNavDrawer();
       }
+    }
+  }
+
+  private void checkStoragePermissions() {
+    if (ContextCompat.checkSelfPermission(Home.this,
+        Manifest.permission.WRITE_EXTERNAL_STORAGE)
+        != PackageManager.PERMISSION_GRANTED) {
+
+      if (ActivityCompat.shouldShowRequestPermissionRationale(Home.this,
+          Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
+      } else {
+        ActivityCompat.requestPermissions(Home.this,
+            new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE},
+            STORAGE_PERMISSIONS_REQUEST_CODE);
+
+        // MY_PERMISSIONS_REQUEST_READ_CONTACTS is an
+        // app-defined int constant. The callback method gets the
+        // result of the request.
+      }
+    } else {
+      // Permission has already been granted
     }
   }
 }
