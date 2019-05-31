@@ -38,5 +38,6 @@
     <color name="verify_phone_enter_code_hint">#cacaca</color>
     <color name="leave_group_button_background_start">#b40000</color>
     <color name="leave_group_button_background_end">#dc0000</color>
+    <color name="select_saved_cards_dialog_bg">#454545</color>
 
 </resources>
