@@ -104,19 +104,18 @@ public class AddPaymentMethod extends AppCompatActivity {
   }
 
   private void sendTokenToServer(StripeCharge stripeCharge) {
-    Call<StripeChargeReceipt> call = cardManagerApiInterface.sendStripeTokenToServer(stripeCharge);
-    call.enqueue(new Callback<StripeChargeReceipt>() {
+    Call<Void> call = cardManagerApiInterface.saveCard(stripeCharge);
+    call.enqueue(new Callback<Void>() {
       @Override
-      public void onResponse(Call<StripeChargeReceipt> call, Response<StripeChargeReceipt> response) {
-        if(response.body().getAmountPaid() != 0L &&
-            response.body().getFailureCode() == null) {
+      public void onResponse(Call<Void> call, Response<Void> response) {
+        if(response.code() == 200) {
             finish();
         } else {
-          Toast.makeText(getApplicationContext(), "Something went wrong!", Toast.LENGTH_LONG).show();
+          Toast.makeText(getApplicationContext(), "We couldn't save your card for some strange reason!", Toast.LENGTH_LONG).show();
         }
       }
       @Override
-      public void onFailure(Call<StripeChargeReceipt> call, Throwable t) {
+      public void onFailure(Call<Void> call, Throwable t) {
         Toast.makeText(getApplicationContext(), "Something went wrong!", Toast.LENGTH_LONG).show();
       }
     });

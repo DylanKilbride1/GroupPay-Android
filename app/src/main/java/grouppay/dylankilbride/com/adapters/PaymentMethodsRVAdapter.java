@@ -49,7 +49,7 @@ public class PaymentMethodsRVAdapter extends RecyclerView.Adapter<PaymentMethods
     viewHolder.cardNumberPreview.setText(cards.getLastFour());
     if(cards.getCardType().equals("Visa")) {
       viewHolder.cardTypeIcon.setBackgroundResource(R.drawable.visa_icon);
-    } else if(cards.getCardType().equals("Mastercard")) {
+    } else if(cards.getCardType().equals("MasterCard")) {
       viewHolder.cardTypeIcon.setBackgroundResource(R.drawable.mastercard_icon);
     } else if(cards.getCardType().equals("Maestro")) {
       viewHolder.cardTypeIcon.setBackgroundResource(R.drawable.maestro_icon);
