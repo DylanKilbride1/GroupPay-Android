@@ -21,6 +21,7 @@ import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.stripe.android.model.Card;
@@ -86,7 +87,7 @@ public class VirtualCardDetails extends AppCompatActivity {
       @Override
       public void onResponse(Call<VirtualCard> call, Response<VirtualCard> response) {
         if (!response.isSuccessful()) {
-          //Handle
+          Toast.makeText(VirtualCardDetails.this, "Couldn't retrieve card details!", Toast.LENGTH_SHORT).show();
         } else {
           try {
 //            switch (response.body().getIssuer()) {
@@ -101,7 +102,7 @@ public class VirtualCardDetails extends AppCompatActivity {
 //                break;
 //            }
             groupPaymentDetails.setCardName(groupAccountName);
-            groupPaymentDetails.setCardNumber("3413 2984 6977 9908");
+            groupPaymentDetails.setCardNumber(response.body().getPan());
             groupPaymentDetails.setExpiryDate(response.body().getCardExpiry());
             cvcStr = response.body().getCvv();
           } catch (Exception e) {
@@ -111,7 +112,7 @@ public class VirtualCardDetails extends AppCompatActivity {
       }
       @Override
       public void onFailure(Call<VirtualCard> call, Throwable t) {
-
+        Toast.makeText(VirtualCardDetails.this, "Couldn't retrieve card details!", Toast.LENGTH_SHORT).show();
       }
     });
   }

@@ -1,7 +1,5 @@
 package grouppay.dylankilbride.com.retrofit_interfaces;
 
-
-
 import grouppay.dylankilbride.com.models.StripeCharge;
 import grouppay.dylankilbride.com.models.StripeChargeReceipt;
 import okhttp3.ResponseBody;
