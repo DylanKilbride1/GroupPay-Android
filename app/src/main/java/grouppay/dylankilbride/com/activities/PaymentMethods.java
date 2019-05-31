@@ -142,7 +142,7 @@ public class PaymentMethods extends AppCompatActivity {
   }
 
   private void parsePaymentDetails(String stripeCardList) {
-    String hiddenDigits = "\u2022\u2022\u2022\u2022 ";
+    String hiddenDigits = "\u2022\u2022\u2022\u2022 \u2022\u2022\u2022\u2022 \u2022\u2022\u2022\u2022 ";
     try {
       JSONObject scl = new JSONObject(stripeCardList);
       JSONArray dataArray = scl.getJSONArray("data");

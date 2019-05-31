@@ -139,7 +139,7 @@
             android:layout_height="50dp"
             android:layout_margin="40dp"
             android:layout_alignParentBottom="true"
-            android:text="CONTINUE"
+            android:text="PAY"
             android:textSize="15dp"
             android:textColor="@color/whiteText"
             android:background="@drawable/add_card_button_bg"/>

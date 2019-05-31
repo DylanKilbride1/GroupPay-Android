@@ -11,11 +11,11 @@ import retrofit2.http.Path;
 
 public interface CardManagerAPI {
 
-  @POST("/payments/charge")
-  Call<StripeChargeReceipt> sendStripeTokenToServer(@Body StripeCharge stripeCharge);
+  @POST("/payments/oneTimePayment")
+  Call<Void> sendStripeTokenToServer(@Body StripeCharge stripeCharge);
 
-  @POST("/payments/charge/save")
-  Call<StripeChargeReceipt> sendStripeTokenToServerAndSave(@Body StripeCharge stripeCharge);
+  @POST("/payments/saveCard")
+  Call<Void> saveCard(@Body StripeCharge stripeCharge);
 
   @GET("/users/user/getAllPaymentMethods/{userId}")
   Call<ResponseBody> getUsersPaymentMethods(@Path("userId") String userId);
