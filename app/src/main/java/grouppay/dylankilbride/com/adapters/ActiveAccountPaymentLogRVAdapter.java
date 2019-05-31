@@ -41,8 +41,8 @@ public class ActiveAccountPaymentLogRVAdapter extends RecyclerView.Adapter<Activ
   public void onBindViewHolder(@NonNull final ViewHolder viewHolder, final int position) {
     final Transaction transaction = transactionsList.get(position);
     String paymentTypeStr = "Paid";
-    viewHolder.userInitials.setText(transaction.getUser().getInitials());
-    viewHolder.userFullName.setText(transaction.getUser().getFullName());
+    viewHolder.userInitials.setText(transaction.getInitials());
+    viewHolder.userFullName.setText(transaction.getTransactionOwner());
     viewHolder.paymentTime.setText(transaction.getPaymentDateAndTime());
     viewHolder.paymentType.setText(paymentTypeStr);
     viewHolder.paymentAmount.setText(transaction.getAmountPaidStr());

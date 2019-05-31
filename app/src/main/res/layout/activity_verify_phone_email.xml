@@ -30,6 +30,41 @@
         android:textSize="14sp"
         android:text="@string/verification_purpose_text"/>
 
+    <TextView
+        android:id="@+id/verifyPhoneCodePrompt"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="40dp"
+        android:layout_marginRight="40dp"
+        android:layout_below="@id/verifyDetailsGroupPayImage"
+        android:text="We have sent a code to the mobile number provided. Please enter it below"
+        android:textColor="@color/whiteText"
+        android:textSize="14sp"
+        android:gravity="center_horizontal"
+        android:visibility="gone"/>
+
+    <EditText
+        android:id="@+id/enterVerificationCodeET"
+        android:layout_width="250dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:hint="Verification Code"
+        android:textSize="24sp"
+        android:textColor="@color/whiteText"
+        android:backgroundTint="@color/whiteText"
+        android:textColorHint="@color/verify_phone_enter_code_hint"
+        android:layout_below="@id/verifyPhoneCodePrompt"
+        android:layout_centerInParent="true"
+        android:gravity="center_horizontal"
+        android:visibility="gone"/>
+
+    <ProgressBar
+        android:id="@+id/verificationProgressBar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:visibility="gone"/>
+
     <Button
         android:id="@+id/verifyAccountEmail"
         android:layout_width="match_parent"
@@ -63,6 +98,19 @@
         android:layout_marginBottom="40dp"
         android:background="@drawable/verify_by_email_bg"
         android:text="I've Verified, Let Me Login!"
+        android:textColor="@color/verify_by_phone_text"/>
+
+    <Button
+        android:id="@+id/verifyPhoneNumberManually"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_marginLeft="40dp"
+        android:layout_marginRight="40dp"
+        android:layout_marginBottom="40dp"
+        android:background="@drawable/verify_by_email_bg"
+        android:text="Verify Code"
+        android:visibility="gone"
         android:textColor="@color/verify_by_phone_text"/>
 
     <Button

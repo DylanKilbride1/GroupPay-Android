@@ -20,12 +20,42 @@
 
     </com.google.android.material.appbar.AppBarLayout>
 
+    <TextView
+        android:id="@+id/contactsOnGPTV"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="?attr/actionBarSize"
+        android:layout_centerHorizontal="true"
+        android:text="Contacts with GroupPay accounts"
+        android:fontFamily="@font/cairo"
+        android:textStyle="bold"
+        android:padding="10dp"/>
+
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/createGroupAccountStage2RV"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_marginTop="?attr/actionBarSize">
+        android:layout_height="wrap_content"
+        android:layout_below="@id/contactsOnGPTV">
 
+
+    </androidx.recyclerview.widget.RecyclerView>
+
+    <TextView
+        android:id="@+id/contactsNotOnGPTV"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/createGroupAccountStage2RV"
+        android:layout_centerHorizontal="true"
+        android:text="Contacts not on GroupPay"
+        android:fontFamily="@font/cairo"
+        android:textStyle="bold"
+        android:padding="10dp"/>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/contactsNotOnGPStage2RV"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/contactsNotOnGPTV" >
     </androidx.recyclerview.widget.RecyclerView>
 
     <Button

@@ -1,10 +1,15 @@
 package grouppay.dylankilbride.com.activities;
 
+import android.Manifest;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.provider.ContactsContract;
 import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
+
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -18,10 +23,12 @@ import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import grouppay.dylankilbride.com.adapters.CreateGroupAccountStage2RVAdapter;
 import grouppay.dylankilbride.com.adapters.ItemClickListener;
 import grouppay.dylankilbride.com.grouppay.R;
+import grouppay.dylankilbride.com.models.Contact;
 import grouppay.dylankilbride.com.models.GroupAccount;
 import grouppay.dylankilbride.com.models.User;
 import grouppay.dylankilbride.com.retrofit_interfaces.GroupAccountAPI;
@@ -37,17 +44,20 @@ public class CreateGroupAccountStage2 extends AppCompatActivity implements ItemC
 
   private CreateGroupAccountStage2RVAdapter adapter;
   private GroupAccountAPI apiInterface;
-  private RecyclerView contactsRecyclerView;
+  private RecyclerView contactsRecyclerView, contactsNotOnGPRV;
   private RecyclerView.LayoutManager contactsRecyclerViewLayoutManager;
   private Button addContactsButton;
   private ArrayList<User> selectedContacts = new ArrayList<>();
   private ArrayList<User> contactList;
-  String groupAccountIdStr;
+  private ArrayList<User> contactsNotOnGPList;
+  private String groupAccountIdStr;
+  private static final int CONTACTS_PERMISSIONS_REQUEST_CODE = 151;
 
   @Override
   protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
     setContentView(R.layout.activity_create_group_stage2);
+    checkContactsPermissions();
 
     setUpActionBar();
     getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -58,6 +68,7 @@ public class CreateGroupAccountStage2 extends AppCompatActivity implements ItemC
     showHideContinueButton(selectedContacts);
 
     contactList = new ArrayList<>();
+    //contactsNotOnGPList = new ArrayList<>();
     getContactsPhoneNumbers();
 
     addContactsButton.setOnClickListener(new View.OnClickListener() {
@@ -74,7 +85,7 @@ public class CreateGroupAccountStage2 extends AppCompatActivity implements ItemC
     });
   }
 
-  public void setUpAccountPreviewRecyclerView(List<User> contactList) {
+  public void setUpContactsOnGroupPayRecyclerView(List<User> contactList) {
     contactsRecyclerView = (RecyclerView) findViewById(R.id.createGroupAccountStage2RV);
     contactsRecyclerViewLayoutManager = new LinearLayoutManager(this);
     contactsRecyclerView.setLayoutManager(contactsRecyclerViewLayoutManager);
@@ -83,6 +94,16 @@ public class CreateGroupAccountStage2 extends AppCompatActivity implements ItemC
     adapter.setOnClick(CreateGroupAccountStage2.this);
     contactsRecyclerView.addItemDecoration(new DividerItemDecoration(contactsRecyclerView.getContext(), DividerItemDecoration.VERTICAL));
   }
+
+//  public void setUpContactsNotOnGPRecyclerView(List<User> contactNotOnGPList) {
+//    contactsRecyclerView = (RecyclerView) findViewById(R.id.contactsNotOnGPStage2RV);
+//    contactsRecyclerViewLayoutManager = new LinearLayoutManager(this);
+//    contactsRecyclerView.setLayoutManager(contactsRecyclerViewLayoutManager);
+//    adapter = new CreateGroupAccountStage2RVAdapter(contactNotOnGPList, R.layout.activity_create_group_stage2_list_item, this);
+//    contactsRecyclerView.setAdapter(adapter);
+//    adapter.setOnClick(CreateGroupAccountStage2.this);
+//    contactsRecyclerView.addItemDecoration(new DividerItemDecoration(contactsRecyclerView.getContext(), DividerItemDecoration.VERTICAL));
+//  }
 
   public void addContactsToGroupAccount(List<User> contactsToAdd) {
     Call<GroupAccount> call = apiInterface.addContactsToAccount(groupAccountIdStr, contactsToAdd);
@@ -161,8 +182,12 @@ public class CreateGroupAccountStage2 extends AppCompatActivity implements ItemC
         null);
     while (phones.moveToNext()) {
       String phoneNumber = phones.getString(phones.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER));
+//      String contactName = phones.getString(phones.getColumnIndex(ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME));
+//      String[] contactNames = contactName.split(" ");
       contactsPhoneNumbers.add(phoneNumber);
+//      contactsNotOnGPList.add(new User(contactNames[0], contactNames[1], phoneNumber));
     }
+//    setUpContactsNotOnGPRecyclerView(contactsNotOnGPList);
     setUpContactsWithGPAccountsCall(contactsPhoneNumbers);
   }
 
@@ -187,7 +212,7 @@ public class CreateGroupAccountStage2 extends AppCompatActivity implements ItemC
           for (int i = 0; i < response.body().size(); i++) {
             contactList.add(response.body().get(i));
           }
-          setUpAccountPreviewRecyclerView(contactList);
+          setUpContactsOnGroupPayRecyclerView(contactList);
         }
       }
 
@@ -206,6 +231,27 @@ public class CreateGroupAccountStage2 extends AppCompatActivity implements ItemC
         return true;
       default:
         return super.onOptionsItemSelected(item);
+    }
+  }
+
+  private void checkContactsPermissions() {
+    if (ContextCompat.checkSelfPermission(CreateGroupAccountStage2.this,
+        Manifest.permission.READ_CONTACTS)
+        != PackageManager.PERMISSION_GRANTED) {
+
+      if (ActivityCompat.shouldShowRequestPermissionRationale(CreateGroupAccountStage2.this,
+          Manifest.permission.READ_CONTACTS)) {
+      } else {
+        ActivityCompat.requestPermissions(CreateGroupAccountStage2.this,
+            new String[]{Manifest.permission.READ_CONTACTS},
+            CONTACTS_PERMISSIONS_REQUEST_CODE);
+
+        // MY_PERMISSIONS_REQUEST_READ_CONTACTS is an
+        // app-defined int constant. The callback method gets the
+        // result of the request.
+      }
+    } else {
+      // Permission has already been granted
     }
   }
 }

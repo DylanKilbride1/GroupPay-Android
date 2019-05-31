@@ -23,7 +23,9 @@ import android.view.View;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.stripe.android.model.Card;
 import com.vinaygaba.creditcardview.CardNumberFormat;
+import com.vinaygaba.creditcardview.CardType;
 import com.vinaygaba.creditcardview.CreditCardView;
 
 import java.math.BigDecimal;
@@ -35,7 +37,7 @@ public class VirtualCardDetails extends AppCompatActivity {
   private String groupAccountIdStr, groupAccountName, valueOfCard;
   private GroupAccountAPI apiInterface;
   private CreditCardView groupPaymentDetails;
-  private TextView cvcView;
+  private TextView cvcView, cardValue;
   private String cvcStr = "";
 
   @Override
@@ -51,21 +53,21 @@ public class VirtualCardDetails extends AppCompatActivity {
     getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
     groupPaymentDetails = findViewById(R.id.groupPaymentCard);
+    cardValue = findViewById(R.id.cardValue);
     groupPaymentDetails.setCardNumberFormat(CardNumberFormat.MASKED_ALL_BUT_LAST_FOUR);
 
     cvcView = findViewById(R.id.virtualPaymentMethodCVC);
 
-    groupPaymentDetails.setOnTouchListener(new View.OnTouchListener() {
-      @Override
-      public boolean onTouch(View view, MotionEvent motionEvent) {
-        if(motionEvent.getAction() == MotionEvent.ACTION_DOWN){
-          cvcView.setText(cvcStr.replace("", " ").trim());
-        }
-        if(motionEvent.getAction() == MotionEvent.ACTION_UP){
-          cvcView.setText("X X X"); //finger was lifted
-        }
-        return true;
+    cardValue.setText("Card Value: €" + valueOfCard);
+
+    groupPaymentDetails.setOnTouchListener((view, motionEvent) -> {
+      if(motionEvent.getAction() == MotionEvent.ACTION_DOWN){
+        cvcView.setText(cvcStr.replace("", " ").trim());
       }
+      if(motionEvent.getAction() == MotionEvent.ACTION_UP){
+        cvcView.setText("X X X");
+      }
+      return true;
     });
   }
 
@@ -87,8 +89,19 @@ public class VirtualCardDetails extends AppCompatActivity {
           //Handle
         } else {
           try {
+//            switch (response.body().getIssuer()) {
+//              case "Master Card":
+//                groupPaymentDetails.setBrandLogo(CardType.MASTERCARD);
+//                break;
+//              case "American Express":
+//                groupPaymentDetails.setBrandLogo(CardType.AMERICAN_EXPRESS);
+//                break;
+//              default:
+//                groupPaymentDetails.setBrandLogo(CardType.VISA);
+//                break;
+//            }
             groupPaymentDetails.setCardName(groupAccountName);
-            groupPaymentDetails.setCardNumber(response.body().getPan());
+            groupPaymentDetails.setCardNumber("3413 2984 6977 9908");
             groupPaymentDetails.setExpiryDate(response.body().getCardExpiry());
             cvcStr = response.body().getCvv();
           } catch (Exception e) {
@@ -102,6 +115,13 @@ public class VirtualCardDetails extends AppCompatActivity {
       }
     });
   }
+
+//  private String formatCardPan(String cardNumber) {
+//    String formattedCardNumber = cardNumber;
+//    formcardNumber.replaceAll("\\d{4}", "$0 ");
+//    cardNumber.replaceFirst("\\d{4}", "$0 ").replaceFirst("\\d{6}", "$0 ");
+//    return formattedCardNumber;
+//  }
 
   public void setUpActionBar() {
     Toolbar toolbar = (Toolbar) findViewById(R.id.virtualPaymentMethodToolbar);

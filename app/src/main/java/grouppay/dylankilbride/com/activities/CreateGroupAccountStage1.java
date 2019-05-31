@@ -34,6 +34,7 @@ import com.squareup.picasso.Picasso;
 import java.io.File;
 import java.math.BigDecimal;
 
+import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import grouppay.dylankilbride.com.grouppay.R;
 import grouppay.dylankilbride.com.models.GroupAccount;
@@ -65,6 +66,7 @@ public class CreateGroupAccountStage1 extends AppCompatActivity {
   RequestBody filename;
   long userId;
   private static final int GALLERY_REQUEST_CODE = 234;
+  private static final int CAMERA_PERMISSIONS_REQUEST_CODE = 150;
   RequestOptions noProfileImageDefault = new RequestOptions().error(R.drawable.no_profile_photo);
 
   @Override
@@ -107,6 +109,8 @@ public class CreateGroupAccountStage1 extends AppCompatActivity {
     amountNeeded.addTextChangedListener(new CurrencyTextWatcher(amountNeeded));
     amountNeeded.setFilters(new InputFilter[] {new DecimalDigitsInputFilter(2)});
     setAmountMaxLength(18);
+
+    checkCameraPermissions();
   }
 
   public void setAmountMaxLength(int length) {
@@ -246,6 +250,27 @@ public class CreateGroupAccountStage1 extends AppCompatActivity {
         return true;
       default:
         return super.onOptionsItemSelected(item);
+    }
+  }
+
+  private void checkCameraPermissions() {
+    if (ContextCompat.checkSelfPermission(CreateGroupAccountStage1.this,
+        Manifest.permission.CAMERA)
+        != PackageManager.PERMISSION_GRANTED) {
+
+      if (ActivityCompat.shouldShowRequestPermissionRationale(CreateGroupAccountStage1.this,
+          Manifest.permission.CAMERA)) {
+      } else {
+        ActivityCompat.requestPermissions(CreateGroupAccountStage1.this,
+            new String[]{Manifest.permission.CAMERA},
+            CAMERA_PERMISSIONS_REQUEST_CODE);
+
+        // MY_PERMISSIONS_REQUEST_READ_CONTACTS is an
+        // app-defined int constant. The callback method gets the
+        // result of the request.
+      }
+    } else {
+      // Permission has already been granted
     }
   }
 }

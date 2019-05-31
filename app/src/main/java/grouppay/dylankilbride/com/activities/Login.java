@@ -1,7 +1,12 @@
 package grouppay.dylankilbride.com.activities;
 
+import android.Manifest;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.content.res.ColorStateList;
+
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 import androidx.core.view.ViewCompat;
 import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
@@ -70,7 +75,6 @@ public class Login extends AppCompatActivity {
     passwordBox.setText(registrationPassword);
 
     firebaseAuth = FirebaseAuth.getInstance();
-    firebaseAuth.getCurrentUser().reload();
 
     final RequestQueue loginRequestQueue = Volley.newRequestQueue(Login.this);
 
@@ -80,14 +84,19 @@ public class Login extends AppCompatActivity {
 
           JSONObject loginRequestDetails = new JSONObject();
           try {
-            if (firebaseAuth.getCurrentUser().isEmailVerified()) {
-              loginRequestDetails.put("email", emailBox.getText().toString());
-              loginRequestDetails.put("password", passwordBox.getText().toString());
-              loginRequestDetails.put("isVerified", "TRUE");
+            if(firebaseAuth.getCurrentUser() != null) {
+              if (firebaseAuth.getCurrentUser().isEmailVerified() || firebaseAuth.getCurrentUser().getPhoneNumber() != null) {
+                loginRequestDetails.put("email", emailBox.getText().toString());
+                loginRequestDetails.put("password", passwordBox.getText().toString());
+                loginRequestDetails.put("isVerified", "TRUE");
+              } else {
+                loginRequestDetails.put("email", emailBox.getText().toString());
+                loginRequestDetails.put("password", passwordBox.getText().toString());
+                loginRequestDetails.put("isVerified", "FALSE");
+              }
             } else {
               loginRequestDetails.put("email", emailBox.getText().toString());
               loginRequestDetails.put("password", passwordBox.getText().toString());
-              loginRequestDetails.put("isVerified", "FALSE");
             }
           } catch (JSONException e) {
             Log.e("Couldn't create JSON: ", e.toString());

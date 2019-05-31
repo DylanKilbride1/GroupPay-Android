@@ -35,5 +35,8 @@
     <color name="homeFAB">#195fc9</color>
     <color name="createGroupAccountContactItemPressed">#9fd4f1</color>
     <color name="verify_by_phone_text">#096cbc</color>
+    <color name="verify_phone_enter_code_hint">#cacaca</color>
+    <color name="leave_group_button_background_start">#b40000</color>
+    <color name="leave_group_button_background_end">#dc0000</color>
 
 </resources>

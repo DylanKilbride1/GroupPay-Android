@@ -2,11 +2,15 @@ package grouppay.dylankilbride.com.activities;
 
 import android.Manifest;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.content.res.Configuration;
 import android.os.Build;
 import androidx.annotation.NonNull;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.navigation.NavigationView;
+
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import androidx.appcompat.app.ActionBarDrawerToggle;
@@ -24,6 +28,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.google.firebase.auth.FirebaseAuth;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -33,6 +39,7 @@ import grouppay.dylankilbride.com.grouppay.R;
 import grouppay.dylankilbride.com.models.GroupAccount;
 import grouppay.dylankilbride.com.models.User;
 import grouppay.dylankilbride.com.retrofit_interfaces.GroupAccountAPI;
+import grouppay.dylankilbride.com.retrofit_interfaces.ProfileAPI;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -56,15 +63,13 @@ public class Home extends AppCompatActivity implements ItemClickListener {
   private int numberOfActiveGroups;
   private GroupAccountAPI apiInterface;
   private ImageView navDrawerProfileImage, noAccountsImgView;
+  private static final int STORAGE_PERMISSIONS_REQUEST_CODE = 152;
 
   @Override
   protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
     setContentView(R.layout.activity_home);
     userId = getIntent().getStringExtra("userId");
-    userName = getIntent().getStringExtra("name");
-    userEmail = getIntent().getStringExtra("email");
-    profileImgUrl = getIntent().getStringExtra("profileImgUrl");
 
     setUpFAB();
     setUpAccountPreviewRecyclerView();
@@ -85,6 +90,8 @@ public class Home extends AppCompatActivity implements ItemClickListener {
       }
     });
 
+    checkStoragePermissions();
+
     drawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
     actionBarDrawerToggle = new ActionBarDrawerToggle(this, drawerLayout, R.string.nav_drawer_open, R.string.nav_drawer_close);
 
@@ -93,8 +100,6 @@ public class Home extends AppCompatActivity implements ItemClickListener {
 
     setUpActionBar();
     getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-
-    setUpNavDrawer();
   }
 
   private void setUpNavDrawer() {
@@ -134,6 +139,7 @@ public class Home extends AppCompatActivity implements ItemClickListener {
             startActivity(intentTransactions);
             break;
           case R.id.nav_logout:
+            FirebaseAuth.getInstance().signOut();
             Intent intentLogin = new Intent(Home.this, Login.class);
             startActivity(intentLogin);
             break;
@@ -263,6 +269,34 @@ public class Home extends AppCompatActivity implements ItemClickListener {
 
   }
 
+  public void getProifleDetails() {
+    Retrofit retrofit = new Retrofit.Builder()
+        .baseUrl(LOCALHOST_SERVER_BASEURL)
+        .addConverterFactory(GsonConverterFactory.create())
+        .build();
+
+    final ProfileAPI profileAPI = retrofit.create(ProfileAPI.class); //Creates model for JSON
+    Call<User> call = profileAPI.getUserDetails(userId);
+    call.enqueue(new Callback<User>() { //Don't use execute as it will execute on main thread
+      @Override
+      public void onResponse(Call<User> call, Response<User> response) {
+        if (!response.isSuccessful()) {
+          //TODO Add error display message for user
+        } else {
+          userEmail = response.body().getEmailAddress();
+          userName = response.body().getFirstName();
+          profileImgUrl = response.body().getProfileUrl();
+          setUpNavDrawer();
+        }
+      }
+
+      @Override
+      public void onFailure(Call<User> call, Throwable t) {
+        //TODO Do something here
+      }
+    });
+  }
+
   @Override
   public void onItemClick(GroupAccount groupAccount) {
     Intent viewDetailedInfo = new Intent(Home.this, GroupAccountDetailed.class);
@@ -276,6 +310,7 @@ public class Home extends AppCompatActivity implements ItemClickListener {
   protected void onResume() {
     super.onResume();
     setUpAssociatedAccountsCall(userId);
+    getProifleDetails();
     groupAccounts.clear();
   }
 
@@ -305,6 +340,27 @@ public class Home extends AppCompatActivity implements ItemClickListener {
         profileImgUrl = data.getStringExtra("profileUrl");
         setUpNavDrawer();
       }
+    }
+  }
+
+  private void checkStoragePermissions() {
+    if (ContextCompat.checkSelfPermission(Home.this,
+        Manifest.permission.WRITE_EXTERNAL_STORAGE)
+        != PackageManager.PERMISSION_GRANTED) {
+
+      if (ActivityCompat.shouldShowRequestPermissionRationale(Home.this,
+          Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
+      } else {
+        ActivityCompat.requestPermissions(Home.this,
+            new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE},
+            STORAGE_PERMISSIONS_REQUEST_CODE);
+
+        // MY_PERMISSIONS_REQUEST_READ_CONTACTS is an
+        // app-defined int constant. The callback method gets the
+        // result of the request.
+      }
+    } else {
+      // Permission has already been granted
     }
   }
 }

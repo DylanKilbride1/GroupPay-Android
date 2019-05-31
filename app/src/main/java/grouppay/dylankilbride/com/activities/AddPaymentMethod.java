@@ -73,7 +73,7 @@ public class AddPaymentMethod extends AppCompatActivity {
         if(!cardToAdd.validateCard()) {
           Toast.makeText(getApplicationContext(), "Card Details Invalid!", Toast.LENGTH_LONG).show();
         }
-        //stripeProcess(cardToAdd);
+        stripeProcess(cardToAdd);
       }
     });
   }

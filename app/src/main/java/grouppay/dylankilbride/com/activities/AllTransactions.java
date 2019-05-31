@@ -135,12 +135,10 @@ public class AllTransactions extends AppCompatActivity {
           transactionsList.clear();
           if (response.body().size() > 0 && !response.body().equals("null")) {
             for (int i = 0; i < response.body().size(); i++) {
-              transactionsList.add(new Transaction(new User(response.body().get(i).getUser().getFirstName(),
-                  response.body().get(i).getUser().getLastName(),
-                  response.body().get(i).getUser().getMobileNumber()),
-                  response.body().get(i).getAmountPaid(),
+              transactionsList.add(new Transaction(response.body().get(i).getAmountPaid(),
                   response.body().get(i).getPaymentDateAndTime(),
-                  new GroupAccount(response.body().get(i).getGroupAccount().getAccountName())));
+                  response.body().get(i).getGroupName(),
+                  response.body().get(i).getTransactionOwner()));
             }
           }
           Collections.reverse(transactionsList);
