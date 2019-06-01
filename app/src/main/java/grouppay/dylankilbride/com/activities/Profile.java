@@ -2,12 +2,16 @@ package grouppay.dylankilbride.com.activities;
 
 import android.Manifest;
 import android.app.Activity;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.net.Uri;
 import android.provider.MediaStore;
+
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.appcompat.app.AppCompatActivity;
@@ -17,6 +21,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -48,7 +53,6 @@ public class Profile extends AppCompatActivity {
   ImageView profileImage;
   RelativeLayout fullNameRL, emailAddressRL, phoneNumberRL;
   private static final int GALLERY_REQUEST_CODE = 1234;
-  private static final int CAMERA_PERMISSIONS_REQUEST_CODE = 150;
   ProfileAPI profileAPI;
   RequestOptions noProfileImageDefault = new RequestOptions().error(R.drawable.no_profile_photo);
 
@@ -72,7 +76,11 @@ public class Profile extends AppCompatActivity {
     profileImage.setOnClickListener(new View.OnClickListener() {
       @Override
       public void onClick(View view) {
-        checkCameraPermissions();
+        if(ContextCompat.checkSelfPermission(Profile.this,
+            Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED) {
+        } else {
+          requestStoragePermission();
+        }
         pickImage();
       }
     });
@@ -107,7 +115,52 @@ public class Profile extends AppCompatActivity {
       }
     });
 
-    checkCameraPermissions();
+    //checkCameraPermissions();
+  }
+
+  private void requestStoragePermission() {
+    if(ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.READ_EXTERNAL_STORAGE)) {
+
+      AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
+      alertDialogBuilder.setTitle("Gallery Access Needed");
+      alertDialogBuilder.setMessage("The following permission is needed to allow you to select a profile photo from your gallery");
+
+      alertDialogBuilder.setPositiveButton("Cool!", new DialogInterface.OnClickListener() {
+        @Override
+        public void onClick(DialogInterface dialogInterface, int i) {
+          ActivityCompat.requestPermissions(Profile.this, new String[] {Manifest.permission.READ_EXTERNAL_STORAGE}, GALLERY_REQUEST_CODE);
+        }
+      });
+
+      alertDialogBuilder.setNegativeButton("Not Now", new DialogInterface.OnClickListener() {
+        @Override
+        public void onClick(DialogInterface dialogInterface, int i) {
+          dialogInterface.dismiss();
+        }
+      });
+
+      AlertDialog alert = alertDialogBuilder.create();
+      alert.show();
+
+      Button negativeButton = alert.getButton(DialogInterface.BUTTON_NEGATIVE);
+      negativeButton.setTextColor(getResources().getColor(R.color.colorAccent));
+      Button positiveButton = alert.getButton(DialogInterface.BUTTON_POSITIVE);
+      positiveButton.setTextColor(getResources().getColor(R.color.colorAccent));
+
+    } else {
+      ActivityCompat.requestPermissions(this, new String[] {Manifest.permission.READ_EXTERNAL_STORAGE}, GALLERY_REQUEST_CODE);
+    }
+  }
+
+  @Override
+  public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+    if(requestCode == GALLERY_REQUEST_CODE) {
+      if(grantResults.length > 0 && grantResults[0]== PackageManager.PERMISSION_GRANTED) {
+        Toast.makeText(this, "Permission granted, sweet!", Toast.LENGTH_SHORT);
+      } else {
+        Toast.makeText(this, "Permission not granted", Toast.LENGTH_SHORT).show();
+      }
+    }
   }
 
   public void setUpActionBar() {
@@ -132,7 +185,6 @@ public class Profile extends AppCompatActivity {
     String[] mimeTypes = {"image/jpeg", "image/png"};
     if (ContextCompat.checkSelfPermission(Profile.this, Manifest.permission.READ_EXTERNAL_STORAGE)
         != PackageManager.PERMISSION_GRANTED) {
-        Toast.makeText(Profile.this, "Permission Denied", Toast.LENGTH_LONG).show();
     } else {
       Intent imageSelection = new Intent(Intent.ACTION_PICK);
       imageSelection.setType("image/*");
@@ -265,24 +317,24 @@ public class Profile extends AppCompatActivity {
     getProifleDetails();
   }
 
-  private void checkCameraPermissions() {
-    if (ContextCompat.checkSelfPermission(Profile.this,
-        Manifest.permission.CAMERA)
-        != PackageManager.PERMISSION_GRANTED) {
-
-      if (ActivityCompat.shouldShowRequestPermissionRationale(Profile.this,
-          Manifest.permission.CAMERA)) {
-      } else {
-        ActivityCompat.requestPermissions(Profile.this,
-            new String[]{Manifest.permission.CAMERA},
-            CAMERA_PERMISSIONS_REQUEST_CODE);
-
-        // MY_PERMISSIONS_REQUEST_READ_CONTACTS is an
-        // app-defined int constant. The callback method gets the
-        // result of the request.
-      }
-    } else {
-      // Permission has already been granted
-    }
-  }
+//  private void checkCameraPermissions() {
+//    if (ContextCompat.checkSelfPermission(Profile.this,
+//        Manifest.permission.CAMERA)
+//        != PackageManager.PERMISSION_GRANTED) {
+//
+//      if (ActivityCompat.shouldShowRequestPermissionRationale(Profile.this,
+//          Manifest.permission.CAMERA)) {
+//      } else {
+//        ActivityCompat.requestPermissions(Profile.this,
+//            new String[]{Manifest.permission.CAMERA},
+//            CAMERA_PERMISSIONS_REQUEST_CODE);
+//
+//        // MY_PERMISSIONS_REQUEST_READ_CONTACTS is an
+//        // app-defined int constant. The callback method gets the
+//        // result of the request.
+//      }
+//    } else {
+//      // Permission has already been granted
+//    }
+ // }
 }

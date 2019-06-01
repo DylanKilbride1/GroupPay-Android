@@ -2,9 +2,12 @@ package grouppay.dylankilbride.com.activities;
 
 import android.Manifest;
 import android.app.Activity;
+import android.content.DialogInterface;
 import android.content.Intent;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.pm.PackageManager;
@@ -65,8 +68,8 @@ public class CreateGroupAccountStage1 extends AppCompatActivity {
   MultipartBody.Part fileToUpload;
   RequestBody filename;
   long userId;
-  private static final int GALLERY_REQUEST_CODE = 234;
-  private static final int CAMERA_PERMISSIONS_REQUEST_CODE = 150;
+  private static final int GALLERY_REQUEST_CODE = 178;
+  private static final int CONTACTS_REQUEST_CODE = 179;
   RequestOptions noProfileImageDefault = new RequestOptions().error(R.drawable.no_profile_photo);
 
   @Override
@@ -110,7 +113,104 @@ public class CreateGroupAccountStage1 extends AppCompatActivity {
     amountNeeded.setFilters(new InputFilter[] {new DecimalDigitsInputFilter(2)});
     setAmountMaxLength(18);
 
-    checkCameraPermissions();
+    if(ContextCompat.checkSelfPermission(CreateGroupAccountStage1.this,
+        Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED) {
+    } else {
+      requestStoragePermission();
+    }
+
+    if(ContextCompat.checkSelfPermission(CreateGroupAccountStage1.this,
+        Manifest.permission.READ_CONTACTS) == PackageManager.PERMISSION_GRANTED) {
+    } else {
+      //requestStoragePermission();
+      requestContactsPermission();
+    }
+  }
+
+  private void requestStoragePermission() {
+    if(ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.READ_EXTERNAL_STORAGE)) {
+
+      AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
+      alertDialogBuilder.setTitle("Gallery Access Needed");
+      alertDialogBuilder.setMessage("The following permission is needed to allow you to select a group photo from your gallery");
+
+      alertDialogBuilder.setPositiveButton("Cool!", new DialogInterface.OnClickListener() {
+        @Override
+        public void onClick(DialogInterface dialogInterface, int i) {
+          ActivityCompat.requestPermissions(CreateGroupAccountStage1.this, new String[] {Manifest.permission.READ_EXTERNAL_STORAGE}, GALLERY_REQUEST_CODE);
+        }
+      });
+
+      alertDialogBuilder.setNegativeButton("Not Now", new DialogInterface.OnClickListener() {
+        @Override
+        public void onClick(DialogInterface dialogInterface, int i) {
+          dialogInterface.dismiss();
+        }
+      });
+
+      AlertDialog alert = alertDialogBuilder.create();
+      alert.show();
+
+      Button negativeButton = alert.getButton(DialogInterface.BUTTON_NEGATIVE);
+      negativeButton.setTextColor(getResources().getColor(R.color.colorAccent));
+      Button positiveButton = alert.getButton(DialogInterface.BUTTON_POSITIVE);
+      positiveButton.setTextColor(getResources().getColor(R.color.colorAccent));
+
+    } else {
+      ActivityCompat.requestPermissions(this, new String[] {Manifest.permission.READ_EXTERNAL_STORAGE}, GALLERY_REQUEST_CODE);
+    }
+  }
+
+  @Override
+  public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+    if(requestCode == GALLERY_REQUEST_CODE) {
+      if(grantResults.length > 0 && grantResults[0]== PackageManager.PERMISSION_GRANTED) {
+        Toast.makeText(this, "Permission granted, sweet!", Toast.LENGTH_SHORT);
+      } else {
+        Toast.makeText(this, "Permission not granted", Toast.LENGTH_SHORT).show();
+      }
+    }
+    if(requestCode == CONTACTS_REQUEST_CODE) {
+      if(grantResults.length > 0 && grantResults[0]== PackageManager.PERMISSION_GRANTED) {
+        Toast.makeText(this, "Permission granted, sweet!", Toast.LENGTH_SHORT);
+      } else {
+        Toast.makeText(this, "Permission not granted", Toast.LENGTH_SHORT).show();
+      }
+    }
+  }
+
+  private void requestContactsPermission() {
+    if(ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.READ_CONTACTS)) {
+
+      AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
+      alertDialogBuilder.setTitle("Contacts Access Needed");
+      alertDialogBuilder.setMessage("The following permission is needed to allow you to select people to add to the group from your contacts");
+
+      alertDialogBuilder.setPositiveButton("Cool!", new DialogInterface.OnClickListener() {
+        @Override
+        public void onClick(DialogInterface dialogInterface, int i) {
+          ActivityCompat.requestPermissions(CreateGroupAccountStage1.this, new String[] {Manifest.permission.READ_CONTACTS}, CONTACTS_REQUEST_CODE);
+        }
+      });
+
+      alertDialogBuilder.setNegativeButton("Not Now", new DialogInterface.OnClickListener() {
+        @Override
+        public void onClick(DialogInterface dialogInterface, int i) {
+          dialogInterface.dismiss();
+        }
+      });
+
+      AlertDialog alert = alertDialogBuilder.create();
+      alert.show();
+
+      Button negativeButton = alert.getButton(DialogInterface.BUTTON_NEGATIVE);
+      negativeButton.setTextColor(getResources().getColor(R.color.colorAccent));
+      Button positiveButton = alert.getButton(DialogInterface.BUTTON_POSITIVE);
+      positiveButton.setTextColor(getResources().getColor(R.color.colorAccent));
+
+    } else {
+      ActivityCompat.requestPermissions(this, new String[] {Manifest.permission.READ_CONTACTS}, CONTACTS_REQUEST_CODE);
+    }
   }
 
   public void setAmountMaxLength(int length) {
@@ -250,27 +350,6 @@ public class CreateGroupAccountStage1 extends AppCompatActivity {
         return true;
       default:
         return super.onOptionsItemSelected(item);
-    }
-  }
-
-  private void checkCameraPermissions() {
-    if (ContextCompat.checkSelfPermission(CreateGroupAccountStage1.this,
-        Manifest.permission.CAMERA)
-        != PackageManager.PERMISSION_GRANTED) {
-
-      if (ActivityCompat.shouldShowRequestPermissionRationale(CreateGroupAccountStage1.this,
-          Manifest.permission.CAMERA)) {
-      } else {
-        ActivityCompat.requestPermissions(CreateGroupAccountStage1.this,
-            new String[]{Manifest.permission.CAMERA},
-            CAMERA_PERMISSIONS_REQUEST_CODE);
-
-        // MY_PERMISSIONS_REQUEST_READ_CONTACTS is an
-        // app-defined int constant. The callback method gets the
-        // result of the request.
-      }
-    } else {
-      // Permission has already been granted
     }
   }
 }
