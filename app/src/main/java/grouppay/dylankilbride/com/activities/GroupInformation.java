@@ -1,9 +1,11 @@
 package grouppay.dylankilbride.com.activities;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -43,7 +45,6 @@ import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.squareup.picasso.Picasso;
-import com.stripe.android.model.Card;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -92,6 +93,11 @@ public class GroupInformation extends AppCompatActivity {
     changeGroupImage.setOnClickListener(new View.OnClickListener() {
       @Override
       public void onClick(View view) {
+        if(ContextCompat.checkSelfPermission(GroupInformation.this,
+            Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED) {
+        } else {
+          requestStoragePermission();
+        }
         pickImage();
       }
     });
@@ -177,11 +183,55 @@ public class GroupInformation extends AppCompatActivity {
     });
   }
 
+  private void requestStoragePermission() {
+    if(ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.READ_EXTERNAL_STORAGE)) {
+
+      AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
+      alertDialogBuilder.setTitle("Gallery Access Needed");
+      alertDialogBuilder.setMessage("The following permission is needed to allow you to select a group photo from your gallery");
+
+      alertDialogBuilder.setPositiveButton("Cool!", new DialogInterface.OnClickListener() {
+        @Override
+        public void onClick(DialogInterface dialogInterface, int i) {
+          ActivityCompat.requestPermissions(GroupInformation.this, new String[] {Manifest.permission.READ_EXTERNAL_STORAGE}, GALLERY_REQUEST_CODE);
+        }
+      });
+
+      alertDialogBuilder.setNegativeButton("Not Now", new DialogInterface.OnClickListener() {
+        @Override
+        public void onClick(DialogInterface dialogInterface, int i) {
+          dialogInterface.dismiss();
+        }
+      });
+
+      AlertDialog alert = alertDialogBuilder.create();
+      alert.show();
+
+      Button negativeButton = alert.getButton(DialogInterface.BUTTON_NEGATIVE);
+      negativeButton.setTextColor(getResources().getColor(R.color.colorAccent));
+      Button positiveButton = alert.getButton(DialogInterface.BUTTON_POSITIVE);
+      positiveButton.setTextColor(getResources().getColor(R.color.colorAccent));
+
+    } else {
+      ActivityCompat.requestPermissions(this, new String[] {Manifest.permission.READ_EXTERNAL_STORAGE}, GALLERY_REQUEST_CODE);
+    }
+  }
+
+  @Override
+  public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+    if(requestCode == GALLERY_REQUEST_CODE) {
+      if(grantResults.length > 0 && grantResults[0]== PackageManager.PERMISSION_GRANTED) {
+        Toast.makeText(this, "Permission granted, sweet!", Toast.LENGTH_SHORT);
+      } else {
+        Toast.makeText(this, "Permission not granted", Toast.LENGTH_SHORT).show();
+      }
+    }
+  }
+
   public void pickImage() {
     String[] mimeTypes = {"image/jpeg", "image/png"};
     if (ContextCompat.checkSelfPermission(GroupInformation.this, Manifest.permission.READ_EXTERNAL_STORAGE)
         != PackageManager.PERMISSION_GRANTED) {
-      Toast.makeText(GroupInformation.this, "Permission Denied", Toast.LENGTH_LONG).show();
     } else {
       Intent imageSelection = new Intent(Intent.ACTION_PICK);
       imageSelection.setType("image/*");
