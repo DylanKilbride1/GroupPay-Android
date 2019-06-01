@@ -19,7 +19,9 @@ import android.os.Bundle;
 import androidx.appcompat.widget.Toolbar;
 
 import android.provider.MediaStore;
+import android.text.Editable;
 import android.text.InputFilter;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
@@ -62,6 +64,7 @@ public class CreateGroupAccountStage1 extends AppCompatActivity {
   Button createStage1AccountBTN;
   GroupAccountAPI apiInterface;
   EditText groupName, groupDescription, amountNeeded;
+  TextView euroSymbol;
   ImageView groupImage;
   String userIdStr, groupAccountIdStr;
   String groupAccountPhotoUrl;
@@ -84,10 +87,13 @@ public class CreateGroupAccountStage1 extends AppCompatActivity {
     userId = Long.valueOf(userIdStr);
 
     createStage1AccountBTN = (Button) findViewById(R.id.createGroupAccountStage1ContinueBTN);
+    createStage1AccountBTN.setAlpha(0.5f);
+    createStage1AccountBTN.setEnabled(false);
     groupName = (EditText) findViewById(R.id.createGroupAccountStage1NameET);
     groupDescription = (EditText) findViewById(R.id.createGroupAccountStage1DescriptionET);
     amountNeeded = (EditText) findViewById(R.id.createGroupAccountStage1AmtNeededET);
     groupImage = (ImageView) findViewById(R.id.createGroupAccountStage1Image);
+    euroSymbol = findViewById(R.id.createGroupStage1EuroSymbolTV);
 
     groupImage.setOnClickListener(new View.OnClickListener() {
       @Override
@@ -112,6 +118,30 @@ public class CreateGroupAccountStage1 extends AppCompatActivity {
     amountNeeded.addTextChangedListener(new CurrencyTextWatcher(amountNeeded));
     amountNeeded.setFilters(new InputFilter[] {new DecimalDigitsInputFilter(2)});
     setAmountMaxLength(18);
+    amountNeeded.addTextChangedListener(new TextWatcher() {
+      @Override
+      public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+      }
+
+      @Override
+      public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+      }
+
+      @Override
+      public void afterTextChanged(Editable editable) {
+        if(amountNeeded.length() > 0) {
+          euroSymbol.setVisibility(View.VISIBLE);
+          createStage1AccountBTN.setEnabled(true);
+          createStage1AccountBTN.setAlpha(1f);
+        } else {
+          euroSymbol.setVisibility(View.INVISIBLE);
+          createStage1AccountBTN.setAlpha(0.5f);
+          createStage1AccountBTN.setEnabled(false);
+        }
+      }
+    });
 
     if(ContextCompat.checkSelfPermission(CreateGroupAccountStage1.this,
         Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED) {

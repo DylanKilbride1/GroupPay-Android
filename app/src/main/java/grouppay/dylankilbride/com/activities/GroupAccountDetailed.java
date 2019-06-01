@@ -52,7 +52,7 @@ import static grouppay.dylankilbride.com.constants.Constants.LOCALHOST_SERVER_BA
 public class GroupAccountDetailed extends AppCompatActivity {
 
   ProgressBar paymentProgress;
-  ImageView groupImage, noPreviousTransactionsImg, buttonHideArrow;
+  ImageView groupImage, noPreviousTransactionsImg;
   TextView progressStartAmount, progressFinalAmount, noPreviousTransactionsTV;
   Button viewVirtualDetails;
   LinearLayout groupDetailsContainer;
@@ -108,15 +108,6 @@ public class GroupAccountDetailed extends AppCompatActivity {
     if(amountPaidL == amountOwedL) {
       setUpFAB();
     }
-
-//    buttonHideArrow.setOnClickListener(view -> {
-//      RotateAnimation rotate = new RotateAnimation(0, 180, Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF, 0.5f);
-//      rotate.setDuration(300);
-//      rotate.setFillAfter(true);
-//      rotate.setInterpolator(new LinearInterpolator());
-//      buttonHideArrow.startAnimation(rotate);
-//      buttonHideArrow.setRotation(+180);
-//    });
   }
 
   private void setUpFAB() {
@@ -128,7 +119,8 @@ public class GroupAccountDetailed extends AppCompatActivity {
         intent.putExtra("userIdStr", userIdStr);
         intent.putExtra("groupAccountIdStr", groupAccountIdStr);
         intent.putExtra("groupAccountName", groupAccountName);
-        intent.putExtra("totalOwed", Double.toString(amountOwed));
+        intent.putExtra("totalOwed", Long.toString(amountOwedL));
+        intent.putExtra("totalPaid", Long.toString(amountPaidL));
         startActivity(intent);
       }
     });

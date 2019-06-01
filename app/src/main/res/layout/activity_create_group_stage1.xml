@@ -89,29 +89,40 @@
                 android:layout_width="match_parent"
                 android:layout_height="70dp">
 
-                    <TextView
-                        android:id="@+id/createGroupAccountStage1AmtTV"
-                        android:layout_width="wrap_content"
-                        android:layout_height="match_parent"
-                        android:textSize="30sp"
-                        android:text="EUR"
-                        android:fontFamily="@font/cairo"
-                        android:layout_marginRight="20dp"
-                        android:gravity="center_vertical"/>
+                <TextView
+                    android:id="@+id/createGroupAccountStage1AmtTV"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:textSize="30sp"
+                    android:text="EUR"
+                    android:fontFamily="@font/cairo"
+                    android:layout_marginRight="20dp"
+                    android:gravity="center_vertical"/>
 
-                    <EditText
-                        android:id="@+id/createGroupAccountStage1AmtNeededET"
-                        android:layout_width="wrap_content"
-                        android:layout_height="match_parent"
-                        android:layout_alignParentEnd="true"
-                        android:fontFamily="@font/cairo"
-                        android:textSize="27sp"
-                        android:digits="0123456789.,€"
-                        android:inputType="number"
-                        android:maxLength="19"
-                        android:hint="@string/deposit_money_amount_hint"
-                        android:background="@android:color/transparent"
-                        />
+                <TextView
+                    android:id="@+id/createGroupStage1EuroSymbolTV"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/euro_currency_symbol"
+                    android:textSize="27sp"
+                    android:textColor="#151515"
+                    android:layout_toStartOf="@+id/createGroupAccountStage1AmtNeededET"
+                    android:layout_centerVertical="true"
+                    android:visibility="gone"/>
+
+                <EditText
+                    android:id="@+id/createGroupAccountStage1AmtNeededET"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_alignParentEnd="true"
+                    android:fontFamily="@font/cairo"
+                    android:textSize="27sp"
+                    android:digits="0123456789.,€"
+                    android:inputType="number"
+                    android:maxLength="19"
+                    android:hint="@string/deposit_money_amount_hint"
+                    android:background="@android:color/transparent"
+                    />
 
             </RelativeLayout>
 
