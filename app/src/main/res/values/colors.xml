@@ -16,6 +16,7 @@
     <color name="viewContactHeaderEnd">#236bbf</color>
     <color name="viewContactLayoutBg">#afafaf</color>
     <color name="offWhiteBg">#c4c4c4</color>
+    <color name="offWhiteBg2">#e4e4e4</color>
     <color name="addPaymentHeaderBgStart">#e1e1e1</color>
     <color name="addPaymentHeaderBgEnd">#d4d4d4</color>
     <color name="addPaymentFAB">#1652ca</color>

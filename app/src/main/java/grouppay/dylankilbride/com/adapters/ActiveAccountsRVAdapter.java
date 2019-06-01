@@ -72,7 +72,7 @@ public class ActiveAccountsRVAdapter extends RecyclerView.Adapter<ActiveAccounts
   }
 
   public void setOnClick(ItemClickListener onClick) {
-    this.onItemClick=onClick;
+    this.onItemClick = onClick;
   }
 
   @Override

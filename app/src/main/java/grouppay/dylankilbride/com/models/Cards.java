@@ -2,22 +2,23 @@ package grouppay.dylankilbride.com.models;
 
 public class Cards {
 
-  private long cardId;
+  private String cardId;
   private String lastFour;
   private String expiryDate;
   private int expiryMonth;
   private int expiryYear;
   private String cardholderName;
   private String cardType;
+  private boolean isPressed = false;
 
   public Cards(){
   }
 
-  public Cards(long id, String lastFour, String expiryDate, String cardholderName, String cardType) {
+  public Cards(String id, String lastFour, int expiryMonth, int expiryYear, String cardType) {
     this.cardId = id;
     this.lastFour = lastFour;
-    this.expiryDate = expiryDate;
-    this.cardholderName = cardholderName;
+    this.expiryMonth = expiryMonth;
+    this.expiryYear = expiryYear;
     this.cardType = cardType;
   }
 
@@ -28,7 +29,7 @@ public class Cards {
     this.cardType = cardType;
   }
 
-  public long getCardId() {
+  public String getCardId() {
     return cardId;
   }
 
@@ -48,7 +49,7 @@ public class Cards {
     return cardType;
   }
 
-  public void setCardId(long id) {
+  public void setCardId(String id) {
     this.cardId = id;
   }
 
@@ -82,5 +83,21 @@ public class Cards {
 
   public void setExpiryYear(int expiryYear) {
     this.expiryYear = expiryYear;
+  }
+
+  public void setPressedTrue(){
+    isPressed = true;
+  }
+
+  public void setPressedFalse() { //what happens if this is called and isPressed already false?
+    isPressed = false;
+  }
+
+  public boolean getIsPressedValue() {
+    return isPressed;
+  }
+
+  public boolean isPressed() {
+    return isPressed;
   }
 }

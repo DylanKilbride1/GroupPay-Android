@@ -7,9 +7,19 @@ public class StripeCharge {
   private double amountInclFees;
   private String userId;
   private String groupAccountId;
+  private String cardId;
 
   public StripeCharge(String tokenId, double amountForGroup, double amountInclFees, String userId, String groupAccountId) {
     this.tokenId = tokenId;
+    this.amountForGroup = amountForGroup;
+    this.amountInclFees = amountInclFees;
+    this.userId = userId;
+    this.groupAccountId = groupAccountId;
+  }
+
+  public StripeCharge(String tokenId, String cardId, double amountForGroup, double amountInclFees, String userId, String groupAccountId) {
+    this.tokenId = tokenId;
+    this.cardId = cardId;
     this.amountForGroup = amountForGroup;
     this.amountInclFees = amountInclFees;
     this.userId = userId;
@@ -27,6 +37,14 @@ public class StripeCharge {
 
   public void setTokenId(String tokenId) {
     this.tokenId = tokenId;
+  }
+
+  public String getCardId() {
+    return cardId;
+  }
+
+  public void setCardId(String cardId) {
+    this.cardId = cardId;
   }
 
   public double getAmountForGroup() {

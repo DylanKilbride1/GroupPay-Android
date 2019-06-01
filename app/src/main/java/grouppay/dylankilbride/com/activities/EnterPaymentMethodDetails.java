@@ -6,11 +6,15 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import grouppay.dylankilbride.com.adapters.ItemClickListener;
 import grouppay.dylankilbride.com.adapters.PaymentMethodsRVAdapter;
+import grouppay.dylankilbride.com.adapters.SavedPaymentMethodsDialogRVAdapter;
 import grouppay.dylankilbride.com.grouppay.R;
 import grouppay.dylankilbride.com.models.Cards;
+import grouppay.dylankilbride.com.models.GroupAccount;
 import grouppay.dylankilbride.com.models.StripeCharge;
 import grouppay.dylankilbride.com.models.StripeChargeReceipt;
+import grouppay.dylankilbride.com.models.User;
 import grouppay.dylankilbride.com.retrofit_interfaces.CardManagerAPI;
 import grouppay.dylankilbride.com.text_watchers.CardExpiryDateTextWatcher;
 import grouppay.dylankilbride.com.text_watchers.CardNumberTextWatcher;
@@ -24,6 +28,7 @@ import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
 import android.app.Dialog;
+import android.content.ClipData;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
@@ -60,12 +65,12 @@ import java.util.List;
 import static grouppay.dylankilbride.com.constants.Constants.LOCALHOST_SERVER_BASEURL;
 import static java.security.AccessController.getContext;
 
-public class EnterPaymentMethodDetails extends AppCompatActivity {
+public class EnterPaymentMethodDetails extends AppCompatActivity implements ItemClickListener {
 
   public final int MY_SCAN_REQUEST_CODE = 1234;
   private EditText cardholderName, cardNumber, expiryDate, cvv;
   private Button usePaymentDetailsBTN;
-  private TextView selectSavedPaymentMethod;
+  private TextView selectSavedPaymentMethod, useNewPaymentDetails;
   private String expiryMonth, expiryYear, amountToDebitStr, amountForGroupStr, userId, groupAccountId;
   private double amountToDebit, amountForGroup;
   private ProgressWheel paymentProgressSpinner;
@@ -73,7 +78,11 @@ public class EnterPaymentMethodDetails extends AppCompatActivity {
   private CardManagerAPI apiInterface;
   private ArrayList<Cards> paymentMethodsList;
   private RecyclerView paymentMethodsRecyclerView;
+  private SavedPaymentMethodsDialogRVAdapter adapter;
   private RecyclerView.LayoutManager paymentMethodsRecyclerViewLayoutManager;
+  private boolean createNewToken = true;
+  private StripeCharge chargeSavedCard;
+  private Dialog dialog;
 
   @Override
   protected void onCreate(Bundle savedInstanceState) {
@@ -88,7 +97,6 @@ public class EnterPaymentMethodDetails extends AppCompatActivity {
     amountForGroup = Double.parseDouble(amountForGroupStr);
 
     paymentMethodsList = new ArrayList<>();
-
     paymentMethodsRequestSetUp(userId);
 
     setUpActionBar();
@@ -102,34 +110,34 @@ public class EnterPaymentMethodDetails extends AppCompatActivity {
     paymentProgressSpinner = (ProgressWheel) findViewById(R.id.progressWheel);
     progressOverlay = (FrameLayout) findViewById(R.id.progress_overlay);
     selectSavedPaymentMethod = findViewById(R.id.enterPaymentDetailsSelectSavedDetails);
+    useNewPaymentDetails = findViewById(R.id.enterPaymentDetailsUseNewDetails);
 
-    if(checkPaymentMethodsListSize() > 0) {
+    selectSavedPaymentMethod.setOnClickListener(view -> {
+      showSavedCardsDialog();
+    });
+
+    useNewPaymentDetails.setOnClickListener(view -> {
+      createNewToken = true;
+      usePaymentDetailsBTN.setText("PAY");
+      useNewPaymentDetails.setVisibility(View.GONE);
       selectSavedPaymentMethod.setVisibility(View.VISIBLE);
-
-      selectSavedPaymentMethod.setOnClickListener(view -> {
-        showSavedCardsDialog();
-      });
-    }
+      undimCardDetailsFields();
+    });
 
     usePaymentDetailsBTN.setOnClickListener(new View.OnClickListener() {
       @Override
       public void onClick(View view) {
-        createPaymentCardToken();
+        if (createNewToken) {
+          createPaymentCardToken();
+        } else {
+          startSpinnerOverlay();
+          setUpTokenToServerCall(chargeSavedCard);
+        }
       }
     });
 
     cardNumber.addTextChangedListener(new CardNumberTextWatcher(cardNumber));
     expiryDate.addTextChangedListener(new CardExpiryDateTextWatcher());
-  }
-
-  public void setUpSavedCardsRecyclerView(List<Cards> cardsList) {
-    // set up the RecyclerView
-    paymentMethodsRecyclerView = (RecyclerView) findViewById(R.id.paymentMethodsRV);
-    paymentMethodsRecyclerViewLayoutManager = new LinearLayoutManager(this);
-    paymentMethodsRecyclerView.setLayoutManager(paymentMethodsRecyclerViewLayoutManager);
-    paymentMethodsRecyclerView.setAdapter(new PaymentMethodsRVAdapter(cardsList, R.layout.saved_cards_dialog_list_item));
-    paymentMethodsRecyclerView.addItemDecoration(new DividerItemDecoration(paymentMethodsRecyclerView.getContext(), DividerItemDecoration.VERTICAL));
-
   }
 
   private int checkPaymentMethodsListSize() {
@@ -280,11 +288,21 @@ public class EnterPaymentMethodDetails extends AppCompatActivity {
   }
 
   private void showSavedCardsDialog() {
-//    setUpSavedCardsRecyclerView(paymentMethodsList);
-    final Dialog dialog = new Dialog(EnterPaymentMethodDetails.this);
+    //setUpSavedCardsRecyclerView(paymentMethodsList);
+    dialog = new Dialog(EnterPaymentMethodDetails.this);
     dialog.setContentView(R.layout.saved_cards_dialog);
 
+    paymentMethodsRecyclerView = dialog.findViewById(R.id.savedPaymentDetailsDialog);
+    paymentMethodsRecyclerViewLayoutManager = new LinearLayoutManager(this);
+    paymentMethodsRecyclerView.setLayoutManager(paymentMethodsRecyclerViewLayoutManager);
+    adapter = new SavedPaymentMethodsDialogRVAdapter(paymentMethodsList, R.layout.saved_cards_dialog_list_item, EnterPaymentMethodDetails.this);
+    paymentMethodsRecyclerView.setAdapter(adapter);
+    adapter.setOnClick(EnterPaymentMethodDetails.this);
+    paymentMethodsRecyclerView.addItemDecoration(new DividerItemDecoration(paymentMethodsRecyclerView.getContext(), DividerItemDecoration.HORIZONTAL));
+
     LinearLayout card = dialog.findViewById(R.id.savedCardLL);
+
+    dialog.show();
   }
 
 //  private void optionalCardSavingDialog() {
@@ -338,14 +356,15 @@ public class EnterPaymentMethodDetails extends AppCompatActivity {
   }
 
   private void parsePaymentDetails(String stripeCardList) {
-    String hiddenDigits = "\u2022\u2022\u2022\u2022 \u2022\u2022\u2022\u2022 \u2022\u2022\u2022\u2022 ";
+    String hiddenDigits = "\u2022\u2022\u2022\u2022 ";
     try {
       JSONObject scl = new JSONObject(stripeCardList);
       JSONArray dataArray = scl.getJSONArray("data");
       for(int i = 0; i < dataArray.length(); i++) {
         JSONObject paymentObject = dataArray.getJSONObject(i);
         String protectedCardNumber = hiddenDigits + paymentObject.getString("last4");
-        paymentMethodsList.add(new Cards(protectedCardNumber,
+        paymentMethodsList.add(new Cards(paymentObject.getString("id"),
+            protectedCardNumber,
             paymentObject.getInt("exp_month"),
             paymentObject.getInt("exp_year"),
             paymentObject.getString("brand")));
@@ -376,13 +395,11 @@ public class EnterPaymentMethodDetails extends AppCompatActivity {
             paymentMethodsList.clear();
             try {
               parsePaymentDetails(response.body().string());
-              setUpSavedCardsRecyclerView(paymentMethodsList);
             } catch (IOException e) {
               e.printStackTrace();
             }
           } else {
             paymentMethodsList.clear();
-            setUpSavedCardsRecyclerView(paymentMethodsList);
           }
         }
       }
@@ -392,4 +409,55 @@ public class EnterPaymentMethodDetails extends AppCompatActivity {
       }
     });
   }
+
+  @Override
+  public void onItemClick(User contact) {
+
+  }
+
+  @Override
+  public void onItemClick(GroupAccount groupAccount) {
+
+  }
+
+  @Override
+  public void onItemClick(Cards card) {
+    dialog.cancel();
+    dimCardDetailsFields();
+    selectSavedPaymentMethod.setVisibility(View.INVISIBLE);
+    useNewPaymentDetails.setVisibility(View.VISIBLE);
+    chargeSavedCard = new StripeCharge(null,
+        card.getCardId(),
+        amountForGroup,
+        amountToDebit,
+        userId,
+        groupAccountId);
+
+    createNewToken = false;
+
+    usePaymentDetailsBTN.setText("Pay with card " + card.getLastFour());
+  }
+
+  private void dimCardDetailsFields() {
+    cardholderName.setEnabled(false);
+    cardholderName.setAlpha(0.5f);
+    cardNumber.setEnabled(false);
+    cardNumber.setAlpha(0.5f);
+    expiryDate.setEnabled(false);
+    expiryDate.setAlpha(0.5f);
+    cvv.setEnabled(false);
+    cvv.setAlpha(0.5f);
+  }
+
+  private void undimCardDetailsFields() {
+    cardholderName.setEnabled(true);
+    cardholderName.setAlpha(1f);
+    cardNumber.setEnabled(true);
+    cardNumber.setAlpha(1f);
+    expiryDate.setEnabled(true);
+    expiryDate.setAlpha(1f);
+    cvv.setEnabled(true);
+    cvv.setAlpha(1f);
+  }
+
 }

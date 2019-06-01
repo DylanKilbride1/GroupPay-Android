@@ -8,28 +8,31 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import grouppay.dylankilbride.com.grouppay.R;
 import grouppay.dylankilbride.com.models.Cards;
 
-public class PaymentMethodsRVAdapter extends RecyclerView.Adapter<PaymentMethodsRVAdapter.ViewHolder>{
+public class SavedPaymentMethodsDialogRVAdapter extends RecyclerView.Adapter<SavedPaymentMethodsDialogRVAdapter.ViewHolder>{
 
   public List<Cards> cardsList;
   private int itemLayout;
   private Context context;
-  private static ItemClickListener clickInterface;
+  private static ItemClickListener onItemClick;
 
-  public PaymentMethodsRVAdapter(List<Cards> cardsList, int itemLayout) {
+  public SavedPaymentMethodsDialogRVAdapter(List<Cards> cardsList, int itemLayout) {
     this.cardsList = cardsList;
     this.itemLayout = itemLayout;
   }
 
-  public PaymentMethodsRVAdapter(List<Cards> cardsList, Context context) {
+  public SavedPaymentMethodsDialogRVAdapter(List<Cards> cardsList, int itemLayout, Context context) {
     this.cardsList = cardsList;
     this.context = context;
+    this.itemLayout = itemLayout;
   }
 
   @NonNull
@@ -41,6 +44,7 @@ public class PaymentMethodsRVAdapter extends RecyclerView.Adapter<PaymentMethods
 
   @Override
   public void onBindViewHolder(@NonNull final ViewHolder viewHolder, final int position) {
+    int selectedPosition = -1;
     final Cards cards = cardsList.get(position);
     viewHolder.cardType.setText(cards.getCardType());
     viewHolder.cardNumberPreview.setText(cards.getLastFour());
@@ -57,6 +61,14 @@ public class PaymentMethodsRVAdapter extends RecyclerView.Adapter<PaymentMethods
     } else {
       viewHolder.cardTypeIcon.setBackgroundResource(R.drawable.nav_drawer_card_icon);
     }
+
+    viewHolder.card.setOnClickListener(new View.OnClickListener() {
+      @Override
+      public void onClick(View view) {
+          viewHolder.card.setBackgroundResource(R.color.createGroupAccountContactItemPressed);
+        onItemClick.onItemClick(cardsList.get(position));
+      }
+    });
   }
 
   @Override
@@ -70,10 +82,16 @@ public class PaymentMethodsRVAdapter extends RecyclerView.Adapter<PaymentMethods
     notifyDataSetChanged();
   }
 
+  public void setOnClick(ItemClickListener onClick) {
+    this.onItemClick = onClick;
+  }
+
+
   public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
     public TextView cardType, cardNumberPreview;
     public ImageView cardTypeIcon;
+    public LinearLayout card;
 
 
     public ViewHolder(@NonNull View itemView) {
@@ -82,6 +100,7 @@ public class PaymentMethodsRVAdapter extends RecyclerView.Adapter<PaymentMethods
       cardType = itemView.findViewById(R.id.cardTypeText);
       cardNumberPreview = itemView.findViewById(R.id.cardNumberPreview);
       cardTypeIcon = itemView.findViewById(R.id.cardTypeImg);
+      card = itemView.findViewById(R.id.savedCardLL);
     }
 
     @Override

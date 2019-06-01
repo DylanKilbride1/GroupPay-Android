@@ -28,6 +28,7 @@ import java.util.Map;
 import grouppay.dylankilbride.com.adapters.CreateGroupAccountStage2RVAdapter;
 import grouppay.dylankilbride.com.adapters.ItemClickListener;
 import grouppay.dylankilbride.com.grouppay.R;
+import grouppay.dylankilbride.com.models.Cards;
 import grouppay.dylankilbride.com.models.Contact;
 import grouppay.dylankilbride.com.models.GroupAccount;
 import grouppay.dylankilbride.com.models.User;
@@ -152,6 +153,11 @@ public class CreateGroupAccountStage2 extends AppCompatActivity implements ItemC
 
   @Override
   public void onItemClick(GroupAccount groupAccount) {
+
+  }
+
+  @Override
+  public void onItemClick(Cards card) {
 
   }
 

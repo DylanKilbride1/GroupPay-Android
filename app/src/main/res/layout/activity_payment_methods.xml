@@ -25,10 +25,6 @@
         android:weightSum="1"
         android:orientation="vertical">
 
-        <ProgressBar
-            android:layout_width="wrap_content"
-            android:layout_height="" />
-
         <RelativeLayout
             android:id="@+id/viewA"
             android:layout_width="match_parent"

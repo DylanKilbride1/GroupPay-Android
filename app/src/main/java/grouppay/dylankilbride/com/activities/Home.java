@@ -36,6 +36,7 @@ import java.util.List;
 import grouppay.dylankilbride.com.adapters.ActiveAccountsRVAdapter;
 import grouppay.dylankilbride.com.adapters.ItemClickListener;
 import grouppay.dylankilbride.com.grouppay.R;
+import grouppay.dylankilbride.com.models.Cards;
 import grouppay.dylankilbride.com.models.GroupAccount;
 import grouppay.dylankilbride.com.models.User;
 import grouppay.dylankilbride.com.retrofit_interfaces.GroupAccountAPI;
@@ -304,6 +305,11 @@ public class Home extends AppCompatActivity implements ItemClickListener {
     viewDetailedInfo.putExtra("userIdStr", userId);
     viewDetailedInfo.putExtra("groupName",groupAccount.getAccountName());
     startActivity(viewDetailedInfo);
+  }
+
+  @Override
+  public void onItemClick(Cards card) {
+
   }
 
   @Override
