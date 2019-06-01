@@ -58,6 +58,8 @@ public class DepositMoneyToGroup extends AppCompatActivity {
     getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
     continueBtn = (Button) findViewById(R.id.depositMoneyToGroupBTN);
+    continueBtn.setEnabled(false);
+    continueBtn.setAlpha(0.5f);
     depositMoneyToGroupHeader = (TextView) findViewById(R.id.depositMoneyToGroupTitle);
     activityHeader = getResources().getString(R.string.deposit_amount_to_group_header) + " " + groupAccountName;
     depositMoneyToGroupHeader.setText(activityHeader);
@@ -100,14 +102,16 @@ public class DepositMoneyToGroup extends AppCompatActivity {
           enteredAmount = new BigDecimal(amountToPay.getText().toString().replaceAll("[^\\d.]", ""));
           if (enteredAmount.compareTo(maxDepositAmount) > 0) {
             exceedsAmount.setVisibility(View.VISIBLE);
-            continueBtn.setClickable(false);
+            continueBtn.setEnabled(false);
             continueBtn.setAlpha(0.5f);
           } else {
-            continueBtn.setClickable(true);
+            continueBtn.setEnabled(true);
             continueBtn.setAlpha(1);
             exceedsAmount.setVisibility(View.INVISIBLE);
           }
         } else {
+          continueBtn.setEnabled(false);
+          continueBtn.setAlpha(0.5f);
           euroSymbol.setVisibility(View.INVISIBLE);
         }
       }
