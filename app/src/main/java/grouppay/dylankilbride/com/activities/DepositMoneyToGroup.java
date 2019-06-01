@@ -31,8 +31,10 @@ public class DepositMoneyToGroup extends AppCompatActivity {
   String groupAccountId, groupAccountName, userId, activityHeader, amountToDebit;
   EditText amountToPay;
   Button continueBtn;
-  TextView depositMoneyToGroupHeader, feeWarning;
-  private String numberOfParticipants, totalAmountOwed;
+  TextView depositMoneyToGroupHeader, feeWarning, exceedsAmount, euroSymbol;
+  private String numberOfParticipants, totalAmountOwed, totalAmountPaid;
+  private long amountOwed, amountPaid;
+  private BigDecimal maxDepositAmount, enteredAmount;
   private String feeWarningStringPart1 = "We charge 3.9% + .25c per transaction. To cover our fees, we will debit €";
   private String feeWarningStringPart2 = " from your account.";
 
@@ -46,6 +48,11 @@ public class DepositMoneyToGroup extends AppCompatActivity {
     userId = getIntent().getStringExtra("userIdStr");
     numberOfParticipants = getIntent().getStringExtra("numberOfParticipants");
     totalAmountOwed = getIntent().getStringExtra("totalOwed");
+    totalAmountPaid = getIntent().getStringExtra("totalPaid");
+
+    amountOwed = Long.valueOf(totalAmountOwed);
+    amountPaid = Long.valueOf(totalAmountPaid);
+    maxDepositAmount = new BigDecimal(amountOwed - amountPaid);
 
     setUpActionBar();
     getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -56,6 +63,8 @@ public class DepositMoneyToGroup extends AppCompatActivity {
     depositMoneyToGroupHeader.setText(activityHeader);
     amountToPay = (EditText) findViewById(R.id.depositMoneyToGroupAmountET);
     feeWarning = findViewById(R.id.depositMoneyToGroupFeeTV);
+    exceedsAmount = findViewById(R.id.depositMoneyToGroupExceedsAmtTV);
+    euroSymbol = findViewById(R.id.depositMoneyToGroupEuroSymbolTV);
 
     continueBtn.setOnClickListener(new View.OnClickListener() {
       @Override
@@ -73,6 +82,36 @@ public class DepositMoneyToGroup extends AppCompatActivity {
     feeWarning.setText(feeWarningStringPart1 + "0" + feeWarningStringPart2);
     amountToPay.addTextChangedListener(new DepositAmountTextWatcher(amountToPay, this));
     setAmountMaxLength(18);
+    amountToPay.addTextChangedListener(new TextWatcher() {
+      @Override
+      public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+      }
+
+      @Override
+      public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+      }
+
+      @Override
+      public void afterTextChanged(Editable editable) {
+        if (amountToPay.length() > 0) {
+          euroSymbol.setVisibility(View.VISIBLE);
+          enteredAmount = new BigDecimal(amountToPay.getText().toString().replaceAll("[^\\d.]", ""));
+          if (enteredAmount.compareTo(maxDepositAmount) > 0) {
+            exceedsAmount.setVisibility(View.VISIBLE);
+            continueBtn.setClickable(false);
+            continueBtn.setAlpha(0.5f);
+          } else {
+            continueBtn.setClickable(true);
+            continueBtn.setAlpha(1);
+            exceedsAmount.setVisibility(View.INVISIBLE);
+          }
+        } else {
+          euroSymbol.setVisibility(View.INVISIBLE);
+        }
+      }
+    });
   }
 
   public void setAmountMaxLength(int length) {

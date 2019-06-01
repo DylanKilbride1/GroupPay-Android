@@ -320,13 +320,6 @@ public class Home extends AppCompatActivity implements ItemClickListener {
     groupAccounts.clear();
   }
 
-  public void getPermissions() {
-    if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-      requestPermissions(new String[]{Manifest.permission.WRITE_CONTACTS,
-          Manifest.permission.READ_CONTACTS}, 1);
-    }
-  }
-
   public void checkForEmptyAccountsList() {
     if (groupAccounts.isEmpty()) {
       accountsRecyclerView.setVisibility(View.GONE);

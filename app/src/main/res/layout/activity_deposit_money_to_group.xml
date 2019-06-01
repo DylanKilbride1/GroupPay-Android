@@ -43,13 +43,12 @@
 
     </LinearLayout>
 
-    <LinearLayout
+    <RelativeLayout
         android:layout_marginTop="40dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginEnd="20dp"
-        android:layout_marginStart="20dp"
-        android:orientation="horizontal">
+        android:layout_marginStart="20dp">
 
         <TextView
             android:layout_width="wrap_content"
@@ -59,12 +58,24 @@
             android:fontFamily="@font/cairo"
             android:layout_marginEnd="40dp"/>
 
+        <TextView
+            android:id="@+id/depositMoneyToGroupEuroSymbolTV"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/euro_currency_symbol"
+            android:textSize="27sp"
+            android:textColor="#151515"
+            android:layout_toStartOf="@+id/depositMoneyToGroupAmountET"
+            android:layout_centerVertical="true"
+            android:visibility="gone"/>
+
         <EditText
             android:id="@+id/depositMoneyToGroupAmountET"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentEnd="true"
             android:hint="@string/deposit_money_amount_hint"
+            android:layout_alignParentEnd="true"
+            android:layout_centerVertical="true"
             android:fontFamily="@font/cairo"
             android:textSize="27sp"
             android:digits="0123456789.,€"
@@ -73,7 +84,18 @@
             android:background="@android:color/transparent"
             tools:text=""/>
 
-    </LinearLayout>
+    </RelativeLayout>
+
+    <TextView
+        android:id="@+id/depositMoneyToGroupExceedsAmtTV"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="20dp"
+        android:textColor="@color/colorAccent"
+        android:text="@string/depostToGroupExceedsTarget"
+        android:layout_gravity="start"
+        android:visibility="gone"
+        />
 
     <TextView
         android:id="@+id/depositMoneyToGroupFeeTV"
