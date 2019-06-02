@@ -51,6 +51,7 @@ public class CreateGroupAccountStage2 extends AppCompatActivity implements ItemC
   private ArrayList<User> selectedContacts = new ArrayList<>();
   private ArrayList<User> contactList;
   private ArrayList<User> contactsNotOnGPList;
+  private TextView numberOfContactsOnGP, numberOfContactsNotOnGP;
   private String groupAccountIdStr;
   private static final int CONTACTS_PERMISSIONS_REQUEST_CODE = 151;
 
@@ -65,11 +66,13 @@ public class CreateGroupAccountStage2 extends AppCompatActivity implements ItemC
 
     groupAccountIdStr = getIntent().getStringExtra("groupAccountId");
     addContactsButton = (Button) findViewById(R.id.createGroupAccountStage2ContinueBTN);
+    numberOfContactsOnGP = findViewById(R.id.numberOfContactsOnGPTV);
+    numberOfContactsNotOnGP = findViewById(R.id.numberOfContactsNotOnGPTV);
 
     showHideContinueButton(selectedContacts);
 
     contactList = new ArrayList<>();
-    //contactsNotOnGPList = new ArrayList<>();
+    contactsNotOnGPList = new ArrayList<>();
     getContactsPhoneNumbers();
 
     addContactsButton.setOnClickListener(new View.OnClickListener() {
@@ -93,18 +96,18 @@ public class CreateGroupAccountStage2 extends AppCompatActivity implements ItemC
     adapter = new CreateGroupAccountStage2RVAdapter(contactList, R.layout.activity_create_group_stage2_list_item, this);
     contactsRecyclerView.setAdapter(adapter);
     adapter.setOnClick(CreateGroupAccountStage2.this);
-    contactsRecyclerView.addItemDecoration(new DividerItemDecoration(contactsRecyclerView.getContext(), DividerItemDecoration.VERTICAL));
+    //contactsRecyclerView.addItemDecoration(new DividerItemDecoration(contactsRecyclerView.getContext(), DividerItemDecoration.VERTICAL));
   }
 
-//  public void setUpContactsNotOnGPRecyclerView(List<User> contactNotOnGPList) {
-//    contactsRecyclerView = (RecyclerView) findViewById(R.id.contactsNotOnGPStage2RV);
-//    contactsRecyclerViewLayoutManager = new LinearLayoutManager(this);
-//    contactsRecyclerView.setLayoutManager(contactsRecyclerViewLayoutManager);
-//    adapter = new CreateGroupAccountStage2RVAdapter(contactNotOnGPList, R.layout.activity_create_group_stage2_list_item, this);
-//    contactsRecyclerView.setAdapter(adapter);
-//    adapter.setOnClick(CreateGroupAccountStage2.this);
-//    contactsRecyclerView.addItemDecoration(new DividerItemDecoration(contactsRecyclerView.getContext(), DividerItemDecoration.VERTICAL));
-//  }
+  public void setUpContactsNotOnGPRecyclerView(List<User> contactNotOnGPList) {
+    contactsRecyclerView = (RecyclerView) findViewById(R.id.contactsNotOnGPStage2RV);
+    contactsRecyclerViewLayoutManager = new LinearLayoutManager(this);
+    contactsRecyclerView.setLayoutManager(contactsRecyclerViewLayoutManager);
+    adapter = new CreateGroupAccountStage2RVAdapter(contactNotOnGPList, R.layout.activity_create_group_stage2_list_item, this);
+    contactsRecyclerView.setAdapter(adapter);
+    adapter.setOnClick(CreateGroupAccountStage2.this);
+    //contactsRecyclerView.addItemDecoration(new DividerItemDecoration(contactsRecyclerView.getContext(), DividerItemDecoration.VERTICAL));
+  }
 
   public void addContactsToGroupAccount(List<User> contactsToAdd) {
     Call<GroupAccount> call = apiInterface.addContactsToAccount(groupAccountIdStr, contactsToAdd);
@@ -145,7 +148,7 @@ public class CreateGroupAccountStage2 extends AppCompatActivity implements ItemC
     if (selectedContacts.size() == 0) {
       addContactsButton.setVisibility(View.INVISIBLE);
     } else {
-      String numberOfContactsSelected = "Continue - " + selectedContacts.size() + " Contacts";
+      String numberOfContactsSelected = "Continue \u2022 " + selectedContacts.size() + " Contacts";
       addContactsButton.setVisibility(View.VISIBLE);
       addContactsButton.setText(numberOfContactsSelected);
     }
@@ -188,12 +191,16 @@ public class CreateGroupAccountStage2 extends AppCompatActivity implements ItemC
         null);
     while (phones.moveToNext()) {
       String phoneNumber = phones.getString(phones.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER));
-//      String contactName = phones.getString(phones.getColumnIndex(ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME));
-//      String[] contactNames = contactName.split(" ");
-      contactsPhoneNumbers.add(phoneNumber);
-//      contactsNotOnGPList.add(new User(contactNames[0], contactNames[1], phoneNumber));
+      String contactName = phones.getString(phones.getColumnIndex(ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME));
+      if(contactName.contains(" ")) {
+        String[] contactNames = contactName.split(" ", 2);
+        contactsPhoneNumbers.add(phoneNumber);
+        contactsNotOnGPList.add(new User(contactNames[0], contactNames[1], phoneNumber));
+      } else {
+        contactsNotOnGPList.add(new User(contactName, " ", phoneNumber));
+      }
     }
-//    setUpContactsNotOnGPRecyclerView(contactsNotOnGPList);
+    setUpContactsNotOnGPRecyclerView(contactsNotOnGPList);
     setUpContactsWithGPAccountsCall(contactsPhoneNumbers);
   }
 
@@ -218,7 +225,9 @@ public class CreateGroupAccountStage2 extends AppCompatActivity implements ItemC
           for (int i = 0; i < response.body().size(); i++) {
             contactList.add(response.body().get(i));
           }
+          numberOfContactsOnGP.setText("\u2022 " + contactList.size());
           setUpContactsOnGroupPayRecyclerView(contactList);
+          setUpContactsNotOnGPRecyclerView(contactsNotOnGPList);
         }
       }
 

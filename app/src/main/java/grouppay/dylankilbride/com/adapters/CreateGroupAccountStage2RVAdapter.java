@@ -44,6 +44,7 @@ public class CreateGroupAccountStage2RVAdapter extends RecyclerView.Adapter<Crea
         final User contact = contactList.get(position);
         viewHolder.contactName.setText(contact.getFullName());
         viewHolder.contactInitials.setText(contact.getInitials());
+        viewHolder.contactNumber.setText(contact.getMobileNumber());
         viewHolder.viewLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -51,7 +52,7 @@ public class CreateGroupAccountStage2RVAdapter extends RecyclerView.Adapter<Crea
                     contact.setPressedTrue();
                     viewHolder.viewLayout.setBackgroundResource(R.color.createGroupAccountContactItemPressed);
                 } else {
-                    viewHolder.viewLayout.setBackgroundResource(R.color.whiteText);
+                    viewHolder.viewLayout.setBackgroundResource(R.color.addContactsUnselectedBg);
                     contact.setPressedFalse();
                 }
                 onItemClick.onItemClick(contactList.get(position));
@@ -73,13 +74,14 @@ public class CreateGroupAccountStage2RVAdapter extends RecyclerView.Adapter<Crea
         public LinearLayout viewLayout;
         public TextView contactName;
         public TextView contactInitials;
-
+        private TextView contactNumber;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
             viewLayout = itemView.findViewById(R.id.createGroupAccountStage2MainLL);
             contactName = itemView.findViewById(R.id.createGroupAccountStage2ContactNameTV);
             contactInitials = itemView.findViewById(R.id.createGroupAccountStage2ContactInitialsTV);
+            contactNumber = itemView.findViewById(R.id.createGroupAccountStage2ContactNumberTV);
         }
 
         public void removeAt(int position) {

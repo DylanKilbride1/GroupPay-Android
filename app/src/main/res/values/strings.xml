@@ -49,6 +49,8 @@
     <string name="verify_phone_number_button">VERIFY PHONE NUMBER</string>
     <string name="verification_purpose_text">We just need to verify that the details you have entered belong to you. Please choose a method of verification below.</string>
     <string name="depostToGroupExceedsTarget">Exceeds target amount!</string>
+    <string name="contacts_with_grouppay_accounts">Contacts with GroupPay accounts</string>
+    <string name="contacts_not_on_grouppay">Contacts not on GroupPay</string>
     <string-array name="country_arrays">
         <item>Select Country</item>
         <item>Afghanistan</item>
