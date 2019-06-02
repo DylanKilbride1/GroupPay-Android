@@ -1,34 +1,33 @@
 package grouppay.dylankilbride.com.adapters;
 
 import android.content.Context;
-import androidx.annotation.NonNull;
-import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import java.util.List;
 
+import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.RecyclerView;
 import grouppay.dylankilbride.com.grouppay.R;
 import grouppay.dylankilbride.com.models.User;
 
-public class CreateGroupAccountStage2RVAdapter extends RecyclerView.Adapter<CreateGroupAccountStage2RVAdapter.ViewHolder>{
+public class NonMemberCreateGroupAccountStage2RVAdapter extends RecyclerView.Adapter<NonMemberCreateGroupAccountStage2RVAdapter.ViewHolder>{
 
     public List<User> contactList;
     private int itemLayout;
     private Context context;
     private static ItemClickListener onItemClick;
 
-    public CreateGroupAccountStage2RVAdapter(List<User> contactList, int itemLayout, Context context) {
+    public NonMemberCreateGroupAccountStage2RVAdapter(List<User> contactList, int itemLayout, Context context) {
         this.contactList = contactList;
         this.itemLayout = itemLayout;
         this.context = context;
     }
 
-    public CreateGroupAccountStage2RVAdapter(List<User> contactList, Context context) {
+    public NonMemberCreateGroupAccountStage2RVAdapter(List<User> contactList, Context context) {
         this.contactList = contactList;
         this.context = context;
     }
@@ -49,13 +48,13 @@ public class CreateGroupAccountStage2RVAdapter extends RecyclerView.Adapter<Crea
         viewHolder.viewLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (!contact.getIsPressedValue()) {
-                    contact.setPressedTrue();
-                    viewHolder.viewLayout.setBackgroundResource(R.color.createGroupAccountContactItemPressed);
-                } else {
-                    viewHolder.viewLayout.setBackgroundResource(R.color.addContactsUnselectedBg);
-                    contact.setPressedFalse();
-                }
+//                if (!contact.getIsPressedValue()) {
+//                    contact.setPressedTrue();
+//                    //viewHolder.viewLayout.setBackgroundResource(R.color.createGroupAccountContactItemPressed);
+//                } else {
+//                    //viewHolder.viewLayout.setBackgroundResource(R.color.addContactsUnselectedBg);
+//                    contact.setPressedFalse();
+//                }
                 onItemClick.onItemClick(contactList.get(position));
             }
         });

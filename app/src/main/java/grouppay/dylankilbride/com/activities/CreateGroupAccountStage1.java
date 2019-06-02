@@ -327,7 +327,7 @@ public class CreateGroupAccountStage1 extends AppCompatActivity {
     GroupAccount groupAccount = new GroupAccount(userId,
         groupName.getText().toString(),
         groupDescription.getText().toString(),
-        new BigDecimal(amountNeeded.getText().toString()));
+        new BigDecimal(amountNeeded.getText().toString().replaceAll("[^\\d]", "")));
 
     Call<GroupAccount> call = apiInterface.createBasicAccount(groupAccount);
 

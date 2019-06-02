@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="grouppay.dylankilbride.com.activities.CreateGroupAccountStage2">
+
+    <com.google.android.material.appbar.AppBarLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:theme="@style/ToolbarTheme">
+
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/createGroupNameToolbar"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:background="@color/whiteText"
+            app:popupTheme="@style/ToolbarTheme" />
+
+    </com.google.android.material.appbar.AppBarLayout>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/contactsOnGPTV"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="?attr/actionBarSize"
+                android:text="@string/contacts_with_grouppay_accounts"
+                android:paddingTop="10dp"
+                android:paddingBottom="5dp"
+                android:layout_marginStart="20dp"/>
+
+            <TextView
+                android:id="@+id/numberOfContactsOnGPTV"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_toRightOf="@+id/contactsOnGPTV"
+                android:layout_marginTop="?attr/actionBarSize"
+                tools:text="- 4"
+                android:paddingTop="10dp"
+                android:paddingLeft="5dp"
+                android:paddingRight="5dp"
+                android:paddingBottom="5dp"/>
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/createGroupAccountStage2RV"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/contactsOnGPTV">
+
+
+            </androidx.recyclerview.widget.RecyclerView>
+
+            <TextView
+                android:id="@+id/contactsNotOnGPTV"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/createGroupAccountStage2RV"
+                android:layout_marginStart="20dp"
+                android:text="@string/contacts_not_on_grouppay"
+                android:paddingTop="5dp"
+                android:paddingBottom="5dp"/>
+
+            <TextView
+                android:id="@+id/numberOfContactsNotOnGPTV"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_toEndOf="@id/contactsNotOnGPTV"
+                android:layout_below="@+id/createGroupAccountStage2RV"
+                tools:text="- 4"
+                android:padding="5dp"/>
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/contactsNotOnGPStage2RV"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/contactsNotOnGPTV" >
+            </androidx.recyclerview.widget.RecyclerView>
+
+        </RelativeLayout>
+
+    </ScrollView>
+
+
+    <Button
+        android:id="@+id/createGroupAccountStage2ContinueBTN"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_margin="30dp"
+        android:layout_alignParentBottom="true"
+        android:text="@string/generic_continue"
+        android:textSize="15dp"
+        android:textColor="@color/whiteText"
+        android:background="@drawable/generic_rounded_continue_button_bg"/>
+</RelativeLayout>

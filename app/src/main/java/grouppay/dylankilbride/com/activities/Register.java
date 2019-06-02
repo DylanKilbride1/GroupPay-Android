@@ -28,6 +28,9 @@ import com.android.volley.toolbox.Volley;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.iid.FirebaseInstanceId;
+import com.google.i18n.phonenumbers.NumberParseException;
+import com.google.i18n.phonenumbers.PhoneNumberUtil;
+import com.google.i18n.phonenumbers.Phonenumber;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -60,6 +63,7 @@ public class Register extends AppCompatActivity {
   private Spinner countryCodes;
   private ArrayList<String> codes;
   private ArrayList<String> countries;
+  private String formattedPhoneNumber;
 
   @Override
   protected void onCreate(Bundle savedInstanceState) {
@@ -90,6 +94,8 @@ public class Register extends AppCompatActivity {
     dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
     countryCodes.setAdapter(dataAdapter);
 
+    PhoneNumberUtil phoneNumberUtil = PhoneNumberUtil.getInstance();
+
     requestQueue = Volley.newRequestQueue(this);
 
     registerButton.setOnClickListener(new View.OnClickListener() {
@@ -105,14 +111,19 @@ public class Register extends AppCompatActivity {
 
         JSONObject registrationRequestDetails = new JSONObject();
         try {
+          Phonenumber.PhoneNumber number = phoneNumberUtil.parse(countryCodeDigits + mobileNumberBox.getText().toString(), null);
+          formattedPhoneNumber = phoneNumberUtil.format(number, PhoneNumberUtil.PhoneNumberFormat.E164);
+
           registrationRequestDetails.put("email_address", emailBox.getText().toString());
           registrationRequestDetails.put("first_name", firstNameBox.getText().toString());
           registrationRequestDetails.put("last_name", lastNameBox.getText().toString());
           registrationRequestDetails.put("password", passwordBox.getText().toString());
-          registrationRequestDetails.put("mobile_number", mobileNumberBox.getText().toString());
+          registrationRequestDetails.put("mobile_number", formattedPhoneNumber);
           registrationRequestDetails.put("device_token", tokenFromSharedPrefs);
         } catch (JSONException e) {
           Log.e("Couldn't create JSON: ", e.toString());
+        } catch (NumberParseException e) {
+          Log.e("PhoneNumberParse Error", e.toString());
         }
         JsonObjectRequest objectRequest = new JsonObjectRequest(Request.Method.POST,
             URL,
@@ -131,7 +142,7 @@ public class Register extends AppCompatActivity {
                           Intent intent = new Intent(Register.this, VerifyPhoneEmail.class);
                           intent.putExtra("registrationEmail", emailBox.getText().toString());
                           intent.putExtra("registrationPhone", mobileNumberBox.getText().toString());
-                          intent.putExtra("registrationPassword", phoneNumber);
+                          intent.putExtra("registrationPassword", formattedPhoneNumber);
                           intent.putExtra("countryCode", countryCodeDigits);
                           startActivity(intent);
                         } else {
