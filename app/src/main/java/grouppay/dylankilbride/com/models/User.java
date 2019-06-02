@@ -1,5 +1,8 @@
 package grouppay.dylankilbride.com.models;
 
+import java.util.Comparator;
+import java.util.Objects;
+
 public class User {
 
   private long id;
@@ -155,5 +158,36 @@ public class User {
 
   public void setIsUserVerified(String isUserVerified) {
     this.isUserVerified = isUserVerified;
+  }
+
+  public static Comparator<User> nameComparator = new Comparator<User>() {
+    @Override
+    public int compare(User u1, User u2) {
+      return (int) (u1.getFirstName().compareTo(u2.getFirstName()));
+    }
+  };
+
+  @Override
+  public boolean equals(Object o) {
+    if (this == o) return true;
+    if (o == null || getClass() != o.getClass()) return false;
+    User user = (User) o;
+    return id == user.id &&
+        isPressed == user.isPressed &&
+        Objects.equals(profileUrl, user.profileUrl) &&
+        Objects.equals(firstName, user.firstName) &&
+        Objects.equals(lastName, user.lastName) &&
+        Objects.equals(emailAddress, user.emailAddress) &&
+        Objects.equals(password, user.password) &&
+        Objects.equals(mobileNumber, user.mobileNumber) &&
+        Objects.equals(profileImage, user.profileImage) &&
+        Objects.equals(deviceToken, user.deviceToken) &&
+        Objects.equals(isUserVerified, user.isUserVerified);
+  }
+
+  @Override
+  public int hashCode() {
+
+    return Objects.hash(id, profileUrl, firstName, lastName, emailAddress, password, mobileNumber, isPressed, profileImage, deviceToken, isUserVerified);
   }
 }
