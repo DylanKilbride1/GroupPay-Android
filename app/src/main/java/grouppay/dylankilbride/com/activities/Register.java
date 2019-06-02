@@ -1,13 +1,7 @@
 package grouppay.dylankilbride.com.activities;
 
-import android.app.PendingIntent;
-import android.content.Context;
 import android.content.Intent;
 
-import com.google.android.gms.auth.api.Auth;
-import com.google.android.gms.auth.api.credentials.Credential;
-import com.google.android.gms.auth.api.credentials.HintRequest;
-import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.snackbar.Snackbar;
@@ -15,7 +9,6 @@ import com.google.android.material.snackbar.Snackbar;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.content.IntentSender;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -34,7 +27,6 @@ import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseAuthException;
 import com.google.firebase.iid.FirebaseInstanceId;
 
 import org.json.JSONArray;
@@ -50,7 +42,6 @@ import java.io.StringWriter;
 import java.io.UnsupportedEncodingException;
 import java.io.Writer;
 import java.util.ArrayList;
-import java.util.Arrays;
 
 import grouppay.dylankilbride.com.grouppay.R;
 import grouppay.dylankilbride.com.service.GroupPayMessagingService;
@@ -144,6 +135,7 @@ public class Register extends AppCompatActivity {
                           intent.putExtra("countryCode", countryCodeDigits);
                           startActivity(intent);
                         } else {
+                          Log.e("Firebase Unsuccessful", task.getException().getMessage());
                           Intent backToLoin = new Intent(Register.this, Login.class);
                           backToLoin.putExtra("registrationEmail", emailBox.getText().toString());
                           backToLoin.putExtra("registrationPassword", passwordBox.getText().toString());
@@ -165,6 +157,7 @@ public class Register extends AppCompatActivity {
               @Override
               public void onErrorResponse(VolleyError error) {
                 Log.e("Rest Error", error.toString());
+                Toast.makeText(Register.this, "No Internet Connection!", Toast.LENGTH_SHORT).show();
               }
             }){
         };
