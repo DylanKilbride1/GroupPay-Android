@@ -51,6 +51,7 @@
     <string name="depostToGroupExceedsTarget">Exceeds target amount!</string>
     <string name="contacts_with_grouppay_accounts">Contacts with GroupPay accounts</string>
     <string name="contacts_not_on_grouppay">Contacts not on GroupPay</string>
+    <string name="profileActivityChangePhoto">CHANGE PHOTO</string>
     <string-array name="country_arrays">
         <item>Select Country</item>
         <item>Afghanistan</item>

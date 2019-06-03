@@ -36,16 +36,32 @@
             android:gravity="center"
             android:orientation="vertical">
 
-            <de.hdodenhof.circleimageview.CircleImageView
-                xmlns:app="http://schemas.android.com/apk/res-auto"
-                android:id="@+id/profile_image"
-                android:layout_width="96dp"
-                android:layout_height="96dp"
-                android:layout_marginBottom="15sp"
-                android:clickable="true"
-                app:civ_border_width="1dp"
-                app:civ_circle_background_color="@color/whiteText"
-                app:civ_border_color="@color/profileImageBorder"/>
+            <LinearLayout
+                android:id="@+id/profilePhotoContainer"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:gravity="center"
+                android:layout_marginBottom="15dp">
+
+                <de.hdodenhof.circleimageview.CircleImageView
+                    xmlns:app="http://schemas.android.com/apk/res-auto"
+                    android:id="@+id/profile_image"
+                    android:layout_width="96dp"
+                    android:layout_height="96dp"
+                    android:layout_marginBottom="5sp"
+                    app:civ_border_width="1dp"
+                    app:civ_circle_background_color="@color/whiteText"
+                    app:civ_border_color="@color/profileImageBorder"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/profileActivityChangePhoto"
+                    android:textColor="@color/colorAccent"
+                    />
+
+            </LinearLayout>
 
                 <TextView
                     android:id="@+id/profileMainFullNameTV"

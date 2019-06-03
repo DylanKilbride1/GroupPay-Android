@@ -23,6 +23,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -51,6 +52,7 @@ public class Profile extends AppCompatActivity {
   String userIdStr, profileUrl;
   TextView editFullNameTV, editEmailTV, editPhoneNumberTV, mainEmailTV, mainNameTV;
   ImageView profileImage;
+  private LinearLayout photoContainer;
   RelativeLayout fullNameRL, emailAddressRL, phoneNumberRL;
   private static final int GALLERY_REQUEST_CODE = 1234;
   ProfileAPI profileAPI;
@@ -67,13 +69,14 @@ public class Profile extends AppCompatActivity {
     userIdStr = getIntent().getStringExtra("userId");
 
     profileImage = (ImageView) findViewById(R.id.profile_image);
+    photoContainer = findViewById(R.id.profilePhotoContainer);
     fullNameRL = (RelativeLayout) findViewById(R.id.profileFullNameRL);
     emailAddressRL = (RelativeLayout) findViewById(R.id.profileEmailAddressRL);
     phoneNumberRL = (RelativeLayout) findViewById(R.id.profilePhoneNumberRL);
     mainEmailTV = (TextView) findViewById(R.id.profileMainEmailAddressTV);
     mainNameTV = (TextView) findViewById(R.id.profileMainFullNameTV);
 
-    profileImage.setOnClickListener(new View.OnClickListener() {
+    photoContainer.setOnClickListener(new View.OnClickListener() {
       @Override
       public void onClick(View view) {
         if(ContextCompat.checkSelfPermission(Profile.this,
