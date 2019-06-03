@@ -111,6 +111,11 @@ public class Home extends AppCompatActivity implements ItemClickListener {
     navName.setText(userName);
     navEmail.setText(userEmail);
     navDrawerProfileImage = (ImageView)headerView.findViewById(R.id.navDrawerProfileImage);
+    navDrawerProfileImage.setOnClickListener(view -> {
+      Intent profileIntent = new Intent(Home.this, Profile.class);
+      profileIntent.putExtra("userId", userId);
+      startActivityForResult(profileIntent, 100);
+    });
     if(profileImgUrl != null) {
       Glide.with(navDrawerProfileImage.getContext())
           .load(profileImgUrl)
