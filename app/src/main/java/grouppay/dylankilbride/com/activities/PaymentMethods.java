@@ -13,7 +13,9 @@ import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -46,6 +48,7 @@ public class PaymentMethods extends AppCompatActivity {
   private String userId;
   private CardManagerAPI apiInterface;
   private ArrayList<Cards> paymentMethodsList;
+  private ProgressBar loadingPB;
 
   @Override
   protected void onCreate(Bundle savedInstanceState) {
@@ -56,6 +59,7 @@ public class PaymentMethods extends AppCompatActivity {
 
     noPaymentMethodsImage = findViewById(R.id.noPaymentMethodsImageView);
     noPaymentMethodsText = findViewById(R.id.noPaymentMethodsTextView);
+    loadingPB = findViewById(R.id.loadingPaymentCardsPB);
 
     setUpActionBar();
     getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -102,6 +106,7 @@ public class PaymentMethods extends AppCompatActivity {
   }
 
   private void paymentMethodsRequestSetUp(String userId) {
+    loadingPB.setVisibility(View.VISIBLE);
     Retrofit getPaymentMethods = new Retrofit.Builder()
         .baseUrl(LOCALHOST_SERVER_BASEURL)
         .addConverterFactory(GsonConverterFactory.create())
@@ -121,9 +126,11 @@ public class PaymentMethods extends AppCompatActivity {
           if(!response.body().toString().isEmpty()) {
             paymentMethodsList.clear();
             try {
+
               parsePaymentDetails(response.body().string());
               setUpAccountPreviewRecyclerView(paymentMethodsList);
               checkForEmptyPaymentMethodList();
+              loadingPB.setVisibility(View.INVISIBLE);
             } catch (IOException e) {
               e.printStackTrace();
             }
@@ -131,12 +138,17 @@ public class PaymentMethods extends AppCompatActivity {
             paymentMethodsList.clear();
             setUpAccountPreviewRecyclerView(paymentMethodsList);
             checkForEmptyPaymentMethodList();
+            loadingPB.setVisibility(View.INVISIBLE);
           }
         }
       }
       @Override
       public void onFailure(Call<ResponseBody> call, Throwable t) {
-
+        loadingPB.setVisibility(View.INVISIBLE);
+        Toast.makeText(PaymentMethods.this,
+            "Sorry, we can't retrieve your cards right now..",
+            Toast.LENGTH_SHORT
+        ).show();
       }
     });
   }

@@ -11,6 +11,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -42,6 +43,7 @@ public class AddPaymentMethod extends AppCompatActivity {
   private Button addPaymentMethodContinueBTN;
   private String expiryMonth, expiryYear, userId;
   private CardManagerAPI cardManagerApiInterface;
+  private ProgressBar addPaymentMethodPB;
 
   @Override
   protected void onCreate(Bundle savedInstanceState) {
@@ -58,6 +60,8 @@ public class AddPaymentMethod extends AppCompatActivity {
     expiryDate = (EditText) findViewById(R.id.addCardExpiryET);
     cvv = (EditText) findViewById(R.id.addCardCvvET);
     addPaymentMethodContinueBTN = (Button) findViewById(R.id.addPaymentMethodContinueBTN);
+    addPaymentMethodPB = findViewById(R.id.addPaymentMethodProgress);
+
 
    cardNumber.addTextChangedListener(new CardNumberTextWatcher(cardNumber));
    expiryDate.addTextChangedListener(new CardExpiryDateTextWatcher());
@@ -66,11 +70,13 @@ public class AddPaymentMethod extends AppCompatActivity {
       @Override
       public void onClick(View view) {
         parseCardExpiryDate();
+        addPaymentMethodPB.setVisibility(View.VISIBLE);
         Card cardToAdd = new Card(cardNumber.getText().toString(),
             Integer.valueOf(expiryMonth),
             Integer.valueOf(expiryYear),
             cvv.getText().toString());
         if(!cardToAdd.validateCard()) {
+          addPaymentMethodPB.setVisibility(View.INVISIBLE);
           Toast.makeText(getApplicationContext(), "Card Details Invalid!", Toast.LENGTH_LONG).show();
         }
         stripeProcess(cardToAdd);
@@ -112,14 +118,17 @@ public class AddPaymentMethod extends AppCompatActivity {
       @Override
       public void onResponse(Call<Void> call, Response<Void> response) {
         if(response.code() == 200) {
-            finish();
+          addPaymentMethodPB.setVisibility(View.INVISIBLE);
+          finish();
         } else {
+          addPaymentMethodPB.setVisibility(View.INVISIBLE);
           Toast.makeText(getApplicationContext(), "We couldn't save your card for some strange reason!", Toast.LENGTH_LONG).show();
         }
       }
       @Override
       public void onFailure(Call<Void> call, Throwable t) {
         Toast.makeText(getApplicationContext(), "Something went wrong!", Toast.LENGTH_LONG).show();
+        addPaymentMethodPB.setVisibility(View.INVISIBLE);
       }
     });
   }
@@ -192,45 +201,6 @@ public class AddPaymentMethod extends AppCompatActivity {
     expiryMonth = expiryDateSegments[0];
     expiryYear = "20" + expiryDateSegments[1];
   }
-//
-//  private void stripeProcess(Card cardToAdd){
-//    Stripe stripe = new Stripe(this, "pk_test_kwfy65ynBeJFLDiklvYHV2tI00fUxcehhP");
-//    stripe.createToken(
-//        cardToAdd,
-//        new TokenCallback() {
-//          public void onSuccess(Token token) {
-//            setUpTokenToServerCall(token.toString());
-//          }
-//          public void onError(Exception error) {
-//            // Show localized error message
-//            Log.e("Stripe Error on Token: ", error.getLocalizedMessage());
-//          }
-//        }
-//    );
-//  }
-//
-//  private void setUpTokenToServerCall(String token){
-//    Retrofit sendToken = new Retrofit.Builder()
-//        .baseUrl(LOCALHOST_SERVER_BASEURL)
-//        .addConverterFactory(GsonConverterFactory.create())
-//        .build();
-//    cardManagerApiInterface = sendToken.create(CardManagerAPI.class);
-//    sendTokenToServer(token);
-//  }
-//
-//  private void sendTokenToServer(String token) {
-//    Call<String> call = cardManagerApiInterface.sendStripeTokenToServer(token);
-//    call.enqueue(new Callback<String>() {
-//      @Override
-//      public void onResponse(Call<String> call, Response<String> response) {
-//
-//      }
-//      @Override
-//      public void onFailure(Call<String> call, Throwable t) {
-//
-//      }
-//    });
-//  }
 
   public void setUpActionBar() {
     Toolbar toolbar = (Toolbar) findViewById(R.id.addPaymentMethodToolbar);

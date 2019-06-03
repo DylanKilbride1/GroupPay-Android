@@ -126,6 +126,10 @@ public class EnterPaymentMethodDetails extends AppCompatActivity implements Item
       }
     });
 
+    if (checkPaymentMethodsListSize() == 0) {
+      selectSavedPaymentMethod.setVisibility(View.INVISIBLE);
+    }
+
     cardNumber.addTextChangedListener(new CardNumberTextWatcher(cardNumber));
     expiryDate.addTextChangedListener(new CardExpiryDateTextWatcher());
   }

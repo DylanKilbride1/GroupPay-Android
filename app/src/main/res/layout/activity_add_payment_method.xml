@@ -133,6 +133,14 @@
         android:layout_width="wrap_content"
         android:layout_height="match_parent">
 
+        <ProgressBar
+            android:id="@+id/addPaymentMethodProgress"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:indeterminateTint="@color/colorAccent"
+            android:visibility="gone"/>
+
         <Button
             android:id="@+id/addPaymentMethodContinueBTN"
             android:layout_width="match_parent"

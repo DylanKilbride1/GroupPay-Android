@@ -51,13 +51,21 @@
                 android:fontFamily="@font/cairo"/>
         </RelativeLayout>
 
-        <LinearLayout
+        <RelativeLayout
             android:id="@+id/viewB"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_weight="0.4"
-            android:background="@color/whiteText"
-            android:orientation="horizontal">
+            android:background="@color/whiteText">
+
+            <ProgressBar
+                android:id="@+id/loadingPaymentCardsPB"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:indeterminateTint="@color/colorAccent"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="50dp"
+                android:visibility="gone"/>
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/paymentMethodsRV"
@@ -71,8 +79,8 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:orientation="vertical">
+                android:orientation="vertical"
+                android:layout_centerInParent="true">
 
                 <ImageView
                     android:id="@+id/noPaymentMethodsImageView"
@@ -97,7 +105,7 @@
 
             </LinearLayout>
 
-        </LinearLayout>
+        </RelativeLayout>
 
     </LinearLayout>
 
