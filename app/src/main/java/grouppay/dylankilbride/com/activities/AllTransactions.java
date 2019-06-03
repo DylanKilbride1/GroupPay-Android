@@ -89,7 +89,7 @@ public class AllTransactions extends AppCompatActivity {
   }
 
   public void populateActiveGroupLL() {
-    String activeAccounts = numberOfActiveGroupsStr + " Groups";
+    String activeAccounts = numberOfActiveGroupsStr + " Group(s)";
     numberOfActiveGroups.setText(activeAccounts);
   }
 

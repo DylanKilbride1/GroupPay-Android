@@ -87,7 +87,10 @@ public class AddPaymentMethod extends AppCompatActivity {
             setUpTokenToServerCall(new StripeCharge(token.getId(), userId));
           }
           public void onError(Exception error) {
-            // Show localized error message
+            Toast.makeText(AddPaymentMethod.this,
+                "Error tokenizing card details",
+                Toast.LENGTH_SHORT
+            ).show();
             Log.e("Stripe Error on Token: ", error.getLocalizedMessage());
           }
         }

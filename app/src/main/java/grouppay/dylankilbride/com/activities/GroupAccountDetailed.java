@@ -217,7 +217,7 @@ public class GroupAccountDetailed extends AppCompatActivity {
       @Override
       public void onResponse(Call<GroupAccount> call, Response<GroupAccount> response) {
         if(!response.isSuccessful()) {
-          //Handle
+          Toast.makeText(GroupAccountDetailed.this, "Can't retrieve details right now..", Toast.LENGTH_SHORT).show();
         } else {
           groupImageUrl = response.body().getGroupImage().getGroupImageLocation();
           amountOwedL = response.body().getTotalAmountOwed().longValue();
@@ -250,7 +250,7 @@ public class GroupAccountDetailed extends AppCompatActivity {
       }
       @Override
       public void onFailure(Call<GroupAccount> call, Throwable t) {
-
+        Toast.makeText(GroupAccountDetailed.this, "Can't retrieve details right now..", Toast.LENGTH_SHORT).show();
       }
     });
   }

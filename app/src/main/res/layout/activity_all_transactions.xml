@@ -79,7 +79,7 @@
                 android:textSize="18sp"
                 android:padding="5dp"
                 android:gravity="center"
-                android:text="You're Currently a Member Of"/>
+                android:text="@string/allTransactionsMemberOf"/>
 
             <LinearLayout
                 android:layout_width="match_parent"
