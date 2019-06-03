@@ -8,25 +8,20 @@
     android:padding="10dp"
     android:id="@+id/createGroupAccountStage2MainLL">
 
-        <TextView
-            android:id="@+id/createGroupAccountStage2ContactInitialsTV"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginRight="20dp"
-            android:layout_marginLeft="10dp"
-            android:background="@drawable/circular_name_initials_textview"
-            android:fontFamily="@font/cairo"
-            android:gravity="center"
-            android:textColor="@color/colorAccent"
-            android:textSize="17sp"
-            android:textStyle="bold"
-            tools:text="DK" />
+    <de.hdodenhof.circleimageview.CircleImageView
+        android:id="@+id/createGroupStage2ContactPhoto"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_marginEnd="20dp"
+        android:layout_marginStart="10dp"
+        android:fontFamily="@font/cairo"
+        android:src="@drawable/no_profile_photo" />
 
         <LinearLayout
             android:id="@+id/userDetailsContainer"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_toEndOf="@id/createGroupAccountStage2ContactInitialsTV"
+            android:layout_toEndOf="@id/createGroupStage2ContactPhoto"
             android:layout_toStartOf="@id/gpIsolatedIcon"
             android:orientation="vertical">
 

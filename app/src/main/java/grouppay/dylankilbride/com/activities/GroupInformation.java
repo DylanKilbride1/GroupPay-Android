@@ -118,7 +118,7 @@ public class GroupInformation extends AppCompatActivity {
   }
 
   private void checkForDescription() {
-    if (groupDescription != null) {
+    if (groupDescription != null && !groupDescription.equals("")) {
       descriptionContainer.setVisibility(View.VISIBLE);
       description.setText(groupDescription);
     }

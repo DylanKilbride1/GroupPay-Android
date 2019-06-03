@@ -6,9 +6,13 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestOptions;
 
 import java.util.List;
 
@@ -21,6 +25,7 @@ public class CreateGroupAccountStage2RVAdapter extends RecyclerView.Adapter<Crea
     private int itemLayout;
     private Context context;
     private static ItemClickListener onItemClick;
+    private RequestOptions noProfileImageDefault = new RequestOptions().error(R.drawable.no_profile_photo);
 
     public CreateGroupAccountStage2RVAdapter(List<User> contactList, int itemLayout, Context context) {
         this.contactList = contactList;
@@ -44,7 +49,10 @@ public class CreateGroupAccountStage2RVAdapter extends RecyclerView.Adapter<Crea
     public void onBindViewHolder(@NonNull final ViewHolder viewHolder, final int position) {
         final User contact = contactList.get(position);
         viewHolder.contactName.setText(contact.getFullName());
-        viewHolder.contactInitials.setText(contact.getInitials());
+        Glide.with(context.getApplicationContext())
+            .load(contact.getProfileImage().getProfileImageLocation())
+            .apply(noProfileImageDefault)
+            .into(viewHolder.contactPhoto);
         viewHolder.contactNumber.setText(contact.getMobileNumber());
         viewHolder.viewLayout.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -74,14 +82,14 @@ public class CreateGroupAccountStage2RVAdapter extends RecyclerView.Adapter<Crea
 
         public RelativeLayout viewLayout;
         public TextView contactName;
-        public TextView contactInitials;
+        public ImageView contactPhoto;
         private TextView contactNumber;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
             viewLayout = itemView.findViewById(R.id.createGroupAccountStage2MainLL);
             contactName = itemView.findViewById(R.id.createGroupAccountStage2ContactNameTV);
-            contactInitials = itemView.findViewById(R.id.createGroupAccountStage2ContactInitialsTV);
+            contactPhoto = itemView.findViewById(R.id.createGroupStage2ContactPhoto);
             contactNumber = itemView.findViewById(R.id.createGroupAccountStage2ContactNumberTV);
         }
 

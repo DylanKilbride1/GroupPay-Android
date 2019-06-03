@@ -122,6 +122,7 @@ public class GroupAccountDetailed extends AppCompatActivity {
         intent.putExtra("totalOwed", Long.toString(amountOwedL));
         intent.putExtra("totalPaid", Long.toString(amountPaidL));
         startActivity(intent);
+        finish();
       }
     });
   }

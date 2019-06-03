@@ -61,7 +61,7 @@ public class EnterPaymentMethodDetails extends AppCompatActivity implements Item
   private EditText cardholderName, cardNumber, expiryDate, cvv;
   private Button usePaymentDetailsBTN;
   private TextView selectSavedPaymentMethod, useNewPaymentDetails;
-  private String expiryMonth, expiryYear, amountToDebitStr, amountForGroupStr, userId, groupAccountId;
+  private String expiryMonth, expiryYear, amountToDebitStr, amountForGroupStr, userId, groupAccountId, groupName;
   private double amountToDebit, amountForGroup;
   private ProgressWheel paymentProgressSpinner;
   private FrameLayout progressOverlay;
@@ -82,6 +82,7 @@ public class EnterPaymentMethodDetails extends AppCompatActivity implements Item
     userId = getIntent().getStringExtra("userIdStr");
     groupAccountId = getIntent().getStringExtra("groupAccountIdStr");
     amountToDebitStr = getIntent().getStringExtra("amountToDebitStr");
+    groupName = getIntent().getStringExtra("groupName");
     amountForGroupStr = getIntent().getStringExtra("amountForGroupStr");
     amountToDebit = Double.parseDouble(amountToDebitStr);
     amountForGroup = Double.parseDouble(amountForGroupStr);
@@ -118,6 +119,7 @@ public class EnterPaymentMethodDetails extends AppCompatActivity implements Item
       @Override
       public void onClick(View view) {
         if (createNewToken) {
+          startSpinnerOverlay();
           createPaymentCardToken();
         } else {
           startSpinnerOverlay();
@@ -125,10 +127,6 @@ public class EnterPaymentMethodDetails extends AppCompatActivity implements Item
         }
       }
     });
-
-    if (checkPaymentMethodsListSize() == 0) {
-      selectSavedPaymentMethod.setVisibility(View.INVISIBLE);
-    }
 
     cardNumber.addTextChangedListener(new CardNumberTextWatcher(cardNumber));
     expiryDate.addTextChangedListener(new CardExpiryDateTextWatcher());
@@ -145,7 +143,6 @@ public class EnterPaymentMethodDetails extends AppCompatActivity implements Item
         new TokenCallback() {
           public void onSuccess(Token token) {
             setUpTokenToServerCall(new StripeCharge(token.getId(), amountForGroup, amountToDebit, userId, groupAccountId));
-            startSpinnerOverlay();
           }
           public void onError(Exception error) {
             Toast.makeText(EnterPaymentMethodDetails.this,
@@ -195,6 +192,11 @@ public class EnterPaymentMethodDetails extends AppCompatActivity implements Item
       public void onResponse(Call<Void> call, Response<Void> response) {
         stopSpinnerOverlay();
         if(response.code() == 200) {
+          Intent goToGroupAccount = new Intent(EnterPaymentMethodDetails.this, GroupAccountDetailed.class);
+          goToGroupAccount.putExtra("groupAccountId", groupAccountId);
+          goToGroupAccount.putExtra("userIdStr", userId);
+          goToGroupAccount.putExtra("groupName", groupName);
+          startActivity(goToGroupAccount);
           finish();
         } else {
           Toast.makeText(getApplicationContext(), "Foook!", Toast.LENGTH_LONG).show();
@@ -362,6 +364,9 @@ public class EnterPaymentMethodDetails extends AppCompatActivity implements Item
             paymentObject.getInt("exp_month"),
             paymentObject.getInt("exp_year"),
             paymentObject.getString("brand")));
+      }
+      if (checkPaymentMethodsListSize() == 0) {
+        selectSavedPaymentMethod.setVisibility(View.INVISIBLE);
       }
     } catch (JSONException e) {
       e.printStackTrace();

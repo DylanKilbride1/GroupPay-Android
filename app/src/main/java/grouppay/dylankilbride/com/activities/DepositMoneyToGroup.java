@@ -75,6 +75,7 @@ public class DepositMoneyToGroup extends AppCompatActivity {
         enterPaymentDetails.putExtra("amountToDebitStr", calculateFee(new BigDecimal(amountToPay.getText().toString().replaceAll("[^\\d\\.]", ""))));
         enterPaymentDetails.putExtra("amountForGroupStr", amountToPay.getText().toString().replaceAll("[^\\d\\.]", ""));
         enterPaymentDetails.putExtra("userIdStr", userId);
+        enterPaymentDetails.putExtra("groupName", groupAccountName);
         enterPaymentDetails.putExtra("groupAccountIdStr", groupAccountId);
         startActivity(enterPaymentDetails);
         finish();
