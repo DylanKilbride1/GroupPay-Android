@@ -103,7 +103,7 @@ public class CreateGroupAccountStage2 extends AppCompatActivity implements ItemC
     contactsRecyclerView.setLayoutManager(contactsRecyclerViewLayoutManager);
     adapter = new CreateGroupAccountStage2RVAdapter(getSortedContactsListByNames(contactList), R.layout.activity_create_group_stage2_member_list_item, this);
     contactsRecyclerView.setAdapter(adapter);
-    adapter.setOnClick(AddParticipantsToGroup.this);
+    adapter.setOnClick(CreateGroupAccountStage2.this);
     //contactsRecyclerView.addItemDecoration(new DividerItemDecoration(contactsRecyclerView.getContext(), DividerItemDecoration.VERTICAL));
   }
 

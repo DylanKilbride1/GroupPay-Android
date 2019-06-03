@@ -68,7 +68,7 @@ public class GroupInformation extends AppCompatActivity {
   private RequestBody filename;
   private MultipartBody.Part fileToUpload;
   private static final int GALLERY_REQUEST_CODE = 290;
-  private TextView leaveGroup;
+  private Button leaveGroup;
 
   @Override
   protected void onCreate(Bundle savedInstanceState) {
