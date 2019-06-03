@@ -11,7 +11,6 @@ import android.os.Bundle;
 
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
-import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.appcompat.widget.Toolbar;
@@ -24,17 +23,14 @@ import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Comparator;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Map;
 
 import grouppay.dylankilbride.com.adapters.CreateGroupAccountStage2RVAdapter;
 import grouppay.dylankilbride.com.adapters.ItemClickListener;
 import grouppay.dylankilbride.com.adapters.NonMemberCreateGroupAccountStage2RVAdapter;
 import grouppay.dylankilbride.com.grouppay.R;
 import grouppay.dylankilbride.com.models.Cards;
-import grouppay.dylankilbride.com.models.Contact;
 import grouppay.dylankilbride.com.models.GroupAccount;
 import grouppay.dylankilbride.com.models.User;
 import grouppay.dylankilbride.com.retrofit_interfaces.GroupAccountAPI;
@@ -107,7 +103,7 @@ public class CreateGroupAccountStage2 extends AppCompatActivity implements ItemC
     contactsRecyclerView.setLayoutManager(contactsRecyclerViewLayoutManager);
     adapter = new CreateGroupAccountStage2RVAdapter(getSortedContactsListByNames(contactList), R.layout.activity_create_group_stage2_member_list_item, this);
     contactsRecyclerView.setAdapter(adapter);
-    adapter.setOnClick(CreateGroupAccountStage2.this);
+    adapter.setOnClick(AddParticipantsToGroup.this);
     //contactsRecyclerView.addItemDecoration(new DividerItemDecoration(contactsRecyclerView.getContext(), DividerItemDecoration.VERTICAL));
   }
 

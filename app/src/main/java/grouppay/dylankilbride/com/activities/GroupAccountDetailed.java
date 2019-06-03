@@ -58,7 +58,7 @@ public class GroupAccountDetailed extends AppCompatActivity {
   LinearLayout groupDetailsContainer;
   private RecyclerView paymentsLogRecyclerView;
   private RecyclerView.LayoutManager paymentsLogRecyclerViewLayoutManager;
-  private String groupAccountIdStr, userIdStr, groupAccountName, groupImageUrl, cardValue;
+  private String groupAccountIdStr, userIdStr, groupAccountName, groupImageUrl, cardValue, groupDescription;
   private GroupAccountAPI apiInterface;
   private ArrayList<Transaction> transactionLog;
   private RequestOptions noGroupImageDefault = new RequestOptions().error(R.drawable.no_group_icon);
@@ -201,6 +201,7 @@ public class GroupAccountDetailed extends AppCompatActivity {
         Intent groupInfo = new Intent(GroupAccountDetailed.this, GroupInformation.class);
         groupInfo.putExtra("groupName", groupAccountName);
         groupInfo.putExtra("groupAccountId", groupAccountIdStr);
+        groupInfo.putExtra("groupDescription", groupDescription);
         groupInfo.putExtra("groupImageUrl", groupImageUrl);
         groupInfo.putExtra("userId", userIdStr);
         startActivity(groupInfo);
@@ -223,6 +224,7 @@ public class GroupAccountDetailed extends AppCompatActivity {
           amountOwedL = response.body().getTotalAmountOwed().longValue();
           amountPaidL = response.body().getTotalAmountPaid().longValue();
           cardValue = response.body().getTotalAmountOwed().toString();
+          groupDescription = response.body().getAccountDescription();
           paymentProgress.setMax(roundBigDecimalUp(response.body().getTotalAmountOwed()));
           paymentProgress.setProgress(roundBigDecimalUp(response.body().getTotalAmountPaid()));
 

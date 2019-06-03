@@ -71,6 +71,8 @@
     <string name="registrationPasswordHint">Password</string>
     <string name="registrationConfirmPasswordHint">Confirm Password</string>
     <string name="registrationMobileNumberHint">Mobile Number</string>
+    <string name="groupInfoGroupDescription">Description</string>
+    <string name="groupInfoAddGroupParticipants">Add Group Participants</string>
     <string-array name="country_arrays">
         <item>Select Country</item>
         <item>Afghanistan</item>

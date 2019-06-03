@@ -65,6 +65,37 @@
         android:background="@color/colorPrimaryDark"
         android:padding="10dp">
 
+        <LinearLayout
+            android:id="@+id/groupInfoGroupDescriptionContainer"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/whiteText"
+            android:layout_marginBottom="10dp"
+            android:orientation="vertical"
+            android:visibility="gone">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColor="@color/colorAccent"
+                android:textSize="18sp"
+                android:padding="3dp"
+                android:paddingStart="10dp"
+                android:paddingEnd="10dp"
+                android:text="@string/groupInfoGroupDescription" />
+
+            <TextView
+                android:id="@+id/groupDescriptionTV"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingStart="10dp"
+                android:paddingEnd="10dp"
+                android:padding="3dp"
+                android:textSize="15sp"
+                tools:text="Test Description"/>
+
+        </LinearLayout>
+
         <TextView
             android:id="@+id/groupInfoNumberOfParticipants"
             android:layout_width="match_parent"

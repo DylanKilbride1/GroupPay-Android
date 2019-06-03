@@ -40,6 +40,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -54,9 +55,11 @@ import static grouppay.dylankilbride.com.constants.Constants.LOCALHOST_SERVER_BA
 
 public class GroupInformation extends AppCompatActivity {
 
-  private String groupName, groupAccountId, groupImageUrl, userId;
+  private String groupName, groupAccountId, groupImageUrl, groupDescription, userId;
   private List<User> participantsList = new ArrayList<>();
   private ImageView groupImage;
+  private LinearLayout descriptionContainer;
+  private TextView description;
   private TextView changeGroupImage, numberOfParticipants;
   private RecyclerView groupParticipantsRv;
   private GroupInfoParticipantsRVAdapter adapter;
@@ -74,6 +77,7 @@ public class GroupInformation extends AppCompatActivity {
 
     groupName = getIntent().getStringExtra("groupName");
     groupAccountId = getIntent().getStringExtra("groupAccountId");
+    groupDescription = getIntent().getStringExtra("groupDescription");
     groupImageUrl = getIntent().getStringExtra("groupImageUrl");
     userId = getIntent().getStringExtra("userId");
 
@@ -82,6 +86,10 @@ public class GroupInformation extends AppCompatActivity {
     numberOfParticipants = findViewById(R.id.groupInfoNumberOfParticipants);
     changeGroupImage = findViewById(R.id.groupInfoChangeImage);
     leaveGroup = findViewById(R.id.groupInfoLeaveGroupButton);
+    descriptionContainer = findViewById(R.id.groupInfoGroupDescriptionContainer);
+    description = findViewById(R.id.groupDescriptionTV);
+
+    checkForDescription();
 
     leaveGroup.setOnClickListener(new View.OnClickListener() {
       @Override
@@ -107,6 +115,13 @@ public class GroupInformation extends AppCompatActivity {
 
     loadGroupImage(groupImageUrl);
 
+  }
+
+  private void checkForDescription() {
+    if (groupDescription != null) {
+      descriptionContainer.setVisibility(View.VISIBLE);
+      description.setText(groupDescription);
+    }
   }
 
   public void setUpActionBar(String groupName) {
@@ -136,6 +151,7 @@ public class GroupInformation extends AppCompatActivity {
   public void setUpGroupParticipantsRecyclerView(List<User> participantsList) {
     // set up the RecyclerView
     groupParticipantsRv = (RecyclerView) findViewById(R.id.groupInfoParticipantsRv);
+    groupParticipantsRv.setNestedScrollingEnabled(false);
     groupParticipantsRvLayoutManager = new LinearLayoutManager(this);
     groupParticipantsRv.setLayoutManager(groupParticipantsRvLayoutManager);
     adapter = new GroupInfoParticipantsRVAdapter(participantsList, R.layout.group_participants_list_item, this);

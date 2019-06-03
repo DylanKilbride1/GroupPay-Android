@@ -11,9 +11,7 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.pm.PackageManager;
-import android.content.res.ColorStateList;
 import android.database.Cursor;
-import android.media.Image;
 import android.net.Uri;
 import android.os.Bundle;
 import androidx.appcompat.widget.Toolbar;
@@ -32,7 +30,6 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.squareup.picasso.Picasso;
 
@@ -45,7 +42,6 @@ import grouppay.dylankilbride.com.grouppay.R;
 import grouppay.dylankilbride.com.models.GroupAccount;
 import grouppay.dylankilbride.com.models.ImageUploadResponse;
 import grouppay.dylankilbride.com.retrofit_interfaces.GroupAccountAPI;
-import grouppay.dylankilbride.com.retrofit_interfaces.ProfileAPI;
 import grouppay.dylankilbride.com.text_watchers.CurrencyTextWatcher;
 import grouppay.dylankilbride.com.text_watchers.DecimalDigitsInputFilter;
 import okhttp3.MediaType;
