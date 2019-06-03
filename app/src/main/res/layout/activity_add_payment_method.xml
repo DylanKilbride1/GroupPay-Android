@@ -54,6 +54,7 @@
             android:maxLines="1"
             android:lines="1"
             android:singleLine="true"
+            android:imeOptions="actionNext"
             android:backgroundTint="@color/editTextBgTintStandard"
             android:hint="@string/cardholderName"/>
 
@@ -73,6 +74,7 @@
                 android:maxLines="1"
                 android:maxLength="19"
                 android:inputType="phone"
+                android:imeOptions="actionNext"
                 android:digits="1234567890 "
                 android:backgroundTint="@color/editTextBgTintStandard"
                 android:drawableStart="@drawable/add_card_cardtype_generic_icon"
@@ -108,6 +110,7 @@
             android:maxLines="1"
             android:maxLength="5"
             android:inputType="phone"
+            android:imeOptions="actionNext"
             android:backgroundTint="@color/editTextBgTintStandard"
             android:hint="@string/expiryDate"/>
 
@@ -120,6 +123,7 @@
             android:maxLines="1"
             android:maxLength="3"
             android:inputType="number"
+            android:imeOptions="actionGo"
             android:backgroundTint="@color/editTextBgTintStandard"
             android:hint="@string/cvvCode"/>
 
