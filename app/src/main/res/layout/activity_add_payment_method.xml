@@ -52,8 +52,10 @@
             android:layout_marginLeft="@dimen/add_card_standard_margin"
             android:layout_marginBottom="15dp"
             android:maxLines="1"
+            android:lines="1"
+            android:singleLine="true"
             android:backgroundTint="@color/editTextBgTintStandard"
-            android:hint="Cardholder Name"/>
+            android:hint="@string/cardholderName"/>
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -75,7 +77,7 @@
                 android:backgroundTint="@color/editTextBgTintStandard"
                 android:drawableStart="@drawable/add_card_cardtype_generic_icon"
                 android:drawablePadding="10dp"
-                android:hint="Card Number"/>
+                android:hint="@string/cardNumber"/>
 
             <ImageView
                 android:id="@+id/scanCardImgIcon"
@@ -107,7 +109,7 @@
             android:maxLength="5"
             android:inputType="phone"
             android:backgroundTint="@color/editTextBgTintStandard"
-            android:hint="Expiry Date"/>
+            android:hint="@string/expiryDate"/>
 
         <EditText
             android:id="@+id/addCardCvvET"
@@ -119,7 +121,7 @@
             android:maxLength="3"
             android:inputType="number"
             android:backgroundTint="@color/editTextBgTintStandard"
-            android:hint="CVV"/>
+            android:hint="@string/cvvCode"/>
 
     </LinearLayout>
 
@@ -133,7 +135,7 @@
             android:layout_height="50dp"
             android:layout_margin="40dp"
             android:layout_alignParentBottom="true"
-            android:text="CONTINUE"
+            android:text="@string/savePaymentCard"
             android:textSize="15dp"
             android:textColor="@color/whiteText"
             android:background="@drawable/add_card_button_bg"/>

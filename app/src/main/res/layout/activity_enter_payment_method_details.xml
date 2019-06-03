@@ -35,7 +35,7 @@
         <ImageView
             android:layout_width="20dp"
             android:layout_height="20dp"
-            android:layout_marginRight="10dp"
+            android:layout_marginEnd="10dp"
             android:src="@drawable/lock_icon"/>
 
         <TextView
@@ -55,9 +55,10 @@
         android:layout_marginLeft="@dimen/add_card_standard_margin"
         android:layout_marginBottom="15dp"
         android:maxLines="1"
+        android:lines="1"
+        android:singleLine="true"
         android:backgroundTint="@color/editTextBgTintStandard"
-        android:hint="Cardholder Name"
-        android:text="Dylan Kilbride"/>
+        android:hint="@string/cardholderName" />
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -79,7 +80,7 @@
             android:backgroundTint="@color/editTextBgTintStandard"
             android:drawableStart="@drawable/add_card_cardtype_generic_icon"
             android:drawablePadding="10dp"
-            android:hint="Card Number"/>
+            android:hint="@string/cardNumber"/>
 
         <ImageView
             android:id="@+id/scanCardImgIcon"
@@ -106,26 +107,24 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="0.5"
-            android:layout_marginRight="15dp"
+            android:layout_marginEnd="15dp"
             android:maxLines="1"
             android:maxLength="5"
             android:inputType="phone"
             android:backgroundTint="@color/editTextBgTintStandard"
-            android:hint="Expiry Date"
-            android:text="05/20"/>
+            android:hint="@string/expiryDate" />
 
         <EditText
             android:id="@+id/enterPaymentMethodDetailsCvvET"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="0.5"
-            android:layout_marginLeft="15dp"
+            android:layout_marginStart="15dp"
             android:maxLines="1"
             android:maxLength="3"
             android:inputType="number"
             android:backgroundTint="@color/editTextBgTintStandard"
-            android:hint="CVV"
-            android:text="123"/>
+            android:hint="@string/cvvCode" />
 
     </LinearLayout>
 
@@ -139,7 +138,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="20dp"
             android:layout_centerHorizontal="true"
-            android:text="Choose a saved payment method instead"
+            android:text="@string/chooseSavedPaymentMethod"
             android:textColor="@color/colorAccent"
             android:fontFamily="@font/cairo"
             android:padding="20dp"
@@ -151,7 +150,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="20dp"
             android:layout_centerHorizontal="true"
-            android:text="Use new payment details"
+            android:text="@string/useNewPaymentDetails"
             android:textColor="@color/colorAccent"
             android:fontFamily="@font/cairo"
             android:padding="20dp"
@@ -164,8 +163,8 @@
             android:layout_height="50dp"
             android:layout_margin="40dp"
             android:layout_alignParentBottom="true"
-            android:text="PAY"
-            android:textSize="15dp"
+            android:text="@string/payByNewCard"
+            android:textSize="15sp"
             android:textColor="@color/whiteText"
             android:background="@drawable/add_card_button_bg"/>
 

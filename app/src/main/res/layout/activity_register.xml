@@ -46,7 +46,11 @@
             android:layout_height="50dp"
             android:fontFamily="@font/cairo"
             android:backgroundTint="@color/editTextBgTintStandard"
-            android:hint="First Name"
+            android:hint="@string/registrationFirstNameHint"
+            android:maxLines="1"
+            android:lines="1"
+            android:singleLine="true"
+            android:imeOptions="actionNext"
             android:id="@+id/firstNameBox"/>
 
         <EditText
@@ -54,7 +58,11 @@
             android:layout_height="50dp"
             android:fontFamily="@font/cairo"
             android:backgroundTint="@color/editTextBgTintStandard"
-            android:hint="Last Name"
+            android:maxLines="1"
+            android:lines="1"
+            android:singleLine="true"
+            android:imeOptions="actionNext"
+            android:hint="@string/registrationLastNameHint"
             android:id="@+id/lastNameBox"/>
 
         <EditText
@@ -62,7 +70,11 @@
             android:layout_height="50dp"
             android:fontFamily="@font/cairo"
             android:backgroundTint="@color/editTextBgTintStandard"
-            android:hint="Email"
+            android:maxLines="1"
+            android:lines="1"
+            android:singleLine="true"
+            android:imeOptions="actionNext"
+            android:hint="@string/registrationEmailHint"
             android:id="@+id/emailBox"/>
 
         <EditText
@@ -71,7 +83,11 @@
             android:fontFamily="@font/cairo"
             android:backgroundTint="@color/editTextBgTintStandard"
             android:inputType="textPassword"
-            android:hint="Password"
+            android:maxLines="1"
+            android:lines="1"
+            android:singleLine="true"
+            android:imeOptions="actionNext"
+            android:hint="@string/registrationPasswordHint"
             android:id="@+id/passwordBox"/>
 
         <EditText
@@ -80,7 +96,11 @@
             android:fontFamily="@font/cairo"
             android:backgroundTint="@color/editTextBgTintStandard"
             android:inputType="textPassword"
-            android:hint="Confirm Password"
+            android:maxLines="1"
+            android:lines="1"
+            android:singleLine="true"
+            android:imeOptions="actionNext"
+            android:hint="@string/registrationConfirmPasswordHint"
             android:id="@+id/confirmPasswordBox"/>
 
         <LinearLayout
@@ -98,7 +118,11 @@
                 android:layout_marginBottom="10dp"
                 android:fontFamily="@font/cairo"
                 android:backgroundTint="@color/editTextBgTintStandard"
-                android:hint="Mobile Number"
+                android:hint="@string/registrationMobileNumberHint"
+                android:maxLines="1"
+                android:lines="1"
+                android:singleLine="true"
+                android:imeOptions="actionGo"
                 android:inputType="number"
                 android:id="@+id/mobileNumberBox"/>
 

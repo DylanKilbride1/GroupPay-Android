@@ -93,6 +93,7 @@ public class Register extends AppCompatActivity {
         android.R.layout.simple_spinner_dropdown_item, countries);
     dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
     countryCodes.setAdapter(dataAdapter);
+    countryCodes.setSelection(dataAdapter.getPosition("Ireland"));
 
     PhoneNumberUtil phoneNumberUtil = PhoneNumberUtil.getInstance();
 

@@ -54,7 +54,12 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="10dp"
-                android:hint="Group Name"
+                android:hint="@string/groupNameHint"
+                android:inputType=""
+                android:maxLines="1"
+                android:lines="1"
+                android:singleLine="true"
+                android:imeOptions="actionNext"
                 android:maxLength="20"
                 android:fontFamily="@font/cairo"
                 android:backgroundTint="@color/editTextBgTintStandard"/>
@@ -78,7 +83,9 @@
                 android:background="@drawable/create_group_description_bg"
                 android:fontFamily="@font/cairo"
                 android:gravity="start"
-                android:hint="Add an optional group descripton here..."
+                android:inputType="textCapSentences|textAutoCorrect"
+                android:imeOptions="actionNext"
+                android:hint="@string/groupDescriptionHint"
                 android:maxLength="150"
                 android:padding="5dp" />
 
@@ -94,9 +101,9 @@
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
                     android:textSize="30sp"
-                    android:text="EUR"
+                    android:text="@string/euroCurrencyIdentifier"
                     android:fontFamily="@font/cairo"
-                    android:layout_marginRight="20dp"
+                    android:layout_marginEnd="20dp"
                     android:gravity="center_vertical"/>
 
                 <TextView
@@ -119,7 +126,8 @@
                     android:textSize="27sp"
                     android:digits="0123456789.,€"
                     android:inputType="number"
-                    android:maxLength="19"
+                    android:imeOptions="actionGo"
+                    android:maxLength="18"
                     android:hint="@string/deposit_money_amount_hint"
                     android:background="@android:color/transparent"
                     />
@@ -131,7 +139,7 @@
                 android:layout_height="25dp"
                 android:layout_below="@+id/stage1AmountSection"
                 android:layout_marginTop="-20dp"
-                android:text="Amount Needed"
+                android:text="@string/amountNeededHint"
                 android:fontFamily="@font/cairo"
                 android:gravity="center_vertical"/>
 
@@ -142,7 +150,7 @@
                 android:layout_margin="30dp"
                 android:layout_alignParentBottom="true"
                 android:text="@string/generic_continue"
-                android:textSize="15dp"
+                android:textSize="15sp"
                 android:textColor="@color/whiteText"
                 android:background="@drawable/generic_rounded_continue_button_bg"/>
 
