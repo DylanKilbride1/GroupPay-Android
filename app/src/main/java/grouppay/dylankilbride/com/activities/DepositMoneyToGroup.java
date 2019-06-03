@@ -72,8 +72,8 @@ public class DepositMoneyToGroup extends AppCompatActivity {
       @Override
       public void onClick(View view) {
         Intent enterPaymentDetails = new Intent(DepositMoneyToGroup.this, EnterPaymentMethodDetails.class);
-        enterPaymentDetails.putExtra("amountToDebitStr", calculateFee(new BigDecimal(amountToPay.getText().toString())));
-        enterPaymentDetails.putExtra("amountForGroupStr", amountToPay.getText().toString());
+        enterPaymentDetails.putExtra("amountToDebitStr", calculateFee(new BigDecimal(amountToPay.getText().toString().replaceAll("[^\\d\\.]", ""))));
+        enterPaymentDetails.putExtra("amountForGroupStr", amountToPay.getText().toString().replaceAll("[^\\d\\.]", ""));
         enterPaymentDetails.putExtra("userIdStr", userId);
         enterPaymentDetails.putExtra("groupAccountIdStr", groupAccountId);
         startActivity(enterPaymentDetails);

@@ -171,6 +171,19 @@ public class GroupAccountDetailed extends AppCompatActivity {
     }
   }
 
+  private void adjustAmountViewsSizes() {
+    if ((progressFinalAmount.length() > 5) && (progressFinalAmount.length() <= 7)) {
+      progressFinalAmount.setTextSize(35);
+    } else  {
+      progressFinalAmount.setTextSize(30);
+    }
+    if ((progressStartAmount.length() > 5) && (progressStartAmount.length() <= 5)) {
+      progressStartAmount.setTextSize(35);
+    } else {
+      progressStartAmount.setTextSize(30);
+    }
+  }
+
   @Override
   public boolean onCreateOptionsMenu(Menu menu) {
     MenuInflater inflater = getMenuInflater();
@@ -304,5 +317,6 @@ public class GroupAccountDetailed extends AppCompatActivity {
     super.onResume();
     getInfoRequestSetUp();
     getGroupTransactionsRequestSetUp();
+    adjustAmountViewsSizes();
   }
 }

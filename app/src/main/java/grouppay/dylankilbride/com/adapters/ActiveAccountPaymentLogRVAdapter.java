@@ -78,15 +78,15 @@ public class ActiveAccountPaymentLogRVAdapter extends RecyclerView.Adapter<Activ
 
     @Override
     public void onClick(View view) {
-      if (view.equals(view)) {
-        removeAt(getAdapterPosition());
-      }
+//      if (view.equals(view)) {
+//        removeAt(getAdapterPosition());
+//      }
     }
 
-    public void removeAt(int position) {
-      transactionsList.remove(position);
-      notifyItemRemoved(position);
-      notifyItemRangeChanged(position, transactionsList.size());
-    }
+//    public void removeAt(int position) {
+//      transactionsList.remove(position);
+//      notifyItemRemoved(position);
+//      notifyItemRangeChanged(position, transactionsList.size());
+//    }
   }
 }

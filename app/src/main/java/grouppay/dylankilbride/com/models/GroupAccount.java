@@ -102,8 +102,17 @@ public class GroupAccount implements Serializable {
   }
 
   public String getAccountFinanceString(){
-    String amountPaid = String.valueOf(totalAmountPaid);
-    String amountOwed = String.valueOf(totalAmountOwed);
+    String amountPaid, amountOwed;
+    if (totalAmountPaid.compareTo(BigDecimal.ZERO) == 0) {
+      amountPaid = "0";
+    } else {
+      amountPaid = String.valueOf(totalAmountPaid.stripTrailingZeros().toPlainString());
+    }
+    if(totalAmountOwed.compareTo(BigDecimal.ZERO) == 0) {
+      amountOwed = "0";
+    } else {
+      amountOwed = String.valueOf(totalAmountOwed.stripTrailingZeros().toPlainString());
+    }
     return "€" + amountPaid + " of €" + amountOwed;
   }
 

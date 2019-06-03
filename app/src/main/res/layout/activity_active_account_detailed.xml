@@ -44,29 +44,34 @@
             android:orientation="vertical"
             android:gravity="center|bottom">
 
-            <LinearLayout
+            <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="90dp">
 
                 <TextView
                     android:id="@+id/activeAccountProgressStartTV"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_alignParentStart="true"
+                    android:layout_alignParentBottom="true"
                     android:fontFamily="@font/cairo"
                     android:textSize="40sp"
                     tools:text="€0" />
 
                 <TextView
                     android:id="@+id/activeAccountProgressEndTV"
-                    android:layout_width="match_parent"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/cairo"
+                    android:layout_alignParentEnd="true"
+                    android:layout_alignParentBottom="true"
                     android:gravity="right"
-                    android:textSize="40sp"
+                    android:textSize="30sp"
                     tools:text="€5000" />
-            </LinearLayout>
+            </RelativeLayout>
 
-            <LinearLayout
+            <RelativeLayout
+                android:id="@+id/progressBarContainer"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
                 <ProgressBar
@@ -76,7 +81,7 @@
                     android:paddingBottom="15dp"
                     style="@style/Widget.AppCompat.ProgressBar.Horizontal"
                     android:progressDrawable="@drawable/active_account_detailed_progress_bar"/>
-            </LinearLayout>
+            </RelativeLayout>
 
             <Button
                 android:id="@+id/detailedAccountsViewVirtualDetailsBTN"

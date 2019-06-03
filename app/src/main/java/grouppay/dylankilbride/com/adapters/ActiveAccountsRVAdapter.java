@@ -54,6 +54,10 @@ public class ActiveAccountsRVAdapter extends RecyclerView.Adapter<ActiveAccounts
         .apply(noGroupImageDefault)
         .into(viewHolder.groupImage);
     viewHolder.groupName.setText(groupAccount.getAccountName());
+
+    if(groupAccount.getAccountFinanceString().length() > 18) {
+      viewHolder.accountValues.setTextSize(22);
+    }
     viewHolder.accountValues.setText(groupAccount.getAccountFinanceString());
     viewHolder.numberOfMembers.setText(groupAccount.getNumberOfMembersString());
 

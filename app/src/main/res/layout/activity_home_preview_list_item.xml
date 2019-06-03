@@ -51,10 +51,9 @@
             android:layout_below="@+id/accountsTvDivider"
             android:layout_toEndOf="@+id/accountPreviewImage"
             android:layout_marginBottom="5dp"
-            android:text="€20 of €3000"
+            android:text="€11026.34 of €123123123"
             android:textColor="@color/whiteText"
             android:textSize="25sp"
-            android:maxLength="18"
             android:maxLines="1"
             android:ellipsize="end"/>
 
