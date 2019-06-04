@@ -196,6 +196,24 @@ public class AddPaymentMethod extends AppCompatActivity {
     );
   }
 
+  public String parseOCRCardExpiryDate(int expiryMonth, int year) {
+    String formattedExpMonth;
+    String formattedExpYear = "";
+    String formattedExpiryDate;
+    if (Integer.toString(expiryMonth).length() == 1) {
+      formattedExpMonth = "0" + expiryMonth;
+    } else {
+      formattedExpMonth = Integer.toString(expiryMonth);
+    }
+    if(Integer.toString(year).length() == 4) {
+      formattedExpYear = Integer.toString(year).substring(2);
+    } else {
+      formattedExpYear = Integer.toString(year);
+    }
+    formattedExpiryDate = formattedExpMonth + "/" + formattedExpYear;
+    return formattedExpiryDate;
+  }
+
   private void setUpTokenToServerCall(StripeCharge stripeCharge){
     Retrofit sendToken = new Retrofit.Builder()
         .baseUrl(LOCALHOST_SERVER_BASEURL)
@@ -248,26 +266,13 @@ public class AddPaymentMethod extends AppCompatActivity {
         CreditCard scanResult = data.getParcelableExtra(CardIOActivity.EXTRA_SCAN_RESULT);
 
         // Never log a raw card number. Avoid displaying it, but if necessary use getFormattedCardNumber()
-        cardNumberResultStr = scanResult.getRedactedCardNumber();
+        cardNumberResultStr = scanResult.getFormattedCardNumber();
 
 
         cardNumber.setText(cardNumberResultStr);
-        if(scanResult.getCardType().toString().equals("American Express")) {
-          cardNumber.setCompoundDrawablesWithIntrinsicBounds(R.drawable.add_card_cardtype_amex_icon, 0, 0, 0);
-        } else if(scanResult.getCardType().toString().equals("Discover")) {
-          cardNumber.setCompoundDrawablesWithIntrinsicBounds(R.drawable.add_card_cardtype_discover_icon, 0, 0, 0);
-        } else if(scanResult.getCardType().toString().equals("Visa")) {
-          cardNumber.setCompoundDrawablesWithIntrinsicBounds(R.drawable.add_card_cardtype_visa_icon, 0, 0, 0);
-        } else if(scanResult.getCardType().toString().equals("MasterCard")) {
-          cardNumber.setCompoundDrawablesWithIntrinsicBounds(R.drawable.add_card_cardtype_mastercard_icon, 0, 0, 0);
-        } else if(scanResult.getCardType().toString().equals("Maestro")) {
-          cardNumber.setCompoundDrawablesWithIntrinsicBounds(R.drawable.add_card_cardtype_maestro_icon, 0, 0, 0);
-        } else {
-          cardNumber.setCompoundDrawablesWithIntrinsicBounds(R.drawable.add_card_cardtype_generic_icon, 0, 0, 0);
-        }
 
         if (scanResult.isExpiryValid()) {
-          cardExpiryResultStr = scanResult.expiryMonth + "/" + scanResult.expiryYear;
+          cardExpiryResultStr = parseOCRCardExpiryDate(scanResult.expiryMonth, scanResult.expiryYear);
           expiryDate.setText(cardExpiryResultStr);
         }
 

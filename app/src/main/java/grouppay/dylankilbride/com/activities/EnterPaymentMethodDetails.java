@@ -322,6 +322,24 @@ public class EnterPaymentMethodDetails extends AppCompatActivity implements Item
     expiryYear = "20" + expiryDateSegments[1];
   }
 
+  public String parseOCRCardExpiryDate(int expiryMonth, int year) {
+    String formattedExpMonth;
+    String formattedExpYear = "";
+    String formattedExpiryDate;
+    if (Integer.toString(expiryMonth).length() == 1) {
+      formattedExpMonth = "0" + expiryMonth;
+    } else {
+      formattedExpMonth = Integer.toString(expiryMonth);
+    }
+    if(Integer.toString(year).length() == 4) {
+      formattedExpYear = Integer.toString(year).substring(2);
+    } else {
+      formattedExpYear = Integer.toString(year);
+    }
+    formattedExpiryDate = formattedExpMonth + "/" + formattedExpYear;
+    return formattedExpiryDate;
+  }
+
   @Override
   protected void onActivityResult(int requestCode, int resultCode, Intent data) {
     super.onActivityResult(requestCode, resultCode, data);
@@ -332,12 +350,12 @@ public class EnterPaymentMethodDetails extends AppCompatActivity implements Item
         CreditCard scanResult = data.getParcelableExtra(CardIOActivity.EXTRA_SCAN_RESULT);
 
         // Never log a raw card number. Avoid displaying it, but if necessary use getFormattedCardNumber()
-        cardNumberResultStr = scanResult.getRedactedCardNumber();
+        cardNumberResultStr = scanResult.getFormattedCardNumber();
 
 
         cardNumber.setText(cardNumberResultStr);
         if (scanResult.isExpiryValid()) {
-          cardExpiryResultStr = scanResult.expiryMonth + "/" + scanResult.expiryYear; //TODO Remove this to stop incorrect exp date
+          cardExpiryResultStr = parseOCRCardExpiryDate(scanResult.expiryMonth, scanResult.expiryYear);
           expiryDate.setText(cardExpiryResultStr);
         }
 
