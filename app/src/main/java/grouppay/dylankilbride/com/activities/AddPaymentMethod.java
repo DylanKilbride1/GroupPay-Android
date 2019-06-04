@@ -5,6 +5,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
 import androidx.appcompat.widget.Toolbar;
 
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
@@ -60,11 +62,81 @@ public class AddPaymentMethod extends AppCompatActivity {
     expiryDate = (EditText) findViewById(R.id.addCardExpiryET);
     cvv = (EditText) findViewById(R.id.addCardCvvET);
     addPaymentMethodContinueBTN = (Button) findViewById(R.id.addPaymentMethodContinueBTN);
+    disablePayButton();
     addPaymentMethodPB = findViewById(R.id.addPaymentMethodProgress);
 
 
    cardNumber.addTextChangedListener(new CardNumberTextWatcher(cardNumber));
    expiryDate.addTextChangedListener(new CardExpiryDateTextWatcher());
+
+    //For validating all fields hold some value
+    cardNumber.addTextChangedListener(new TextWatcher() {
+      @Override
+      public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+      }
+
+      @Override
+      public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+      }
+
+      @Override
+      public void afterTextChanged(Editable editable) {
+        checkForValidFieldEntries();
+      }
+    });
+
+    cardholderName.addTextChangedListener(new TextWatcher() {
+      @Override
+      public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+      }
+
+      @Override
+      public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+      }
+
+      @Override
+      public void afterTextChanged(Editable editable) {
+        checkForValidFieldEntries();
+      }
+    });
+
+    expiryDate.addTextChangedListener(new TextWatcher() {
+      @Override
+      public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+      }
+
+      @Override
+      public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+      }
+
+      @Override
+      public void afterTextChanged(Editable editable) {
+        checkForValidFieldEntries();
+      }
+    });
+
+    cvv.addTextChangedListener(new TextWatcher() {
+      @Override
+      public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+      }
+
+      @Override
+      public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+      }
+
+      @Override
+      public void afterTextChanged(Editable editable) {
+        checkForValidFieldEntries();
+      }
+    });
 
     addPaymentMethodContinueBTN.setOnClickListener(new View.OnClickListener() {
       @Override
@@ -82,6 +154,27 @@ public class AddPaymentMethod extends AppCompatActivity {
         stripeProcess(cardToAdd);
       }
     });
+  }
+
+  private void checkForValidFieldEntries() {
+    if((!cardholderName.getText().toString().isEmpty())
+        && (cardNumber.length() >= 15)
+        && (expiryDate.length() >= 5)
+        && (cvv.length() == 3)) {
+      enablePayButton();
+    } else {
+      disablePayButton();
+    }
+  }
+
+  private void enablePayButton() {
+    addPaymentMethodContinueBTN.setEnabled(true);
+    addPaymentMethodContinueBTN.setAlpha(1);
+  }
+
+  private void disablePayButton() {
+    addPaymentMethodContinueBTN.setEnabled(false);
+    addPaymentMethodContinueBTN.setAlpha(0.5f);
   }
 
   private void stripeProcess(Card cardToAdd){

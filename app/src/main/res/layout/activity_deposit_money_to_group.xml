@@ -80,7 +80,7 @@
             android:textSize="27sp"
             android:digits="0123456789.,€"
             android:inputType="number"
-            android:maxLength="19"
+            android:maxLength="18"
             android:background="@android:color/transparent"
             tools:text=""/>
 

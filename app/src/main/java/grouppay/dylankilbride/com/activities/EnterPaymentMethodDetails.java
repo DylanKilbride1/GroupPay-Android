@@ -29,6 +29,8 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
@@ -98,6 +100,7 @@ public class EnterPaymentMethodDetails extends AppCompatActivity implements Item
     expiryDate = (EditText) findViewById(R.id.enterPaymentMethodDetailsExpiryET);
     cvv = (EditText) findViewById(R.id.enterPaymentMethodDetailsCvvET);
     usePaymentDetailsBTN = (Button) findViewById(R.id.enterPaymentMethodDetailsContinueBTN);
+    disablePayButton();
     paymentProgressSpinner = (ProgressWheel) findViewById(R.id.progressWheel);
     progressOverlay = (FrameLayout) findViewById(R.id.progress_overlay);
     selectSavedPaymentMethod = findViewById(R.id.enterPaymentDetailsSelectSavedDetails);
@@ -130,10 +133,100 @@ public class EnterPaymentMethodDetails extends AppCompatActivity implements Item
 
     cardNumber.addTextChangedListener(new CardNumberTextWatcher(cardNumber));
     expiryDate.addTextChangedListener(new CardExpiryDateTextWatcher());
+
+    //For validating all fields hold some value
+    cardNumber.addTextChangedListener(new TextWatcher() {
+      @Override
+      public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+      }
+
+      @Override
+      public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+      }
+
+      @Override
+      public void afterTextChanged(Editable editable) {
+        checkForValidFieldEntries();
+      }
+    });
+
+    cardholderName.addTextChangedListener(new TextWatcher() {
+      @Override
+      public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+      }
+
+      @Override
+      public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+      }
+
+      @Override
+      public void afterTextChanged(Editable editable) {
+        checkForValidFieldEntries();
+      }
+    });
+
+    expiryDate.addTextChangedListener(new TextWatcher() {
+      @Override
+      public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+      }
+
+      @Override
+      public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+      }
+
+      @Override
+      public void afterTextChanged(Editable editable) {
+        checkForValidFieldEntries();
+      }
+    });
+
+    cvv.addTextChangedListener(new TextWatcher() {
+      @Override
+      public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+      }
+
+      @Override
+      public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+      }
+
+      @Override
+      public void afterTextChanged(Editable editable) {
+        checkForValidFieldEntries();
+      }
+    });
   }
 
   private int checkPaymentMethodsListSize() {
     return paymentMethodsList.size();
+  }
+
+  private void checkForValidFieldEntries() {
+    if((!cardholderName.getText().toString().isEmpty())
+        && (cardNumber.length() >= 15)
+        && (expiryDate.length() >= 5)
+        && (cvv.length() == 3)) {
+    enablePayButton();
+    } else {
+    disablePayButton();
+    }
+  }
+
+  private void enablePayButton() {
+    usePaymentDetailsBTN.setEnabled(true);
+    usePaymentDetailsBTN.setAlpha(1);
+  }
+
+  private void disablePayButton() {
+    usePaymentDetailsBTN.setEnabled(false);
+    usePaymentDetailsBTN.setAlpha(0.5f);
   }
 
   private void createPaymentCardToken(){
@@ -458,5 +551,4 @@ public class EnterPaymentMethodDetails extends AppCompatActivity implements Item
     cvv.setEnabled(true);
     cvv.setAlpha(1f);
   }
-
 }
