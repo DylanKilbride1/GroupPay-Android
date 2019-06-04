@@ -116,6 +116,7 @@ public class EnterPaymentMethodDetails extends AppCompatActivity implements Item
       useNewPaymentDetails.setVisibility(View.GONE);
       selectSavedPaymentMethod.setVisibility(View.VISIBLE);
       undimCardDetailsFields();
+      disablePayButton();
     });
 
     usePaymentDetailsBTN.setOnClickListener(new View.OnClickListener() {
@@ -526,6 +527,8 @@ public class EnterPaymentMethodDetails extends AppCompatActivity implements Item
         groupAccountId);
 
     createNewToken = false;
+
+    enablePayButton();
 
     usePaymentDetailsBTN.setText("Pay with card " + card.getLastFour());
   }
