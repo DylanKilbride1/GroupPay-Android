@@ -49,7 +49,7 @@
                     android:layout_height="wrap_content"
                     android:layout_alignParentBottom="true"
                     android:layout_margin="10dp"
-                    android:alpha="0.3"
+                    android:alpha="0.5"
                     android:background="#000000"
                     android:fontFamily="@font/cairo"
                     android:paddingLeft="5dp"
