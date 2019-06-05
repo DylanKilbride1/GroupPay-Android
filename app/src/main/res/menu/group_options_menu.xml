@@ -7,10 +7,5 @@
         app:showAsAction="never"
         android:orderInCategory="0">
     </item>
-    <item android:id="@+id/groupMessages"
-        android:title="@string/detailed_group_group_messages"
-        app:showAsAction="never"
-        android:orderInCategory="1">
-    </item>
 
 </menu>

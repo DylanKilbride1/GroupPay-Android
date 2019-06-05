@@ -19,6 +19,7 @@ import androidx.appcompat.widget.Toolbar;
 import android.provider.MediaStore;
 import android.text.Editable;
 import android.text.InputFilter;
+import android.text.InputType;
 import android.text.TextWatcher;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -86,6 +87,7 @@ public class CreateGroupAccountStage1 extends AppCompatActivity {
     createStage1AccountBTN.setAlpha(0.5f);
     createStage1AccountBTN.setEnabled(false);
     groupName = (EditText) findViewById(R.id.createGroupAccountStage1NameET);
+    groupName.setInputType(InputType.TYPE_TEXT_FLAG_NO_SUGGESTIONS);
     groupDescription = (EditText) findViewById(R.id.createGroupAccountStage1DescriptionET);
     amountNeeded = (EditText) findViewById(R.id.createGroupAccountStage1AmtNeededET);
     groupImage = (ImageView) findViewById(R.id.createGroupAccountStage1Image);
